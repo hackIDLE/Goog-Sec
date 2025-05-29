@@ -1,0 +1,313 @@
+site_name: Google Security Suite
+site_url: https://ethanolivertroy.github.io/Goog-Sec
+site_description: A comprehensive security guide and toolkit for Google Workspace, Google Cloud Platform, and other Google products
+site_author: Google Security Research Team
+
+# Repository
+repo_name: Goog-Sec
+repo_url: https://github.com/ethanolivertroy/Goog-Sec
+edit_uri: edit/main/docs/
+
+# Copyright
+copyright: Copyright &copy; 2025
+
+# Configuration
+theme:
+  name: material
+  features:
+    # Navigation
+    - navigation.instant
+    - navigation.tracking
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.indexes
+    - navigation.path
+    - navigation.top
+    - navigation.footer
+    - navigation.expand
+    - toc.follow
+    - toc.integrate
+    
+    # Search
+    - search.suggest
+    - search.highlight
+    - search.share
+    
+    # Content
+    - content.tabs.link
+    - content.code.copy
+    - content.code.annotate
+    - content.code.select
+    - content.code.select.copy
+    - content.action.edit
+    - content.action.view
+    - content.action.feedback
+    - content.action.star
+    - content.action.issue
+    - content.authors
+    - content.contributors
+    - content.git
+    - content.footer
+    - content.source
+    
+    # Header
+    - header.autohide
+  language: en
+  palette:
+    # Palette toggle for light mode
+    - scheme: default
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+      primary: green
+      accent: green
+    # Palette toggle for dark mode
+    - scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+      primary: green
+      accent: green
+  font:
+    text: Roboto
+    code: Roboto Mono
+  favicon: /assets/favicon.png
+  icon:
+    logo: material/shield-lock
+    repo: fontawesome/brands/github
+  
+  # Custom CSS files
+  extra_css:
+    - stylesheets/extra.css
+    - stylesheets/nav-fix.css
+    - stylesheets/hero.css
+    - stylesheets/table-fix.css
+    - stylesheets/remove-shadows.css
+    - stylesheets/grid-cards.css
+    - stylesheets/header.css
+    - stylesheets/features.css
+    - stylesheets/code-blocks.css
+    - stylesheets/page-footer.css
+    - stylesheets/git-annotations.css
+    - stylesheets/github-contributors.css
+    
+  # Custom JavaScript files
+  extra_javascript:
+    - js/feedback.js
+    - js/github-contributors.js
+  
+
+# Extensions
+markdown_extensions:
+  - abbr
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - toc:
+      permalink: true
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.keys
+  - pymdownx.magiclink:
+      repo_url_shorthand: true
+      user: ethanolivertroy
+      repo: GWS-Security-Suite
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+        - name: vegalite
+          class: vegalite
+          format: !!python/name:pymdownx.superfences.fence_code_format
+        - name: math
+          class: arithmatex
+          format: !!python/name:pymdownx.arithmatex.fence_mathjax_format
+      preserve_tabs: true
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
+
+# Plugins
+plugins:
+  - search
+  - glightbox:
+      touchNavigation: true
+      loop: false
+      effect: zoom
+      width: 100%
+      height: auto
+      zoomable: true
+      draggable: true
+  - git-revision-date-localized:
+      enable_creation_date: true
+      type: date
+      fallback_to_build_date: true
+  - git-committers:
+      repository: ethanolivertroy/Goog-Sec
+      token: !ENV GITHUB_TOKEN
+      branch: main
+      docs_path: docs/
+
+# Page tree
+nav:
+  - Home: index.md
+  - Google Workspace Security:
+      - Overview: workspace/index.md
+      - Core Security Components:
+          - Identity Security: identity-security.md
+          - Data Protection: data-protection.md
+          - Email Security: email-security.md
+          - Endpoint Security: endpoint-security.md
+          - Drive & Document Security: drive-document-security.md
+          - Threat Hunting: threat-hunting.md
+          - Detection Rules: detection-rules.md
+          - Security Checklists: security-checklists.md
+      - Advanced Security Topics:
+          - Apps Script Security: apps-script-security.md
+          - Attack Vectors: attack-vectors.md
+          - Exploitation Examples: exploitation-examples.md
+          - Google Groups Security: google-groups-security.md
+          - Incident Response Playbooks: incident-response-playbooks.md
+          - Log Analysis: log-analysis.md
+          - Marketplace Security: marketplace-security.md
+          - MSP Implementation: msp-implementation.md
+          - OAuth Token Analysis: oauth-token-analysis.md
+          - Organizational Units: organizational-units.md
+          - Pentesting Insights: pentesting-insights.md
+          - Vulnerability Management: vulnerability-management.md
+          - Executive Dashboards: executive-dashboards.md
+  - Google Cloud Platform Security:
+      - Overview: gcp/index.md
+      - Identity & Access Management: gcp/iam.md
+      - Network Security: gcp/network-security.md
+      - Compute Security: gcp/compute-security.md
+      - Storage & Database Security: gcp/storage-security.md
+      - Kubernetes & Container Security: 
+          - Overview: gcp/container-security.md
+          - Google Kubernetes Engine (GKE):
+              - Overview: gcp/gke/index.md
+              - FIPS 140-2 Compliance: gcp/gke/fips-compliance.md
+      - Cloud Logging & Monitoring: gcp/logging-monitoring.md
+      - Security Command Center: gcp/security-command-center.md
+      - Compliance & Regulatory Controls: gcp/compliance.md
+  - Google Chrome Security:
+      - Overview: chrome/index.md
+      - Chrome Enterprise: chrome/chrome-enterprise.md
+      - Policy Configuration: chrome/policy-config.md
+      - Extension Security: chrome/extension-security.md
+      - Web Filtering: chrome/web-filtering.md
+      - Authentication & SSO: chrome/authentication.md
+      - Zero Trust Browsing: chrome/zero-trust.md
+  - Cross-Product Security:
+      - Overview: cross-product/index.md
+      - Identity Federation: cross-product/identity-federation.md
+      - Zero Trust Architecture: cross-product/zero-trust.md
+      - Security Operations: cross-product/security-operations.md
+      - Threat Intelligence: cross-product/threat-intelligence.md
+      - Compliance Management: cross-product/compliance.md
+  - NIST/FedRAMP Controls:
+      - Overview: nist-fedramp/index.md
+      - Google Cloud Platform:
+          - Access Control (AC): nist-fedramp/gcp/access-control.md
+          - Configuration Management (CM): nist-fedramp/gcp/configuration-management.md
+          - Identification & Authentication (IA): nist-fedramp/gcp/identification-authentication.md
+          - System & Communications Protection (SC): nist-fedramp/gcp/system-communications-protection.md
+          - System & Information Integrity (SI): nist-fedramp/gcp/system-information-integrity.md
+      - Google Workspace:
+          - Overview: nist-fedramp/workspace/index.md
+  - Resources: resources.md
+  - Contributing:
+      - Documentation Guidelines: contributing/documentation-guidelines.md
+      - Code Block Features: contributing/code-blocks.md
+      - Plugin Installation: contributing/plugin-installation.md
+
+# Extra
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/ethanolivertroy/GWS-Security-Suite
+    - icon: fontawesome/brands/twitter
+      link: https://twitter.com/ethanolivertroy
+    - icon: fontawesome/brands/linkedin
+      link: https://linkedin.com/in/ethanolivertroy
+  
+  # Enable generation notice
+  generator: true
+  
+  # Version information
+  version:
+    provider: mike
+    default: latest
+  
+  # Enable tags
+  tags: true
+  
+  # Enable cookie consent
+  consent:
+    title: Cookie consent
+    description: >- 
+      We use cookies to recognize your repeated visits and preferences, as well
+      as to measure the effectiveness of our documentation and whether users
+      find what they're searching for. With your consent, you're helping us to
+      make our documentation better.
+    actions:
+      - accept
+      - reject
+      - manage
+  
+  # Analytics and feedback
+  analytics:
+    feedback:
+      title: Was this page helpful?
+      ratings:
+        - icon: material/emoticon-happy-outline
+          name: This page was helpful
+          data: 1
+          note: >-
+            Thanks for your feedback!
+        - icon: material/emoticon-sad-outline
+          name: This page could be improved
+          data: 0
+          note: >- 
+            Thanks for your feedback! Help us improve this page by
+            <a href="https://github.com/ethanolivertroy/GWS-Security-Suite/issues/new/?title=[Feedback]+{title}+-+{url}" target="_blank" rel="noopener">telling us what you're missing</a>.
+  
+  # Page metadata
+  page_authors:
+    enabled: true
+    
+  # Git repository information
+  git:
+    enabled: true  
+    icon: fontawesome/brands/github
+    
+  issue:
+    provider: github
+    repository: ethanolivertroy/Goog-Sec
+    icon: fontawesome/brands/github
+    
+  star:
+    provider: github
+    repository: ethanolivertroy/Goog-Sec
+  

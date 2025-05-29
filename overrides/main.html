@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block extrahead %}
+  <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-eval' 'unsafe-inline';">
+  {% include "partials/social.html" %}
+{% endblock %}
+
+{% block hero %}
+  {% if page.is_homepage %}
+    <div class="md-header__hero">
+      <div class="md-header__hero-inner">
+        <div class="md-header__hero-content">
+          <h1>Google Security Suite</h1>
+          <p>A comprehensive security guide and toolkit for Google Workspace, Google Cloud Platform, and other Google products</p>
+          <a href="#getting-started" class="md-button md-button--primary">Get Started</a>
+          <a href="workspace/" class="md-button">Workspace Security</a>
+          <a href="gcp/" class="md-button">GCP Security</a>
+        </div>
+      </div>
+    </div>
+  {% elif page.url and page.url.startswith('/workspace/') %}
+    <div class="md-header__hero hero-workspace">
+      <div class="md-header__hero-inner">
+        <div class="md-header__hero-content">
+          <h1>{{ page.title }}</h1>
+          <p>{{ page.meta.description }}</p>
+          <a href="#getting-started" class="md-button md-button--primary">Get Started</a>
+          <a href="../identity-security/" class="md-button">Identity Security</a>
+        </div>
+      </div>
+    </div>
+  {% elif page.url and page.url.startswith('/gcp/') %}
+    <div class="md-header__hero hero-gcp">
+      <div class="md-header__hero-inner">
+        <div class="md-header__hero-content">
+          <h1>{{ page.title }}</h1>
+          <p>{{ page.meta.description }}</p>
+          <a href="#getting-started" class="md-button md-button--primary">Get Started</a>
+          {% if 'iam.md' in page.file.src_path %}
+          {% else %}
+          <a href="iam/" class="md-button">Identity & Access Management</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  {% elif page.url and page.url.startswith('/chrome/') %}
+    <div class="md-header__hero hero-chrome">
+      <div class="md-header__hero-inner">
+        <div class="md-header__hero-content">
+          <h1>{{ page.title }}</h1>
+          <p>{{ page.meta.description }}</p>
+          <a href="#getting-started" class="md-button md-button--primary">Get Started</a>
+        </div>
+      </div>
+    </div>
+  {% elif page.url and page.url.startswith('/cross-product/') %}
+    <div class="md-header__hero hero-cross-product">
+      <div class="md-header__hero-inner">
+        <div class="md-header__hero-content">
+          <h1>{{ page.title }}</h1>
+          <p>{{ page.meta.description }}</p>
+          <a href="#getting-started" class="md-button md-button--primary">Get Started</a>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+  <!-- Site-wide Under Construction admonition -->
+  <div class="admonition warning">
+    <p class="admonition-title">⚠️ Under Construction</p>
+    <p>This site is currently under construction and serves as a temporary placeholder. Content is being actively developed and may be incomplete or subject to change.</p>
+  </div>
+
+  {{ super() }}
+
+  <!-- Add a back-to-top button -->
+  <button
+    class="md-top md-icon"
+    data-md-component="top"
+    hidden
+  >
+    {% include ".icons/material/arrow-up.svg" %}
+    {{ lang.t("top.title") }}
+  </button>
+{% endblock %}

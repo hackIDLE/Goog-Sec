@@ -1,0 +1,48 @@
+{% if page and page.meta and page.meta.title %}
+  {% set title = page.meta.title %}
+{% elif page and page.title and not page.is_homepage %}
+  {% set title = page.title | striptags %}
+{% else %}
+  {% set title = config.site_name %}
+{% endif %}
+
+{% if page and page.meta and page.meta.description %}
+  {% set description = page.meta.description %}
+{% elif page and page.summary %}
+  {% set description = page.summary | striptags %}
+{% else %}
+  {% set description = config.site_description %}
+{% endif %}
+
+<!-- Social Meta Tags -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="{{ title }}">
+<meta property="og:description" content="{{ description }}">
+<meta property="og:url" content="{{ page.canonical_url }}">
+<meta property="og:site_name" content="{{ config.site_name }}">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ title }}">
+<meta name="twitter:description" content="{{ description }}">
+
+{% if page.url and page.url.startswith('/gcp/') %}
+  <meta property="og:image" content="{{ config.site_url }}/assets/social/gcp.png">
+  <meta property="og:image:alt" content="Google Cloud Platform Security">
+  <meta name="twitter:image" content="{{ config.site_url }}/assets/social/gcp.png">
+{% elif page.url and page.url.startswith('/workspace/') %}
+  <meta property="og:image" content="{{ config.site_url }}/assets/social/workspace.png">
+  <meta property="og:image:alt" content="Google Workspace Security">
+  <meta name="twitter:image" content="{{ config.site_url }}/assets/social/workspace.png">
+{% elif page.url and page.url.startswith('/chrome/') %}
+  <meta property="og:image" content="{{ config.site_url }}/assets/social/chrome.png">
+  <meta property="og:image:alt" content="Google Chrome Security">
+  <meta name="twitter:image" content="{{ config.site_url }}/assets/social/chrome.png">
+{% elif page.url and page.url.startswith('/cross-product/') %}
+  <meta property="og:image" content="{{ config.site_url }}/assets/social/cross-product.png">
+  <meta property="og:image:alt" content="Cross-Product Security">
+  <meta name="twitter:image" content="{{ config.site_url }}/assets/social/cross-product.png">
+{% else %}
+  <meta property="og:image" content="{{ config.site_url }}/assets/social/default.png">
+  <meta property="og:image:alt" content="{{ title }}">
+  <meta name="twitter:image" content="{{ config.site_url }}/assets/social/default.png">
+{% endif %}

@@ -1,0 +1,62 @@
+/* GitHub Contributors styling */
+
+.md-source-file {
+  margin-bottom: 1.2rem;
+}
+
+.md-source-file__fact {
+  align-items: center;
+  color: var(--md-default-fg-color--light);
+  display: inline-flex;
+  font-size: .68rem;
+  gap: .3rem;
+  margin-right: 1rem;
+}
+
+.md-source-file__fact--contributors {
+  margin-bottom: 0.5rem;
+}
+
+.md-source-file__fact svg {
+  width: .9rem;
+  height: .9rem;
+  fill: currentcolor;
+}
+
+/* Contributors avatars */
+.md-source-file__contributors {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.3rem;
+}
+
+.md-source-file__contributor {
+  border-radius: 100%;
+  display: block;
+  flex-shrink: 0;
+  height: 1.8rem;
+  overflow: hidden;
+  transition: transform 250ms;
+  width: 1.8rem;
+}
+
+.md-source-file__contributor:hover {
+  transform: scale(1.1);
+}
+
+.md-source-file__contributor img {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+
+/* Time info */
+.md-source-file__fact--git {
+  margin-right: 0.6rem;
+}
+
+/* "GitHub" text */
+.md-source-file__repository-icon {
+  margin-right: 0.3rem;
+}

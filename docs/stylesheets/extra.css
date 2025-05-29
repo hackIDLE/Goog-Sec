@@ -1,0 +1,358 @@
+/* Additional styling for Google Workspace Security Suite documentation */
+
+/* Google brand colors */
+:root {
+  --gws-blue: #4285F4;
+  --gws-red: #DB4437;
+  --gws-yellow: #F4B400;
+  --gws-green: #0F9D58;
+  --gws-light-green: #34A853;
+  --gws-teal: #00ACC1;
+  --gws-dark-gray: #5F6368;
+  --gws-light-gray: #E8EAED;
+}
+
+/* Content width and spacing improvements */
+.md-grid {
+  max-width: 64rem;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.md-content {
+  line-height: 1.6;
+}
+
+.md-content__inner {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+}
+
+.md-typeset h1, 
+.md-typeset h2 {
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  color: var(--gws-dark-gray);
+  font-weight: 500;
+}
+
+.md-typeset h3, 
+.md-typeset h4 {
+  margin-top: 1.5rem;
+  color: var(--gws-dark-gray);
+  font-weight: 500;
+}
+
+.md-typeset p {
+  margin-bottom: 1rem;
+}
+
+.md-typeset ul li, 
+.md-typeset ol li {
+  margin-bottom: 0.5rem;
+}
+
+.md-typeset blockquote {
+  border-left: 4px solid var(--gws-green);
+  color: var(--gws-dark-gray);
+}
+
+.md-typeset hr {
+  border-bottom: 1px solid var(--gws-light-gray);
+}
+
+/* Paragraph spacing */
+.md-typeset p + p {
+  margin-top: 1rem;
+}
+
+/* Navigation Improvements */
+.md-footer-nav {
+  background-color: white;
+  color: var(--gws-dark-gray);
+  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.03);
+}
+
+.md-footer-nav__link {
+  padding-top: 1.4rem;
+  padding-bottom: 1.4rem;
+}
+
+.md-footer-nav__button {
+  margin-bottom: 0.5rem;
+}
+
+.md-footer-nav__inner {
+  max-width: 64rem;
+  margin: 0 auto;
+}
+
+.md-footer-nav__direction {
+  color: var(--gws-dark-gray);
+  opacity: 0.7;
+  font-size: 0.7rem;
+}
+
+.md-footer-nav__title {
+  color: var(--gws-dark-gray);
+  font-size: 0.9rem;
+}
+
+.md-footer-nav__link:focus .md-footer-nav__title,
+.md-footer-nav__link:hover .md-footer-nav__title {
+  color: var(--gws-green);
+}
+
+/* Table of Contents Improvements */
+.md-nav__title {
+  font-weight: 500;
+  color: var(--gws-dark-gray);
+}
+
+.md-nav--lifted > .md-nav__list > .md-nav__item--active {
+  padding-bottom: 1rem;
+}
+
+.md-nav__item .md-nav__link--active {
+  color: var(--gws-green);
+  font-weight: 600;
+}
+
+.md-nav__link:focus,
+.md-nav__link:hover {
+  color: var(--gws-light-green);
+}
+
+.md-sidebar--secondary:not([hidden]) ~ .md-content > .md-content__inner {
+  margin-right: 12.1rem;
+}
+
+@media screen and (min-width: 76.1875em) {
+  .md-sidebar--secondary {
+    width: 11rem;
+    padding-left: 0.5rem;
+  }
+}
+
+.md-nav__item .md-nav__link {
+  transition: color 0.2s ease;
+}
+
+.md-nav__item {
+  padding-left: 0.5rem;
+  border-left: 2px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.md-nav__item--active {
+  border-left: 2px solid var(--gws-green);
+}
+
+/* Custom header styling with Google Workspace look */
+.md-header {
+  background-color: var(--gws-green);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.md-tabs {
+  background-color: var(--gws-light-green);
+}
+
+/* Custom admonition for best practices */
+:root {
+  --md-admonition-icon--best-practice: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>')
+}
+.md-typeset .admonition.best-practice,
+.md-typeset details.best-practice {
+  border-color: var(--gws-green);
+}
+.md-typeset .best-practice > .admonition-title,
+.md-typeset .best-practice > summary {
+  background-color: rgba(15, 157, 88, 0.1);
+  border-color: var(--gws-green);
+}
+.md-typeset .best-practice > .admonition-title::before,
+.md-typeset .best-practice > summary::before {
+  background-color: var(--gws-green);
+  -webkit-mask-image: var(--md-admonition-icon--best-practice);
+          mask-image: var(--md-admonition-icon--best-practice);
+}
+
+/* Custom admonition for MSP specific notes */
+:root {
+  --md-admonition-icon--msp: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 3C6.5 3 2 6.58 2 11c0 2.15 1.05 4.08 2.69 5.47C4.26 17.6 3.83 19.14 3 20.45c2.15-.46 4.08-1.42 5.55-2.83C9.62 17.87 10.78 18 12 18c5.5 0 10-4.47 10-7s-4.5-8-10-8z"/></svg>')
+}
+.md-typeset .admonition.msp,
+.md-typeset details.msp {
+  border-color: var(--gws-blue);
+}
+.md-typeset .msp > .admonition-title,
+.md-typeset .msp > summary {
+  background-color: rgba(66, 133, 244, 0.1);
+  border-color: var(--gws-blue);
+}
+.md-typeset .msp > .admonition-title::before,
+.md-typeset .msp > summary::before {
+  background-color: var(--gws-blue);
+  -webkit-mask-image: var(--md-admonition-icon--msp);
+          mask-image: var(--md-admonition-icon--msp);
+}
+
+/* Checklist styling with Google green */
+.md-typeset .task-list-control .task-list-indicator::before {
+  background-color: var(--gws-green);
+}
+
+/* Card grid for documentation links */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.card {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+  background-color: white;
+}
+
+.card:hover {
+  box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+  border-color: var(--gws-green);
+}
+
+.card h3 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  font-size: 1.2rem;
+  color: var(--gws-dark-gray);
+}
+
+.card p {
+  margin: 0.5rem 0;
+  font-size: 0.9rem;
+  color: var(--gws-dark-gray);
+}
+
+.card .icon {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  color: var(--gws-green);
+  display: block;
+  text-align: center;
+}
+
+/* Google-like buttons */
+.md-button {
+  background-color: var(--gws-blue);
+  color: white !important;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.md-button:hover {
+  background-color: #3367d6;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.md-button--primary {
+  background-color: var(--gws-green);
+}
+
+.md-button--primary:hover {
+  background-color: #0b8043;
+}
+
+/* Table styling more like Google's tables */
+.md-typeset table:not([class]) {
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.md-typeset table:not([class]) th {
+  background-color: var(--gws-light-green);
+  color: white;
+}
+
+.md-typeset table:not([class]) tr:hover {
+  background-color: rgba(15, 157, 88, 0.05);
+}
+
+/* Code block styling */
+.md-typeset pre > code {
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.md-typeset .highlight {
+  background-color: #f8f9fa;
+}
+
+.md-typeset code {
+  background-color: rgba(15, 157, 88, 0.05);
+  color: var(--gws-dark-gray);
+  padding: 0.2em 0.4em;
+  border-radius: 3px;
+  font-size: 0.9em;
+}
+
+/* Copy button */
+.md-clipboard {
+  color: var(--gws-dark-gray);
+  opacity: 0.5;
+  transition: opacity 0.2s ease, color 0.2s ease;
+}
+
+.md-clipboard:hover {
+  opacity: 1;
+  color: var(--gws-green);
+}
+
+/* Command line */
+.md-typeset .highlight .gp {
+  color: var(--gws-green);
+}
+
+/* Comments */
+.md-typeset .highlight .c, 
+.md-typeset .highlight .c1, 
+.md-typeset .highlight .cm {
+  color: #5F6368;
+  font-style: italic;
+}
+
+/* Strings */
+.md-typeset .highlight .s,
+.md-typeset .highlight .s1,
+.md-typeset .highlight .s2 {
+  color: #0F9D58;
+}
+
+/* Keywords */
+.md-typeset .highlight .k,
+.md-typeset .highlight .kn,
+.md-typeset .highlight .kd,
+.md-typeset .highlight .kc {
+  color: #4285F4;
+  font-weight: 600;
+}
+
+/* Numbers */
+.md-typeset .highlight .mi,
+.md-typeset .highlight .mf {
+  color: #DB4437;
+}
+
+/* Improve code rendering within admonitions */
+.md-typeset .admonition code,
+.md-typeset details code {
+  background-color: rgba(0, 0, 0, 0.05);
+}

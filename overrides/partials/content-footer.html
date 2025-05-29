@@ -1,0 +1,69 @@
+{% if page.meta and page.meta.title %}
+  <h2 id="__contributors">{{ lang.t("meta.source") }}</h2>
+{% endif %}
+
+<div class="md-source-file">
+  <small>
+    <!-- Date -->
+    {% if page.meta.git_revision_date_localized %}
+    <span class="md-source-file__fact">
+      <span class="md-icon" title="{{ lang.t('source.file.date.updated') }}">
+        {% include ".icons/material/clock-edit-outline.svg" %}
+      </span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">{{ page.meta.git_revision_date_localized }}</span>
+    </span>
+    {% endif %}
+    
+    <!-- Git committers -->
+    {% if committers %}
+    <span class="md-source-file__fact">
+      <span class="md-icon" title="{{ lang.t('source.file.contributors') }}">
+        {% include ".icons/material/account-multiple.svg" %}
+      </span>
+      <span class="git-committers">
+        {% for committer in committers %}
+          {% if committer.login %}
+            <a href="https://github.com/{{ committer.login }}" class="git-committers-avatar" title="{{ committer.name }}">
+              <img src="{{ committer.avatar }}" alt="{{ committer.name }}">
+            </a>
+          {% else %}
+            <span class="git-committers-avatar" title="{{ committer.name }}">
+              <img src="{{ committer.avatar }}" alt="{{ committer.name }}">
+            </span>
+          {% endif %}
+        {% endfor %}
+      </span>
+    </span>
+    {% endif %}
+    
+    <!-- Git authors -->
+    {% if git_authors %}
+    <span class="md-source-file__fact">
+      <span class="md-icon" title="{{ lang.t('source.file.authors') }}">
+        {% include ".icons/material/account-group.svg" %}
+      </span>
+      <span class="git-authors">
+        {% for author in git_authors %}
+          {% if author.name != "Not Committed Yet" %}
+            <a href="https://github.com/{{ author.name }}" class="git-authors-avatar" title="{{ author.name }}">
+              <img src="https://github.com/{{ author.name }}.png" alt="{{ author.name }}">
+            </a>
+          {% endif %}
+        {% endfor %}
+      </span>
+    </span>
+    {% endif %}
+    
+    <!-- Source link -->
+    {% if page.meta.git_site_url %}
+    <span class="md-source-file__fact">
+      <span class="md-icon" title="{{ lang.t('source.file.path') }}: {{ page.meta.git_info.page_path }}">
+        {% include ".icons/material/file.svg" %}
+      </span>
+      <a href="{{ page.meta.git_site_url }}" class="md-source-file__link" title="{{ lang.t('source.file.show') }}">
+        {{ lang.t("source.file.show") }}
+      </a>
+    </span>
+    {% endif %}
+  </small>
+</div>
