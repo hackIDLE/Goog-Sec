@@ -210,6 +210,7 @@ nav:
               - FIPS 140-2 Compliance: gcp/gke/fips-compliance.md
       - Cloud Logging & Monitoring: gcp/logging-monitoring.md
       - Security Command Center: gcp/security-command-center.md
+      - AI/ML Security (SAIF): gcp/saif-framework.md
       - Compliance & Regulatory Controls: gcp/compliance.md
   - Google Chrome Security:
       - Overview: chrome/index.md
