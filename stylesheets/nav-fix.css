@@ -1,0 +1,86 @@
+/* Navigation overlap fix for MkDocs Material theme */
+
+/* Ensure proper spacing between navigation items */
+.md-nav__item {
+  margin: 0.4em 0;
+}
+
+/* Fix for nested navigation items */
+.md-nav__item .md-nav__item {
+  padding: 0 0 0 0.5rem;
+  margin: 0;
+}
+
+/* Add proper spacing between navigation levels */
+.md-nav__list .md-nav__list {
+  margin-top: 0.2rem;
+  margin-bottom: 0.2rem;
+  padding-left: 0.2rem;
+}
+
+/* Prevent text overflow and ensure proper wrapping */
+.md-nav__link {
+  display: block;
+  margin-top: 0.3em;
+  margin-bottom: 0.3em;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  hyphens: auto;
+}
+
+/* Fix for navigation item overlap in collapsed/expanded states */
+.md-nav--lifted > .md-nav__list > .md-nav__item--active {
+  padding-bottom: 0.6rem;
+}
+
+/* Add proper spacing for active items with sub-items */
+.md-nav__item--active > .md-nav {
+  margin-top: 0.2rem;
+}
+
+/* Ensure navigation sections are properly spaced */
+.md-nav__item--section {
+  margin-top: 1.2rem;
+}
+
+/* Fix z-index for proper layering */
+.md-nav__item {
+  position: relative;
+  z-index: 1;
+}
+
+.md-nav__item--active {
+  z-index: 2;
+}
+
+/* Ensure expanded navigation items don't overlap with content below */
+.md-nav__item--nested .md-nav {
+  margin-bottom: 0.4rem;
+}
+
+/* Fix spacing when using integrated table of contents */
+.md-nav--integrated > .md-nav__list > .md-nav__item {
+  padding-bottom: 0.3rem;
+}
+
+/* Additional fixes for admonitions section that had overlap issues */
+.md-nav__item:has(.md-nav__link[href*="admonitions"]) + .md-nav__item {
+  margin-top: 0.5em;
+}
+
+/* Ensure proper display for nested items in admonitions section */
+.md-nav__item:has(.md-nav__link[href*="admonitions"]) .md-nav__item {
+  margin: 0.3em 0;
+}
+
+/* Fix for content that might be causing overlay */
+.md-nav__list:has(.md-nav__link[href*="admonitions"]) .md-nav__list {
+  margin-bottom: 0.4rem;
+  padding-bottom: 0.2rem;
+}
+
+/* Add appropriate line height to prevent text overlap */
+.md-nav__link {
+  line-height: 1.5;
+}

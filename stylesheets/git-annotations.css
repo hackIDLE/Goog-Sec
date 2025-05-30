@@ -1,0 +1,234 @@
+/* Styling for Git repository annotations */
+
+/* Git revision date */
+.git-revision-date-localized-plugin {
+  display: flex;
+  align-items: center;
+  margin-top: 1.5rem;
+  color: var(--md-default-fg-color--light);
+  font-size: 0.8rem;
+}
+
+.git-revision-date-localized-plugin .git-revision-date-localized-icon {
+  margin-right: 0.3rem;
+  color: var(--gws-green);
+}
+
+/* Git revision date tooltip */
+.git-revision-date-localized-plugin .git-revision-date-localized-tooltip {
+  position: relative;
+}
+
+.git-revision-date-localized-plugin time {
+  border-bottom: 1px dotted var(--md-default-fg-color--light);
+  cursor: help;
+}
+
+/* Git authors styling */
+.md-source-file__fact {
+  display: flex;
+  align-items: center;
+  margin-right: 1rem;
+  color: var(--md-default-fg-color--light);
+  font-size: 0.8rem;
+}
+
+.md-source-file__fact svg {
+  margin-right: 0.3rem;
+  fill: var(--gws-green);
+}
+
+.md-source-file__fact time {
+  color: inherit;
+}
+
+/* Style for the git-committers and git-authors blocks */
+.git-committers, .git-authors {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.git-committers-avatar, .git-authors-avatar {
+  margin-left: -6px;
+  position: relative;
+}
+
+.git-committers-avatar:first-child, .git-authors-avatar:first-child {
+  margin-left: 0;
+}
+
+/* Author avatars */
+.md-source-file__fact img {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 100%;
+  margin-right: 0.5rem;
+  vertical-align: middle;
+  border: 1px solid rgba(0, 0, 0, 0.07);
+  transition: transform 0.25s;
+}
+
+[data-md-color-scheme="slate"] .md-source-file__fact img {
+  border-color: rgba(255, 255, 255, 0.07);
+}
+
+.md-source-file__fact img:hover {
+  transform: scale(1.1);
+}
+
+/* Hide email addresses completely */
+.md-source-file__fact .git-revision-date-localized-plugin-author-email,
+.md-typeset .git-revision-date-localized-plugin-author-email,
+.md-source-date__fact span[title^="mailto:"],
+a[href^="mailto:"],
+.md-typeset a[href^="mailto:"],
+.git-revision-date-localized-plugin-author > span:not(.md-author):not(a),
+.git-revision-date-localized-plugin-author > span:not(.md-author)::after,
+.md-source-file__fact span[href^="mailto:"],
+.md-authors span[href^="mailto:"],
+.git-authors-info span,
+.md-source-file__fact.git-revision-date-localized-plugin-author > span:not(.md-icon),
+.md-annotation__fact:has(a[href^="mailto:"]), 
+.md-typeset a[href^="mailto:"],
+.git-authors-count,
+.git-committers-count,
+span[data-email],
+a[data-email],
+div[data-email],
+.git-committers .git-committers-email,
+.git-committers-avatar + span,
+[class*="email"],
+[class*="committers"] span:not(.git-committers-avatar),
+[class*="committers"] div:not(.git-committers-avatar),
+[class*="authors"] span:not(.git-authors-avatar):not(.md-icon) {
+  display: none !important;
+  visibility: hidden !important;
+  width: 0 !important;
+  height: 0 !important;
+  opacity: 0 !important;
+  position: absolute !important;
+  pointer-events: none !important;
+  clip: rect(0, 0, 0, 0) !important;
+  margin: -1px !important;
+}
+
+/* Keep only avatars visible */
+.git-revision-date-localized-plugin-author span,
+.git-committers span,
+.git-authors span {
+  font-size: 0 !important;
+  color: transparent !important;
+}
+
+/* Make avatars more visible and properly sized */
+.git-committers-avatar img,
+.git-authors-avatar img,
+.md-author img {
+  width: 26px !important;
+  height: 26px !important;
+  border-radius: 50% !important;
+  margin: 3px !important;
+  display: inline-block !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  position: relative !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  transition: transform 0.2s ease !important;
+  background-color: var(--md-default-bg-color) !important;
+}
+
+[data-md-color-scheme="slate"] .git-committers-avatar img,
+[data-md-color-scheme="slate"] .git-authors-avatar img,
+[data-md-color-scheme="slate"] .md-author img {
+  border-color: rgba(255, 255, 255, 0.1) !important;
+  background-color: var(--md-default-bg-color) !important;
+}
+
+.git-committers-avatar img:hover,
+.git-authors-avatar img:hover,
+.md-author img:hover {
+  transform: scale(1.2) !important;
+  border-color: var(--gws-green) !important;
+  z-index: 10 !important;
+}
+
+/* Authors container */
+.git-revision-date-localized-plugin-author {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+/* Author styling */
+.git-revision-date-localized-plugin-author a {
+  text-decoration: none !important;
+  color: var(--md-default-fg-color--light);
+  font-size: 0.7rem;
+  display: inline-flex;
+  align-items: center;
+  transition: color 0.25s;
+}
+
+.git-revision-date-localized-plugin-author a:hover {
+  color: var(--gws-green);
+}
+
+/* Repository links */
+.md-source-file__repository {
+  display: flex;
+  align-items: center;
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+}
+
+.md-source-file__repository a {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 1rem;
+  color: var(--gws-green);
+}
+
+.md-source-file__repository svg {
+  margin-right: 0.3rem;
+  fill: currentColor;
+}
+
+/* Action buttons (star, issue, etc.) */
+.md-content__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.md-content__action {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.3rem 0.6rem;
+  border-radius: 0.2rem;
+  background-color: var(--md-default-bg-color);
+  border: 1px solid var(--md-default-fg-color--lightest);
+  color: var(--md-default-fg-color);
+  transition: all 0.2s ease;
+  font-size: 0.75rem;
+}
+
+.md-content__action:hover {
+  background-color: rgba(0, 140, 77, 0.1);
+  border-color: var(--gws-green);
+  color: var(--gws-green);
+}
+
+.md-content__action svg {
+  margin-right: 0.3rem;
+  fill: currentColor;
+}
+
+/* Dark mode adjustments */
+[data-md-color-scheme="slate"] .md-content__action {
+  background-color: hsla(220, 13%, 18%, 1);
+  border-color: rgba(255, 255, 255, 0.07);
+}

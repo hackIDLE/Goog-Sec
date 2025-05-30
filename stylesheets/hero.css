@@ -1,0 +1,137 @@
+/* Hero section styling */
+.hero {
+  margin-top: -2rem;
+  padding: 4rem 0;
+  text-align: center;
+  background: linear-gradient(135deg, var(--gws-green) 0%, var(--gws-light-green) 100%);
+  color: white;
+  border-radius: 0 0 10px 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.hero h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  color: white;
+}
+
+.hero p {
+  font-size: 1.2rem;
+  max-width: 800px;
+  margin: 0 auto 2rem auto;
+  opacity: 0.9;
+}
+
+.hero-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.hero-buttons .md-button {
+  background-color: white;
+  color: var(--gws-green) !important;
+  border: none;
+  padding: 0.7rem 1.4rem;
+  font-weight: 500;
+}
+
+.hero-buttons .md-button:hover {
+  background-color: rgba(255, 255, 255, 0.9);
+  border: none;
+  transform: translateY(-2px);
+}
+
+.hero-buttons .md-button--primary {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: white !important;
+  backdrop-filter: blur(10px);
+}
+
+.hero-buttons .md-button--primary:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Wave separator */
+.wave-separator {
+  position: relative;
+  height: 70px;
+  margin-top: -30px;
+}
+
+.wave-separator svg {
+  position: absolute;
+  width: 100%;
+  height: 70px;
+  transform: translateY(-100%);
+}
+
+/* Features section */
+.features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  padding: 2rem 0;
+  margin-top: 3rem;
+}
+
+.feature {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 1.5rem;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.feature:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.feature-icon {
+  font-size: 2.5rem;
+  color: var(--gws-green);
+  margin-bottom: 1rem;
+}
+
+.feature h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  color: var(--gws-dark-gray);
+}
+
+.feature p {
+  font-size: 0.9rem;
+  color: var(--gws-dark-gray);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .hero {
+    padding: 3rem 1rem;
+  }
+  
+  .hero h1 {
+    font-size: 2rem;
+  }
+  
+  .hero p {
+    font-size: 1rem;
+  }
+  
+  .hero-buttons {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .features {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}

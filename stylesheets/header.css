@@ -1,0 +1,72 @@
+/* Custom header/hero styling */
+.md-header__hero {
+  background: linear-gradient(135deg, var(--md-primary-fg-color) 0%, var(--md-primary-fg-color--light) 100%);
+  color: var(--md-primary-bg-color);
+  padding: 3rem 0.8rem;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.md-header__hero-inner {
+  margin: 0 auto;
+  max-width: 61rem;
+  padding: 0 1rem;
+}
+
+.md-header__hero-content h1 {
+  color: var(--md-primary-bg-color);
+  font-weight: 600;
+  margin: 0 0 1rem;
+  font-size: 2.5rem;
+}
+
+.md-header__hero-content p {
+  margin: 0 0 2rem;
+  font-size: 1.2rem;
+  max-width: 40rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.md-header__hero .md-button {
+  margin: 0.5rem;
+  border: 2px solid white;
+  color: white !important;
+  background-color: transparent;
+  transition: all 0.3s ease;
+}
+
+.md-header__hero .md-button:hover {
+  background-color: white;
+  color: var(--md-primary-fg-color) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.md-header__hero .md-button--primary {
+  background-color: white;
+  color: var(--md-primary-fg-color) !important;
+  border: 2px solid white;
+}
+
+.md-header__hero .md-button--primary:hover {
+  background-color: transparent;
+  color: white !important;
+}
+
+/* Section specific hero background colors */
+.hero-workspace {
+  background: linear-gradient(135deg, #0F9D58 0%, #34A853 100%);
+}
+
+.hero-gcp {
+  background: linear-gradient(135deg, #4285F4 0%, #5E97F6 100%);
+}
+
+.hero-chrome {
+  background: linear-gradient(135deg, #DB4437 0%, #E67C73 100%);
+}
+
+.hero-cross-product {
+  background: linear-gradient(135deg, #F4B400 0%, #F9CB61 100%);
+}

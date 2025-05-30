@@ -1,0 +1,48 @@
+/* Remove all table borders from code blocks */
+.md-typeset .highlighttable,
+.md-typeset .highlight table {
+  border: none !important;
+  border-spacing: 0 !important;
+  border-collapse: collapse !important;
+}
+
+.md-typeset .highlighttable td,
+.md-typeset .highlighttable th,
+.md-typeset .highlight table td,
+.md-typeset .highlight table th,
+.md-typeset table.highlighttable {
+  border: none !important;
+  padding: 0 !important;
+  vertical-align: top !important;
+}
+
+/* Ensure code blocks don't have borders from data tables styling */
+.md-typeset .highlighttable tbody,
+.md-typeset .highlighttable tr,
+.md-typeset .highlight table tbody,
+.md-typeset .highlight table tr {
+  border: none !important;
+  background-color: transparent !important;
+}
+
+/* Fix for specific table styling inherited from other themes */
+.md-typeset table:not([class]) {
+  display: table;
+}
+
+.md-typeset table:not([class]).highlighttable {
+  display: table !important;
+  box-shadow: none !important;
+}
+
+/* Fix for zebra striping in tables affecting code blocks */
+.md-typeset .highlighttable tbody tr:nth-child(odd),
+.md-typeset .highlight table tbody tr:nth-child(odd) {
+  background-color: transparent !important;
+}
+
+/* Fix for table overflow */
+.md-typeset .highlighttable {
+  overflow-x: auto !important;
+  max-width: 100% !important;
+}

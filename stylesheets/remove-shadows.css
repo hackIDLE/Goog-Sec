@@ -1,0 +1,47 @@
+/* Remove all shadows from code blocks */
+
+/* Target all potential code elements that might have shadows */
+.md-typeset .highlight,
+.md-typeset pre,
+.md-typeset code,
+.md-typeset .highlighttable,
+.md-typeset table.highlighttable,
+.md-typeset table:not([class]).highlighttable,
+.md-typeset div.highlight,
+.md-typeset div[class*="language-"],
+.md-typeset pre[class*="language-"],
+.highlighting-content {
+  box-shadow: none !important;
+}
+
+/* Ensure borders are completely removed as well */
+.md-typeset .highlight,
+.md-typeset pre,
+.md-typeset code,
+.md-typeset .highlighttable,
+.md-typeset div.highlight {
+  border: none !important;
+}
+
+/* Enforce a clean appearance */
+.md-typeset pre {
+  overflow: auto;
+}
+
+/* Remove any additional styling that might cause visual artifacts */
+.md-typeset .highlighttable td,
+.md-typeset .highlight pre {
+  background-color: var(--md-code-bg-color) !important;
+}
+
+/* Ensure line numbers don't have box-shadow */
+.linenodiv {
+  box-shadow: none !important;
+}
+
+/* For Safari and other browsers that might add their own styling */
+.md-typeset div.highlight::before,
+.md-typeset div.highlight::after {
+  box-shadow: none !important;
+  border: none !important;
+}
