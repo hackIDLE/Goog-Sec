@@ -1,0 +1,107 @@
+/* Styling for page footer content (last update time, authors, feedback) */
+
+/* Date styling */
+.md-source-file {
+  color: var(--md-default-fg-color--light);
+  font-size: 0.85rem;
+}
+
+.md-source-file time {
+  color: var(--gws-green);
+}
+
+/* Feedback section styling */
+.md-feedback {
+  padding: 1.5rem 0;
+  border-top: 1px solid var(--md-default-fg-color--lightest);
+  margin-top: 1.5rem;
+}
+
+.md-feedback__title {
+  color: var(--md-default-fg-color);
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.md-feedback__note {
+  color: var(--md-default-fg-color--light);
+  font-size: 0.8rem;
+}
+
+.md-feedback__link,
+.md-feedback__link:hover {
+  color: var(--gws-green);
+}
+
+/* Author section styling */
+.md-authors {
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.md-authors__author {
+  display: flex;
+  align-items: center;
+  margin-right: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.md-authors__avatar {
+  border: 1px solid rgba(0, 0, 0, 0.07);
+  border-radius: 100%;
+  margin-right: 0.5rem;
+}
+
+.md-authors__name {
+  color: var(--md-default-fg-color--light);
+  font-size: 0.85rem;
+}
+
+/* Dark mode adjustments */
+[data-md-color-scheme="slate"] .md-authors__avatar {
+  border-color: rgba(255, 255, 255, 0.07);
+}
+
+[data-md-color-scheme="slate"] .md-feedback {
+  border-top-color: rgba(255, 255, 255, 0.07);
+}
+
+/* Emoji icons in feedback */
+.md-feedback .md-icon svg {
+  fill: currentColor;
+}
+
+.md-feedback__response {
+  color: var(--gws-green);
+}
+
+/* Rating buttons */
+.md-feedback__rating {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.md-feedback__rating button {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.2rem;
+  background-color: var(--md-default-bg-color);
+  border: 1px solid var(--md-default-fg-color--lightest);
+  color: var(--md-default-fg-color);
+  transition: all 0.2s ease;
+  font-size: 0.8rem;
+}
+
+.md-feedback__rating button:hover {
+  background-color: rgba(0, 140, 77, 0.1);
+  border-color: var(--gws-green);
+  color: var(--gws-green);
+}
+
+.md-feedback__rating button .md-icon {
+  margin-right: 0.3rem;
+}

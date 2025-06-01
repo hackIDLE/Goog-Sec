@@ -1,0 +1,4150 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A comprehensive security guide and toolkit for Google Workspace, Google Cloud Platform, and other Google products">
+      
+      
+        <meta name="author" content="Google Security Research Team">
+      
+      
+        <link rel="canonical" href="https://ethanolivertroy.github.io/Goog-Sec/email-security/">
+      
+      
+        <link rel="prev" href="../data-protection/">
+      
+      
+        <link rel="next" href="../endpoint-security/">
+      
+      
+      <link rel="icon" href="/assets/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.14">
+    
+    
+      
+        <title>Email Security - Google Security Suite</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.342714a4.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+    
+    
+    
+   <link href="../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><style>
+    html.glightbox-open { overflow: initial; height: 100%; }
+    .gslide-title { margin-top: 0px; user-select: text; }
+    .gslide-desc { color: #666; user-select: text; }
+    .gslide-image img { background: white; }
+    .gscrollbar-fixer { padding-right: 15px; }
+    .gdesc-inner { font-size: 0.75rem; }
+    body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color);}
+    body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color);}
+    body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color);}</style> <script src="../assets/javascripts/glightbox.min.js"></script></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="green" data-md-color-accent="green">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#google-workspace-email-security-guide" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Google Security Suite" class="md-header__button md-logo" aria-label="Google Security Suite" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 1 3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5zm0 6c1.4 0 2.8 1.1 2.8 2.5V11c.6 0 1.2.6 1.2 1.3v3.5c0 .6-.6 1.2-1.3 1.2H9.2c-.6 0-1.2-.6-1.2-1.3v-3.5c0-.6.6-1.2 1.2-1.2V9.5C9.2 8.1 10.6 7 12 7m0 1.2c-.8 0-1.5.5-1.5 1.3V11h3V9.5c0-.8-.7-1.3-1.5-1.3"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Google Security Suite
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Email Security
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="green" data-md-color-accent="green"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="green" data-md-color-accent="green"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/ethanolivertroy/Goog-Sec" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Goog-Sec
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../workspace/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Google Workspace Security
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../gcp/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Google Cloud Platform Security
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../chrome/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Google Chrome Security
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../cross-product/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Cross-Product Security
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../nist-fedramp/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  NIST/FedRAMP Controls
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../resources/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Resources
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../contributing/documentation-guidelines/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Contributing
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Google Security Suite" class="md-nav__button md-logo" aria-label="Google Security Suite" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 1 3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5zm0 6c1.4 0 2.8 1.1 2.8 2.5V11c.6 0 1.2.6 1.2 1.3v3.5c0 .6-.6 1.2-1.3 1.2H9.2c-.6 0-1.2-.6-1.2-1.3v-3.5c0-.6.6-1.2 1.2-1.2V9.5C9.2 8.1 10.6 7 12 7m0 1.2c-.8 0-1.5.5-1.5 1.3V11h3V9.5c0-.8-.7-1.3-1.5-1.3"/></svg>
+
+    </a>
+    Google Security Suite
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/ethanolivertroy/Goog-Sec" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Goog-Sec
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../workspace/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Google Workspace Security
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Google Workspace Security
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    Core Security Components
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            Core Security Components
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../identity-security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Identity Security
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../data-protection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Data Protection
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Email Security
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Email Security
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#email-security-architecture-in-google-workspace" class="md-nav__link">
+    <span class="md-ellipsis">
+      Email Security Architecture in Google Workspace
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Email Security Architecture in Google Workspace">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#understanding-gmails-security-layers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Understanding Gmail's Security Layers
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gmail-security-vs-traditional-secure-email-gateways" class="md-nav__link">
+    <span class="md-ellipsis">
+      Gmail Security vs. Traditional Secure Email Gateways
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementing-comprehensive-email-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      Implementing Comprehensive Email Security
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Implementing Comprehensive Email Security">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-core-email-authentication-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Core Email Authentication Configuration
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Core Email Authentication Configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#spf-sender-policy-framework-implementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      SPF (Sender Policy Framework) Implementation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dkim-domainkeys-identified-mail-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      DKIM (DomainKeys Identified Mail) Configuration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dmarc-domain-based-message-authentication-reporting-conformance-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      DMARC (Domain-based Message Authentication, Reporting &amp; Conformance) Setup
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-enhanced-anti-phishing-protection" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Enhanced Anti-Phishing Protection
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Enhanced Anti-Phishing Protection">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#suspicious-link-protection" class="md-nav__link">
+    <span class="md-ellipsis">
+      Suspicious Link Protection
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#external-sender-warnings" class="md-nav__link">
+    <span class="md-ellipsis">
+      External Sender Warnings
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#advanced-phishing-and-malware-protection" class="md-nav__link">
+    <span class="md-ellipsis">
+      Advanced Phishing and Malware Protection
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-data-loss-prevention-implementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Data Loss Prevention Implementation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Data Loss Prevention Implementation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#content-compliance-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      Content Compliance Rules
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dlp-policy-implementation-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      DLP Policy Implementation Strategy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#confidential-mode-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Confidential Mode Configuration
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-advanced-routing-and-security-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Advanced Routing and Security Rules
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Advanced Routing and Security Rules">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#inbound-security-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      Inbound Security Rules
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#outbound-security-controls" class="md-nav__link">
+    <span class="md-ellipsis">
+      Outbound Security Controls
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-user-and-group-based-security-policies" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. User and Group-Based Security Policies
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. User and Group-Based Security Policies">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#role-based-email-policies" class="md-nav__link">
+    <span class="md-ellipsis">
+      Role-Based Email Policies
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#organizational-unit-email-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      Organizational Unit Email Security
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#security-monitoring-and-incident-response" class="md-nav__link">
+    <span class="md-ellipsis">
+      Security Monitoring and Incident Response
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Security Monitoring and Incident Response">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-email-security-monitoring-framework" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Email Security Monitoring Framework
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Email Security Monitoring Framework">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-monitoring-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Monitoring Metrics
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#email-log-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Email Log Analysis
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-email-incident-response-procedures" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Email Incident Response Procedures
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Email Incident Response Procedures">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#phishing-attack-response" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phishing Attack Response
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#business-email-compromise-response" class="md-nav__link">
+    <span class="md-ellipsis">
+      Business Email Compromise Response
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-security-testing-and-simulation" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Security Testing and Simulation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Security Testing and Simulation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#phishing-simulation-program" class="md-nav__link">
+    <span class="md-ellipsis">
+      Phishing Simulation Program
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#security-control-validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Security Control Validation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#advanced-email-security-topics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Advanced Email Security Topics
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Advanced Email Security Topics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-zero-trust-email-security-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Zero Trust Email Security Model
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-integration-with-security-ecosystem" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Integration with Security Ecosystem
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Integration with Security Ecosystem">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#siem-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      SIEM Integration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#threat-intelligence-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Threat Intelligence Integration
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-email-security-analytics" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Email Security Analytics
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Email Security Analytics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#user-behavior-analytics" class="md-nav__link">
+    <span class="md-ellipsis">
+      User Behavior Analytics
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#advanced-threat-analytics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Advanced Threat Analytics
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#msp-specific-email-security-strategies" class="md-nav__link">
+    <span class="md-ellipsis">
+      MSP-Specific Email Security Strategies
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="MSP-Specific Email Security Strategies">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#multi-tenant-email-security-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      Multi-Tenant Email Security Management
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#client-specific-customization" class="md-nav__link">
+    <span class="md-ellipsis">
+      Client-Specific Customization
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementation-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      Implementation Checklist
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Implementation Checklist">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#initial-email-security-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      Initial Email Security Setup
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#advanced-security-enhancement" class="md-nav__link">
+    <span class="md-ellipsis">
+      Advanced Security Enhancement
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ongoing-maintenance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ongoing Maintenance
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      Resources
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../endpoint-security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Endpoint Security
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../drive-document-security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Drive & Document Security
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../threat-hunting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Threat Hunting
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../detection-rules/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Detection Rules
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../security-checklists/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Security Checklists
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    Advanced Security Topics
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            Advanced Security Topics
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apps-script-security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Apps Script Security
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../attack-vectors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Attack Vectors
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../exploitation-examples/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Exploitation Examples
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../google-groups-security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Google Groups Security
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../incident-response-playbooks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Incident Response Playbooks
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../log-analysis/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Log Analysis
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../marketplace-security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Marketplace Security
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../msp-implementation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    MSP Implementation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../oauth-token-analysis/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    OAuth Token Analysis
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../organizational-units/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Organizational Units
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pentesting-insights/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Pentesting Insights
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../vulnerability-management/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Vulnerability Management
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../executive-dashboards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Executive Dashboards
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../gcp/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Google Cloud Platform Security
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Google Cloud Platform Security
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gcp/iam/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Identity & Access Management
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gcp/network-security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Network Security
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gcp/compute-security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Compute Security
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gcp/storage-security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Storage & Database Security
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_6" id="__nav_3_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Kubernetes & Container Security
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_6">
+            <span class="md-nav__icon md-icon"></span>
+            Kubernetes & Container Security
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gcp/container-security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_6_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../gcp/gke/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Google Kubernetes Engine (GKE)
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3_6_2" id="__nav_3_6_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_6_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_6_2">
+            <span class="md-nav__icon md-icon"></span>
+            Google Kubernetes Engine (GKE)
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gcp/gke/fips-compliance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    FIPS 140-2 Compliance
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gcp/logging-monitoring/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Cloud Logging & Monitoring
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gcp/security-command-center/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Security Command Center
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gcp/saif-framework/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    AI/ML Security (SAIF)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gcp/compliance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Compliance & Regulatory Controls
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../chrome/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Google Chrome Security
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Google Chrome Security
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chrome/chrome-enterprise/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Chrome Enterprise
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chrome/policy-config/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Policy Configuration
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chrome/extension-security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Extension Security
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chrome/web-filtering/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Web Filtering
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chrome/authentication/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Authentication & SSO
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chrome/zero-trust/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Zero Trust Browsing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../cross-product/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Cross-Product Security
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Cross-Product Security
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cross-product/identity-federation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Identity Federation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cross-product/zero-trust/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Zero Trust Architecture
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cross-product/security-operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Security Operations
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cross-product/threat-intelligence/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Threat Intelligence
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cross-product/compliance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Compliance Management
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../nist-fedramp/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    NIST/FedRAMP Controls
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_6" id="__nav_6_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            NIST/FedRAMP Controls
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_2" id="__nav_6_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Google Cloud Platform
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_2">
+            <span class="md-nav__icon md-icon"></span>
+            Google Cloud Platform
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../nist-fedramp/gcp/access-control/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Access Control (AC)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../nist-fedramp/gcp/configuration-management/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Configuration Management (CM)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../nist-fedramp/gcp/identification-authentication/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Identification & Authentication (IA)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../nist-fedramp/gcp/system-communications-protection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    System & Communications Protection (SC)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../nist-fedramp/gcp/system-information-integrity/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    System & Information Integrity (SI)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../nist-fedramp/workspace/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Google Workspace
+    
+  </span>
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_3">
+            <span class="md-nav__icon md-icon"></span>
+            Google Workspace
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../resources/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Resources
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Contributing
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            Contributing
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contributing/documentation-guidelines/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Documentation Guidelines
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contributing/code-blocks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Code Block Features
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contributing/plugin-installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Plugin Installation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/ethanolivertroy/Goog-Sec/edit/main/docs/email-security.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+    
+      
+    
+    <a href="https://github.com/ethanolivertroy/Goog-Sec/raw/main/docs/email-security.md" title="View source of this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"/></svg>
+    </a>
+  
+
+
+<div class="admonition warning">
+<p class="admonition-title">Under Construction</p>
+<p>This page is under construction. Please check back later for comprehensive guidance</p>
+</div>
+<h1 id="google-workspace-email-security-guide">Google Workspace Email Security Guide<a class="headerlink" href="#google-workspace-email-security-guide" title="Permanent link">&para;</a></h1>
+<p>This comprehensive guide provides security professionals and MSPs with detailed strategies for securing Google Workspace email environments, with a focus on advanced threat detection, policy implementation, and monitoring.</p>
+<h2 id="email-security-architecture-in-google-workspace">Email Security Architecture in Google Workspace<a class="headerlink" href="#email-security-architecture-in-google-workspace" title="Permanent link">&para;</a></h2>
+<h3 id="understanding-gmails-security-layers">Understanding Gmail's Security Layers<a class="headerlink" href="#understanding-gmails-security-layers" title="Permanent link">&para;</a></h3>
+<p>Gmail's security architecture consists of multiple defensive layers that work together to provide comprehensive protection:</p>
+<ol>
+<li><strong>Connection Security</strong></li>
+<li>TLS encryption for mail transfer</li>
+<li>SMTP security enforcement</li>
+<li>
+<p>Certificate validation</p>
+</li>
+<li>
+<p><strong>Identity and Authentication</strong></p>
+</li>
+<li>SPF, DKIM, and DMARC validation</li>
+<li>Sender reputation assessment</li>
+<li>
+<p>Authentication results verification</p>
+</li>
+<li>
+<p><strong>Content Security</strong></p>
+</li>
+<li>Spam filtering algorithms</li>
+<li>Malware detection engines</li>
+<li>Phishing protection</li>
+<li>
+<p>Attachment scanning</p>
+</li>
+<li>
+<p><strong>User Security</strong></p>
+</li>
+<li>Suspicious login detection</li>
+<li>Security alert notifications</li>
+<li>Safe browsing warnings</li>
+<li>
+<p>External sender indicators</p>
+</li>
+<li>
+<p><strong>Data Protection</strong></p>
+</li>
+<li>Data Loss Prevention (DLP)</li>
+<li>Content compliance rules</li>
+<li>Confidential mode</li>
+<li>Rights management</li>
+</ol>
+<h3 id="gmail-security-vs-traditional-secure-email-gateways">Gmail Security vs. Traditional Secure Email Gateways<a class="headerlink" href="#gmail-security-vs-traditional-secure-email-gateways" title="Permanent link">&para;</a></h3>
+<p>Unlike traditional SEGs which sit in front of mail systems, Gmail's security is deeply integrated into the platform. Key differences include:</p>
+<table>
+<thead>
+<tr>
+<th>Characteristic</th>
+<th>Traditional SEG</th>
+<th>Gmail Security</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Architecture</strong></td>
+<td>Separate product, often on-premises or cloud proxy</td>
+<td>Natively integrated into Gmail platform</td>
+</tr>
+<tr>
+<td><strong>Deployment</strong></td>
+<td>Requires MX record changes, mail routing configuration</td>
+<td>Built-in, no additional deployment required</td>
+</tr>
+<tr>
+<td><strong>Updates</strong></td>
+<td>Scheduled updates, often requiring maintenance windows</td>
+<td>Continuous updates without disruption</td>
+</tr>
+<tr>
+<td><strong>Intelligence</strong></td>
+<td>Based on vendor threat intelligence and signatures</td>
+<td>Machine learning with real-time global threat data</td>
+</tr>
+<tr>
+<td><strong>Scalability</strong></td>
+<td>Often requires capacity planning and scaling</td>
+<td>Automatically scales with Google infrastructure</td>
+</tr>
+<tr>
+<td><strong>User Experience</strong></td>
+<td>May introduce latency, quarantine management</td>
+<td>Seamless experience with minimal user interaction</td>
+</tr>
+</tbody>
+</table>
+<h2 id="implementing-comprehensive-email-security">Implementing Comprehensive Email Security<a class="headerlink" href="#implementing-comprehensive-email-security" title="Permanent link">&para;</a></h2>
+<h3 id="1-core-email-authentication-configuration">1. Core Email Authentication Configuration<a class="headerlink" href="#1-core-email-authentication-configuration" title="Permanent link">&para;</a></h3>
+<p>Properly configured email authentication is fundamental to preventing spoofing and phishing:</p>
+<h4 id="spf-sender-policy-framework-implementation">SPF (Sender Policy Framework) Implementation<a class="headerlink" href="#spf-sender-policy-framework-implementation" title="Permanent link">&para;</a></h4>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Admin Console &gt; Apps &gt; Google Workspace &gt; Gmail &gt; Authentication
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>- Add SPF records to your DNS with appropriate scope
+</span></code></pre></div>
+<p><strong>Example SPF Record:</strong>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>v=spf1 include:_spf.google.com ~all
+</span></code></pre></div></p>
+<p><strong>Implementation Considerations:</strong>
+- Use <code>~all</code> (soft fail) initially to monitor impact
+- Transition to <code>-all</code> (hard fail) after validation period
+- Include all legitimate sending sources
+- Stay under the 10 DNS lookup limit</p>
+<h4 id="dkim-domainkeys-identified-mail-configuration">DKIM (DomainKeys Identified Mail) Configuration<a class="headerlink" href="#dkim-domainkeys-identified-mail-configuration" title="Permanent link">&para;</a></h4>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>Admin Console &gt; Apps &gt; Google Workspace &gt; Gmail &gt; Authentication
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>- Generate DKIM key for your domain
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>- Add DKIM keys to DNS
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>- Enable DKIM signing
+</span></code></pre></div>
+<p><strong>Best Practices:</strong>
+- Use 2048-bit keys for stronger security
+- Implement DKIM for all domains, including subdomains
+- Rotate keys annually as a security best practice
+- Monitor DKIM signature validation rates</p>
+<h4 id="dmarc-domain-based-message-authentication-reporting-conformance-setup">DMARC (Domain-based Message Authentication, Reporting &amp; Conformance) Setup<a class="headerlink" href="#dmarc-domain-based-message-authentication-reporting-conformance-setup" title="Permanent link">&para;</a></h4>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>Admin Console &gt; Apps &gt; Google Workspace &gt; Gmail &gt; Authentication
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>- Configure DMARC policy through DNS records
+</span></code></pre></div>
+<p><strong>Example DMARC Record:</strong>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>v=DMARC1; p=quarantine; pct=100; rua=mailto:dmarc-reports@example.com
+</span></code></pre></div></p>
+<p><strong>Progressive Implementation Strategy:</strong>
+1. Start with monitoring policy (<code>p=none</code>)
+2. Analyze reports to identify legitimate sources
+3. Move to quarantine policy (<code>p=quarantine</code>) with percentage (<code>pct=</code>)
+4. Progress to rejection policy (<code>p=reject</code>) when ready</p>
+<p><strong>Reporting Configuration:</strong>
+- Set up dedicated mailbox for aggregate reports (<code>rua=</code>)
+- Consider using a DMARC analysis service
+- Review reports weekly during implementation
+- Monitor for unauthorized senders</p>
+<h3 id="2-enhanced-anti-phishing-protection">2. Enhanced Anti-Phishing Protection<a class="headerlink" href="#2-enhanced-anti-phishing-protection" title="Permanent link">&para;</a></h3>
+<p>Implement advanced controls to protect against sophisticated phishing:</p>
+<h4 id="suspicious-link-protection">Suspicious Link Protection<a class="headerlink" href="#suspicious-link-protection" title="Permanent link">&para;</a></h4>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>Admin Console &gt; Apps &gt; Google Workspace &gt; Gmail &gt; Safety
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>- Configure URL link protection settings
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>- Enable &quot;Protect against inbound emails that contain suspicious links&quot;
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>- Enable &quot;Scan images sent as attachments&quot;
+</span></code></pre></div>
+<p><strong>Protection Options:</strong>
+- <strong>Warning prompt</strong>: Display warning before user visits suspicious links
+- <strong>Link modification</strong>: Rewrite links to pass through Google Safe Browsing
+- <strong>Link click tracking</strong>: Record suspicious link interactions for security review</p>
+<h4 id="external-sender-warnings">External Sender Warnings<a class="headerlink" href="#external-sender-warnings" title="Permanent link">&para;</a></h4>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>Admin Console &gt; Apps &gt; Google Workspace &gt; Gmail &gt; Safety
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>- Enable &quot;Show a warning for unauthenticated emails&quot;
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>- Configure &quot;Automatically identify emails from outside your organization&quot;
+</span></code></pre></div>
+<p><strong>Implementation Considerations:</strong>
+- Create custom warning banners for external emails
+- Implement additional warnings for first-time senders
+- Configure special warnings for lookalike domain names
+- Consider warning levels based on sender risk score</p>
+<h4 id="advanced-phishing-and-malware-protection">Advanced Phishing and Malware Protection<a class="headerlink" href="#advanced-phishing-and-malware-protection" title="Permanent link">&para;</a></h4>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>Admin Console &gt; Apps &gt; Google Workspace &gt; Gmail &gt; Safety
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>- Enable &quot;Protect against anomalous attachment types&quot;
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>- Configure &quot;Protect against emails with unusual attachment types&quot;
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>- Set &quot;Protect against encrypted attachments that Google can&#39;t scan&quot; as appropriate
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>- Enable &quot;Protect against domain spoofing based on similar domain names&quot;
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>- Enable &quot;Protect against spoofing of employee names&quot;
+</span></code></pre></div>
+<p><strong>Key Controls:</strong>
+- Implement attachment type restrictions
+- Configure enhanced pre-delivery message scanning
+- Enable encrypted attachment protection
+- Activate employee impersonation protection
+- Configure domain spoofing detection</p>
+<h3 id="3-data-loss-prevention-implementation">3. Data Loss Prevention Implementation<a class="headerlink" href="#3-data-loss-prevention-implementation" title="Permanent link">&para;</a></h3>
+<p>Protect sensitive information from unauthorized email transmission:</p>
+<h4 id="content-compliance-rules">Content Compliance Rules<a class="headerlink" href="#content-compliance-rules" title="Permanent link">&para;</a></h4>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>Admin Console &gt; Apps &gt; Google Workspace &gt; Gmail &gt; Compliance
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>- Configure content compliance rules
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>- Set up custom content matchers
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>- Define appropriate actions
+</span></code></pre></div>
+<p><strong>Example Rule Configurations:</strong></p>
+<p><strong>Credit Card Rule:</strong>
+- <strong>Trigger</strong>: Messages containing credit card numbers
+- <strong>Action</strong>: Quarantine or add warning
+- <strong>Pattern</strong>: Regular expression for credit card formats
+- <strong>Scope</strong>: Outbound email to external recipients</p>
+<p><strong>Medical Information Rule:</strong>
+- <strong>Trigger</strong>: Messages containing PHI/health identifiers
+- <strong>Action</strong>: Apply confidential mode or require approval
+- <strong>Pattern</strong>: Dictionary of medical terms + identifiers
+- <strong>Scope</strong>: All email messages</p>
+<h4 id="dlp-policy-implementation-strategy">DLP Policy Implementation Strategy<a class="headerlink" href="#dlp-policy-implementation-strategy" title="Permanent link">&para;</a></h4>
+<p><strong>Staged Approach:</strong>
+1. <strong>Discovery Mode</strong>: Identify data patterns without enforcement
+2. <strong>Advisory Mode</strong>: Warn users about sensitive content
+3. <strong>Enforcement Mode</strong>: Block or modify non-compliant messages</p>
+<p><strong>Policy Components:</strong>
+- <strong>Content Detectors</strong>: Regular expressions, dictionaries, fingerprints
+- <strong>Contextual Rules</strong>: Recipient, sender, time-based conditions
+- <strong>Actions</strong>: Block, quarantine, modify, warn, log
+- <strong>Exceptions</strong>: Legitimate business cases requiring special handling</p>
+<h4 id="confidential-mode-configuration">Confidential Mode Configuration<a class="headerlink" href="#confidential-mode-configuration" title="Permanent link">&para;</a></h4>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>Admin Console &gt; Apps &gt; Google Workspace &gt; Gmail &gt; Confidential Mode
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>- Configure &quot;Allow users to send confidential emails&quot;
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>- Set appropriate defaults for expiration and access controls
+</span></code></pre></div>
+<p><strong>Key Features to Configure:</strong>
+- Message expiration timeframes
+- SMS verification requirements
+- Ability to revoke access
+- Prevent downloading, printing, or forwarding</p>
+<h3 id="4-advanced-routing-and-security-rules">4. Advanced Routing and Security Rules<a class="headerlink" href="#4-advanced-routing-and-security-rules" title="Permanent link">&para;</a></h3>
+<p>Implement sophisticated mail flow rules to enhance security:</p>
+<h4 id="inbound-security-rules">Inbound Security Rules<a class="headerlink" href="#inbound-security-rules" title="Permanent link">&para;</a></h4>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>Admin Console &gt; Apps &gt; Google Workspace &gt; Gmail &gt; Routing
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>- Configure inbound security rules based on sender attributes
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>- Set up content-based routing policies
+</span></code></pre></div>
+<p><strong>Example Inbound Rules:</strong></p>
+<p><strong>External PDF Scanning:</strong>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>IF:
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>- Sender: External
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>- Attachment: PDF files
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>THEN:
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>- Add X-header: X-PDF-Scanned
+</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>- Apply additional malware scanning
+</span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>- Modify subject: [PDF ATTACHMENT]
+</span></code></pre></div></p>
+<p><strong>Lookalike Domain Alert:</strong>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>IF:
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>- Sender domain: Similar to your domain (regex pattern)
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>- Not authenticated via DKIM/SPF
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>THEN:
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>- Add warning banner
+</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>- Route to suspicious email folder
+</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>- Generate security alert
+</span></code></pre></div></p>
+<h4 id="outbound-security-controls">Outbound Security Controls<a class="headerlink" href="#outbound-security-controls" title="Permanent link">&para;</a></h4>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>Admin Console &gt; Apps &gt; Google Workspace &gt; Gmail &gt; Routing
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>- Configure outbound mail policies
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>- Set up data security rules for external communication
+</span></code></pre></div>
+<p><strong>Example Outbound Rules:</strong></p>
+<p><strong>Partner Domain Routing:</strong>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>IF:
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>- Recipient domain: Trusted partner domains
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>- Contains attachments
+</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>THEN:
+</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>- Apply TLS enforcement
+</span><span id="__span-14-6"><a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>- Add footer with data classification
+</span><span id="__span-14-7"><a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a>- Allow higher attachment size limits
+</span></code></pre></div></p>
+<p><strong>High-Risk Destination Control:</strong>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>IF:
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>- Recipient country: High-risk locations
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>- Contains attachments or links
+</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>THEN:
+</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>- Require additional verification
+</span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>- Apply stricter content analysis
+</span><span id="__span-15-7"><a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a>- Enforce longer message hold for review
+</span></code></pre></div></p>
+<h3 id="5-user-and-group-based-security-policies">5. User and Group-Based Security Policies<a class="headerlink" href="#5-user-and-group-based-security-policies" title="Permanent link">&para;</a></h3>
+<p>Implement targeted security controls based on user roles and requirements:</p>
+<h4 id="role-based-email-policies">Role-Based Email Policies<a class="headerlink" href="#role-based-email-policies" title="Permanent link">&para;</a></h4>
+<p>Configure policies for specific user groups:</p>
+<p><strong>Finance Team Policy:</strong>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>Admin Console &gt; Groups &gt; Create new group &gt; Finance Users
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>- Apply enhanced security features:
+</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>  - Mandatory encryption for external emails
+</span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>  - Stricter attachment controls
+</span><span id="__span-16-5"><a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a>  - Advanced phishing protection
+</span><span id="__span-16-6"><a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a>  - Enhanced logging
+</span></code></pre></div></p>
+<p><strong>Executive Protection Policy:</strong>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>Admin Console &gt; Groups &gt; Create new group &gt; Executive Users
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>- Apply enhanced security features:
+</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>  - Impersonation protection
+</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>  - Display name monitoring
+</span><span id="__span-17-5"><a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>  - Stricter external sender warnings
+</span><span id="__span-17-6"><a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a>  - Enhanced phishing protection
+</span></code></pre></div></p>
+<h4 id="organizational-unit-email-security">Organizational Unit Email Security<a class="headerlink" href="#organizational-unit-email-security" title="Permanent link">&para;</a></h4>
+<p>Implement differential email security by OU:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>Admin Console &gt; Directory &gt; Organizational Units
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>- Create security-focused OUs
+</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>- Apply appropriate email security controls per OU
+</span></code></pre></div>
+<p><strong>Implementation Strategy:</strong>
+- Group users with similar security profiles
+- Create graduated security tiers (Standard, Enhanced, High Security)
+- Align email security with data sensitivity and user role
+- Document exception processes for cross-OU needs</p>
+<h2 id="security-monitoring-and-incident-response">Security Monitoring and Incident Response<a class="headerlink" href="#security-monitoring-and-incident-response" title="Permanent link">&para;</a></h2>
+<h3 id="1-email-security-monitoring-framework">1. Email Security Monitoring Framework<a class="headerlink" href="#1-email-security-monitoring-framework" title="Permanent link">&para;</a></h3>
+<p>Implement comprehensive monitoring to detect email-based threats:</p>
+<h4 id="key-monitoring-metrics">Key Monitoring Metrics<a class="headerlink" href="#key-monitoring-metrics" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Metric Category</th>
+<th>Key Indicators</th>
+<th>Monitoring Frequency</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Authentication</strong></td>
+<td>SPF/DKIM/DMARC failure rates, authentication bypass attempts</td>
+<td>Daily</td>
+</tr>
+<tr>
+<td><strong>Phishing</strong></td>
+<td>Reported phishing, click-through rates on suspicious links</td>
+<td>Daily</td>
+</tr>
+<tr>
+<td><strong>Malware</strong></td>
+<td>Attachment blocks, malicious content detection</td>
+<td>Daily</td>
+</tr>
+<tr>
+<td><strong>Data Loss</strong></td>
+<td>DLP rule triggers, confidential mode usage</td>
+<td>Weekly</td>
+</tr>
+<tr>
+<td><strong>User Behavior</strong></td>
+<td>Unusual sending patterns, rule modifications, forwarding changes</td>
+<td>Weekly</td>
+</tr>
+<tr>
+<td><strong>System Health</strong></td>
+<td>Mail flow delays, quarantine size, processing issues</td>
+<td>Daily</td>
+</tr>
+</tbody>
+</table>
+<h4 id="email-log-analysis">Email Log Analysis<a class="headerlink" href="#email-log-analysis" title="Permanent link">&para;</a></h4>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>Admin Console &gt; Reports &gt; Audit &gt; Email Log Search
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>- Set up regular review of email security logs
+</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>- Configure custom log queries for specific threats
+</span></code></pre></div>
+<p><strong>Sample Monitoring Queries:</strong></p>
+<p><strong>Authentication Failure Monitoring:</strong>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="c1">-- Pseudocode for email authentication monitoring</span>
+</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">sender_domain</span><span class="p">,</span><span class="w"> </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">failure_count</span><span class="p">,</span>
+</span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="w">       </span><span class="n">dkim_result</span><span class="p">,</span><span class="w"> </span><span class="n">spf_result</span><span class="p">,</span><span class="w"> </span><span class="n">dmarc_result</span>
+</span><span id="__span-20-4"><a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="k">FROM</span><span class="w"> </span><span class="n">email_logs</span>
+</span><span id="__span-20-5"><a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a><span class="k">WHERE</span><span class="w"> </span><span class="k">timestamp</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">TIMESTAMP_SUB</span><span class="p">(</span><span class="k">CURRENT_TIMESTAMP</span><span class="p">(),</span><span class="w"> </span><span class="nb">INTERVAL</span><span class="w"> </span><span class="mi">24</span><span class="w"> </span><span class="n">HOUR</span><span class="p">)</span>
+</span><span id="__span-20-6"><a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a><span class="w">  </span><span class="k">AND</span><span class="w"> </span><span class="p">(</span><span class="n">dkim_result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;fail&#39;</span><span class="w"> </span><span class="k">OR</span><span class="w"> </span><span class="n">spf_result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;fail&#39;</span><span class="w"> </span><span class="k">OR</span><span class="w"> </span><span class="n">dmarc_result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;fail&#39;</span><span class="p">)</span>
+</span><span id="__span-20-7"><a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a><span class="w">  </span><span class="k">AND</span><span class="w"> </span><span class="n">recipient_domain</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;yourdomain.com&#39;</span>
+</span><span id="__span-20-8"><a id="__codelineno-20-8" name="__codelineno-20-8" href="#__codelineno-20-8"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">sender_domain</span><span class="p">,</span><span class="w"> </span><span class="n">dkim_result</span><span class="p">,</span><span class="w"> </span><span class="n">spf_result</span><span class="p">,</span><span class="w"> </span><span class="n">dmarc_result</span>
+</span><span id="__span-20-9"><a id="__codelineno-20-9" name="__codelineno-20-9" href="#__codelineno-20-9"></a><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">failure_count</span><span class="w"> </span><span class="k">DESC</span>
+</span><span id="__span-20-10"><a id="__codelineno-20-10" name="__codelineno-20-10" href="#__codelineno-20-10"></a><span class="k">LIMIT</span><span class="w"> </span><span class="mi">100</span>
+</span></code></pre></div></p>
+<p><strong>Suspicious Email Pattern Detection:</strong>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="c1">-- Pseudocode for suspicious email patterns</span>
+</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">sender_email</span><span class="p">,</span><span class="w"> </span><span class="n">subject</span><span class="p">,</span><span class="w"> </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">email_count</span><span class="p">,</span>
+</span><span id="__span-21-3"><a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="w">       </span><span class="k">MIN</span><span class="p">(</span><span class="k">timestamp</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">first_seen</span><span class="p">,</span><span class="w"> </span><span class="k">MAX</span><span class="p">(</span><span class="k">timestamp</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">last_seen</span>
+</span><span id="__span-21-4"><a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a><span class="k">FROM</span><span class="w"> </span><span class="n">email_logs</span>
+</span><span id="__span-21-5"><a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a><span class="k">WHERE</span><span class="w"> </span><span class="k">timestamp</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">TIMESTAMP_SUB</span><span class="p">(</span><span class="k">CURRENT_TIMESTAMP</span><span class="p">(),</span><span class="w"> </span><span class="nb">INTERVAL</span><span class="w"> </span><span class="mi">24</span><span class="w"> </span><span class="n">HOUR</span><span class="p">)</span>
+</span><span id="__span-21-6"><a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a><span class="w">  </span><span class="k">AND</span><span class="w"> </span><span class="n">recipient_domain</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;yourdomain.com&#39;</span>
+</span><span id="__span-21-7"><a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a><span class="w">  </span><span class="k">AND</span><span class="w"> </span><span class="p">(</span>
+</span><span id="__span-21-8"><a id="__codelineno-21-8" name="__codelineno-21-8" href="#__codelineno-21-8"></a><span class="w">    </span><span class="n">subject</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;%urgent%&#39;</span><span class="w"> </span><span class="k">OR</span>
+</span><span id="__span-21-9"><a id="__codelineno-21-9" name="__codelineno-21-9" href="#__codelineno-21-9"></a><span class="w">    </span><span class="n">subject</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;%password%&#39;</span><span class="w"> </span><span class="k">OR</span>
+</span><span id="__span-21-10"><a id="__codelineno-21-10" name="__codelineno-21-10" href="#__codelineno-21-10"></a><span class="w">    </span><span class="n">subject</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;%verify%&#39;</span><span class="w"> </span><span class="k">OR</span>
+</span><span id="__span-21-11"><a id="__codelineno-21-11" name="__codelineno-21-11" href="#__codelineno-21-11"></a><span class="w">    </span><span class="n">subject</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;%account%access%&#39;</span>
+</span><span id="__span-21-12"><a id="__codelineno-21-12" name="__codelineno-21-12" href="#__codelineno-21-12"></a><span class="w">  </span><span class="p">)</span>
+</span><span id="__span-21-13"><a id="__codelineno-21-13" name="__codelineno-21-13" href="#__codelineno-21-13"></a><span class="w">  </span><span class="k">AND</span><span class="w"> </span><span class="n">authentication_summary</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;%PASS%&#39;</span>
+</span><span id="__span-21-14"><a id="__codelineno-21-14" name="__codelineno-21-14" href="#__codelineno-21-14"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">sender_email</span><span class="p">,</span><span class="w"> </span><span class="n">subject</span>
+</span><span id="__span-21-15"><a id="__codelineno-21-15" name="__codelineno-21-15" href="#__codelineno-21-15"></a><span class="k">HAVING</span><span class="w"> </span><span class="n">email_count</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">5</span>
+</span><span id="__span-21-16"><a id="__codelineno-21-16" name="__codelineno-21-16" href="#__codelineno-21-16"></a><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">email_count</span><span class="w"> </span><span class="k">DESC</span>
+</span></code></pre></div></p>
+<h3 id="2-email-incident-response-procedures">2. Email Incident Response Procedures<a class="headerlink" href="#2-email-incident-response-procedures" title="Permanent link">&para;</a></h3>
+<p>Develop structured response procedures for email security incidents:</p>
+<h4 id="phishing-attack-response">Phishing Attack Response<a class="headerlink" href="#phishing-attack-response" title="Permanent link">&para;</a></h4>
+<p><strong>Initial Assessment:</strong>
+1. Identify affected users and message characteristics
+2. Determine if credentials were compromised
+3. Assess if malware was delivered
+4. Identify similar messages in mail flow</p>
+<p><strong>Containment Steps:</strong>
+1. Remove phishing emails from affected inboxes
+2. Block sender domains/addresses
+3. Update content filters to catch similar messages
+4. Reset passwords for affected users if credentials compromised</p>
+<p><strong>Eradication Actions:</strong>
+1. Deploy additional scanning for related threats
+2. Update phishing protection rules
+3. Enhance security awareness for targeted users
+4. Implement additional verification if necessary</p>
+<p><strong>Recovery Process:</strong>
+1. Restore access to legitimate services
+2. Monitor for further attempts
+3. Implement additional security controls
+4. Document incident and update security posture</p>
+<h4 id="business-email-compromise-response">Business Email Compromise Response<a class="headerlink" href="#business-email-compromise-response" title="Permanent link">&para;</a></h4>
+<p><strong>Initial Assessment:</strong>
+1. Confirm account compromise indicators
+2. Determine account access timeline
+3. Identify actions taken by attackers
+4. Assess financial or data loss impact</p>
+<p><strong>Containment Steps:</strong>
+1. Reset account credentials
+2. Enable additional authentication factors
+3. Review and remove suspicious rules or delegates
+4. Block external forwarding temporarily</p>
+<p><strong>Eradication Actions:</strong>
+1. Scan for persistence mechanisms (mail rules, delegates)
+2. Identify and remediate any related compromises
+3. Implement enhanced monitoring for affected accounts
+4. Review authentication patterns for anomalies</p>
+<p><strong>Recovery Process:</strong>
+1. Restore proper account configuration
+2. Implement additional security controls
+3. Enhanced monitoring of victim accounts
+4. Conduct user security training</p>
+<h3 id="3-security-testing-and-simulation">3. Security Testing and Simulation<a class="headerlink" href="#3-security-testing-and-simulation" title="Permanent link">&para;</a></h3>
+<p>Implement proactive security testing for email defenses:</p>
+<h4 id="phishing-simulation-program">Phishing Simulation Program<a class="headerlink" href="#phishing-simulation-program" title="Permanent link">&para;</a></h4>
+<p>Develop an ongoing phishing simulation program:</p>
+<ol>
+<li><strong>Assessment Phase</strong></li>
+<li>Establish baseline phishing susceptibility</li>
+<li>Identify high-risk user groups</li>
+<li>
+<p>Define success metrics</p>
+</li>
+<li>
+<p><strong>Implementation Phase</strong></p>
+</li>
+<li>Create graduated difficulty levels</li>
+<li>Design realistic scenarios based on actual threats</li>
+<li>
+<p>Implement automated reporting and tracking</p>
+</li>
+<li>
+<p><strong>Education Integration</strong></p>
+</li>
+<li>Provide immediate education for users who fail tests</li>
+<li>Create targeted training based on simulation results</li>
+<li>
+<p>Track improvement over time</p>
+</li>
+<li>
+<p><strong>Continuous Improvement</strong></p>
+</li>
+<li>Analyze results to improve security controls</li>
+<li>Update simulations based on current threat landscape</li>
+<li>Report metrics to leadership</li>
+</ol>
+<h4 id="security-control-validation">Security Control Validation<a class="headerlink" href="#security-control-validation" title="Permanent link">&para;</a></h4>
+<p>Regularly test email security controls:</p>
+<ol>
+<li><strong>Authentication Testing</strong></li>
+<li>Verify SPF, DKIM, and DMARC enforcement</li>
+<li>Test sender verification mechanisms</li>
+<li>
+<p>Validate domain spoofing protection</p>
+</li>
+<li>
+<p><strong>Content Filtering Validation</strong></p>
+</li>
+<li>Test malware detection using EICAR test files</li>
+<li>Validate phishing URL detection</li>
+<li>
+<p>Verify attachment scanning effectiveness</p>
+</li>
+<li>
+<p><strong>DLP Rule Testing</strong></p>
+</li>
+<li>Verify sensitive data detection patterns</li>
+<li>Test boundary conditions for rules</li>
+<li>
+<p>Validate exception handling</p>
+</li>
+<li>
+<p><strong>User Protection Testing</strong></p>
+</li>
+<li>Verify external sender warnings</li>
+<li>Test suspicious link warnings</li>
+<li>Validate security notifications</li>
+</ol>
+<h2 id="advanced-email-security-topics">Advanced Email Security Topics<a class="headerlink" href="#advanced-email-security-topics" title="Permanent link">&para;</a></h2>
+<h3 id="1-zero-trust-email-security-model">1. Zero Trust Email Security Model<a class="headerlink" href="#1-zero-trust-email-security-model" title="Permanent link">&para;</a></h3>
+<p>Implement a comprehensive Zero Trust approach to email security:</p>
+<p><strong>Core Principles:</strong>
+1. <strong>Verify Explicitly</strong>: Authentication and verification for all senders
+2. <strong>Least Privilege Access</strong>: Minimum necessary email functionality
+3. <strong>Assume Breach</strong>: Continuous monitoring and verification</p>
+<p><strong>Implementation Approach:</strong></p>
+<ol>
+<li><strong>Identity Verification Layer</strong></li>
+<li>Enforce strong authentication for senders</li>
+<li>Implement multiple validation signals</li>
+<li>
+<p>Create sender trust scoring</p>
+</li>
+<li>
+<p><strong>Content Trust Layer</strong></p>
+</li>
+<li>Treat all content as potentially malicious</li>
+<li>Implement multiple scanning engines</li>
+<li>
+<p>Use sandboxing for suspicious content</p>
+</li>
+<li>
+<p><strong>Access Control Layer</strong></p>
+</li>
+<li>Apply conditional access to email</li>
+<li>Implement device trust requirements</li>
+<li>
+<p>Enforce encryption for sensitive content</p>
+</li>
+<li>
+<p><strong>Continuous Monitoring Layer</strong></p>
+</li>
+<li>Monitor behavior patterns</li>
+<li>Apply adaptive controls</li>
+<li>Implement real-time risk assessment</li>
+</ol>
+<h3 id="2-integration-with-security-ecosystem">2. Integration with Security Ecosystem<a class="headerlink" href="#2-integration-with-security-ecosystem" title="Permanent link">&para;</a></h3>
+<p>Leverage integrations with broader security infrastructure:</p>
+<h4 id="siem-integration">SIEM Integration<a class="headerlink" href="#siem-integration" title="Permanent link">&para;</a></h4>
+<p>Implement integration with Security Information and Event Management systems:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>Admin Console &gt; Security &gt; Alert Center &gt; Alert notifications
+</span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>- Configure email security log export
+</span><span id="__span-22-3"><a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a>- Set up API integration for alert data
+</span><span id="__span-22-4"><a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a>- Implement correlation rules in SIEM
+</span></code></pre></div>
+<p><strong>Key Integration Points:</strong>
+- Email authentication failure events
+- Phishing and malware detection alerts
+- DLP rule triggers
+- Authentication anomalies
+- Admin configuration changes</p>
+<h4 id="threat-intelligence-integration">Threat Intelligence Integration<a class="headerlink" href="#threat-intelligence-integration" title="Permanent link">&para;</a></h4>
+<p>Leverage threat intelligence to enhance email security:</p>
+<ol>
+<li><strong>External Threat Feeds</strong></li>
+<li>Implement integration with threat intelligence platforms</li>
+<li>Subscribe to email-specific threat feeds</li>
+<li>
+<p>Create automation for indicator ingestion</p>
+</li>
+<li>
+<p><strong>Custom Indicators</strong></p>
+</li>
+<li>Develop process for custom IOC creation</li>
+<li>Implement feedback loop from incident response</li>
+<li>
+<p>Create regular review and cleanup process</p>
+</li>
+<li>
+<p><strong>Automated Response</strong></p>
+</li>
+<li>Create playbooks for common threat types</li>
+<li>Implement automated remediation for known threats</li>
+<li>Develop escalation procedures for novel threats</li>
+</ol>
+<h3 id="3-email-security-analytics">3. Email Security Analytics<a class="headerlink" href="#3-email-security-analytics" title="Permanent link">&para;</a></h3>
+<p>Implement advanced analytics to enhance detection capabilities:</p>
+<h4 id="user-behavior-analytics">User Behavior Analytics<a class="headerlink" href="#user-behavior-analytics" title="Permanent link">&para;</a></h4>
+<p>Monitor email usage patterns to detect anomalies:</p>
+<ol>
+<li><strong>Baseline Development</strong></li>
+<li>Establish normal sending patterns per user</li>
+<li>Document typical external communication</li>
+<li>
+<p>Map expected attachment and link usage</p>
+</li>
+<li>
+<p><strong>Anomaly Detection</strong></p>
+</li>
+<li>Identify deviations from normal patterns</li>
+<li>Alert on unusual recipient combinations</li>
+<li>
+<p>Detect changes in email frequency or timing</p>
+</li>
+<li>
+<p><strong>Contextual Analysis</strong></p>
+</li>
+<li>Correlate email behavior with other activities</li>
+<li>Implement risk scoring based on multiple factors</li>
+<li>Apply machine learning for pattern recognition</li>
+</ol>
+<h4 id="advanced-threat-analytics">Advanced Threat Analytics<a class="headerlink" href="#advanced-threat-analytics" title="Permanent link">&para;</a></h4>
+<p>Implement sophisticated analytics for threat detection:</p>
+<ol>
+<li><strong>Content Analysis</strong></li>
+<li>Deploy natural language processing for phishing detection</li>
+<li>Implement imagery analysis for brand impersonation</li>
+<li>
+<p>Use machine learning to identify suspicious language patterns</p>
+</li>
+<li>
+<p><strong>Relationship Mapping</strong></p>
+</li>
+<li>Create sender-recipient relationship graphs</li>
+<li>Identify unusual communication patterns</li>
+<li>
+<p>Detect potential business email compromise attempts</p>
+</li>
+<li>
+<p><strong>Temporal Analytics</strong></p>
+</li>
+<li>Analyze timing of email campaigns</li>
+<li>Identify coordinated attack patterns</li>
+<li>Detect low-and-slow attack methodologies</li>
+</ol>
+<h2 id="msp-specific-email-security-strategies">MSP-Specific Email Security Strategies<a class="headerlink" href="#msp-specific-email-security-strategies" title="Permanent link">&para;</a></h2>
+<h3 id="multi-tenant-email-security-management">Multi-Tenant Email Security Management<a class="headerlink" href="#multi-tenant-email-security-management" title="Permanent link">&para;</a></h3>
+<p>Implement efficient security management across client environments:</p>
+<ol>
+<li><strong>Standardized Baseline</strong></li>
+<li>Create tiered security baselines by client type</li>
+<li>Implement consistent naming conventions</li>
+<li>
+<p>Develop standardized configuration templates</p>
+</li>
+<li>
+<p><strong>Cross-Tenant Monitoring</strong></p>
+</li>
+<li>Implement consolidated security monitoring</li>
+<li>Create unified alert management</li>
+<li>
+<p>Develop cross-client threat detection</p>
+</li>
+<li>
+<p><strong>Delegated Administration</strong></p>
+</li>
+<li>Configure appropriate client admin access</li>
+<li>Create clear security responsibility matrix</li>
+<li>Implement workflow for security change requests</li>
+</ol>
+<h3 id="client-specific-customization">Client-Specific Customization<a class="headerlink" href="#client-specific-customization" title="Permanent link">&para;</a></h3>
+<p>Balance standardization with client-specific needs:</p>
+<ol>
+<li><strong>Security Policy Adaptation</strong></li>
+<li>Create process for client-specific policy variations</li>
+<li>Document exceptions with justification</li>
+<li>
+<p>Implement regular review process</p>
+</li>
+<li>
+<p><strong>Custom Integration Support</strong></p>
+</li>
+<li>Develop procedures for client-specific integrations</li>
+<li>Create security review process for integrations</li>
+<li>
+<p>Implement monitoring for integration-specific risks</p>
+</li>
+<li>
+<p><strong>Compliance Variation Management</strong></p>
+</li>
+<li>Map specific compliance requirements by client</li>
+<li>Create validation mechanisms for compliance controls</li>
+<li>Implement documented exception processes</li>
+</ol>
+<h2 id="implementation-checklist">Implementation Checklist<a class="headerlink" href="#implementation-checklist" title="Permanent link">&para;</a></h2>
+<h3 id="initial-email-security-setup">Initial Email Security Setup<a class="headerlink" href="#initial-email-security-setup" title="Permanent link">&para;</a></h3>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Configure SPF, DKIM, and DMARC authentication</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Implement enhanced phishing and malware protection</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Configure external sender and domain spoofing protection</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Set up basic content compliance and DLP rules</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Implement confidential mode configuration</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Configure email routing and security rules</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Establish baseline monitoring and alerting</li>
+</ul>
+<h3 id="advanced-security-enhancement">Advanced Security Enhancement<a class="headerlink" href="#advanced-security-enhancement" title="Permanent link">&para;</a></h3>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Implement role-based email security policies</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Configure advanced DLP rules for sensitive data</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Deploy sophisticated attachment controls</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Implement Zero Trust email security model</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Configure SIEM and threat intelligence integration</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Establish user behavior analytics</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Develop security testing and simulation program</li>
+</ul>
+<h3 id="ongoing-maintenance">Ongoing Maintenance<a class="headerlink" href="#ongoing-maintenance" title="Permanent link">&para;</a></h3>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Weekly review of email security metrics</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Monthly testing of security controls</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Quarterly phishing simulations</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Bi-annual security policy review</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Annual comprehensive email security assessment</li>
+</ul>
+<h2 id="resources">Resources<a class="headerlink" href="#resources" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="https://support.google.com/a/answer/7587183">Google Workspace Email Security Best Practices</a></li>
+<li><a href="https://support.google.com/a/answer/9157861">Gmail Security Checklist</a></li>
+<li><a href="https://support.google.com/a/topic/2683828">Google Workspace Admin Help: Email Security</a></li>
+<li><a href="https://dmarc.org/resources/implementation-guide/">DMARC.org Implementation Guide</a></li>
+<li><a href="https://csrc.nist.gov/publications/detail/sp/800-177/rev-1/final">NIST Email Security Guidelines</a></li>
+</ul>
+<hr />
+<p><strong>Note</strong>: This guide should be adapted to your organization's specific requirements, risk profile, and compliance needs.</p>
+
+
+
+
+
+
+
+  
+    
+  
+  
+    
+  
+
+
+  <aside class="md-source-file">
+    
+      
+  <span class="md-source-file__fact">
+    <span class="md-icon" title="Last update">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
+    </span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="June 1, 2025 02:13:27 UTC">June 1, 2025</span>
+  </span>
+
+    
+    
+      
+  <span class="md-source-file__fact">
+    <span class="md-icon" title="Created">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
+    </span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="June 1, 2025 02:13:27 UTC">June 1, 2025</span>
+  </span>
+
+    
+    
+    
+      
+  <span class="md-source-file__fact">
+    
+      
+  <span class="md-icon" title="Contributors">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33s1.71.11 2.5.33c1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2"/></svg>
+  </span>
+  <span>GitHub</span>
+
+    
+    <nav>
+      
+        <a href="https://github.com/ethanolivertroy" class="md-author" title="@ethanolivertroy">
+          
+          <img src="https://avatars.githubusercontent.com/u/63926014?v=4&size=72" alt="ethanolivertroy">
+        </a>
+      
+      
+      
+    </nav>
+  </span>
+
+    
+  </aside>
+
+
+  
+
+
+
+  <form class="md-feedback" name="feedback" hidden>
+    <fieldset>
+      <legend class="md-feedback__title">
+        Was this page helpful?
+      </legend>
+      <div class="md-feedback__inner">
+        <div class="md-feedback__list">
+          
+            <button class="md-feedback__icon md-icon" type="submit" title="This page was helpful" data-md-value="1">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8 8 8 0 0 0 8-8m2 0a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10M10 9.5c0 .8-.7 1.5-1.5 1.5S7 10.3 7 9.5 7.7 8 8.5 8s1.5.7 1.5 1.5m7 0c0 .8-.7 1.5-1.5 1.5S14 10.3 14 9.5 14.7 8 15.5 8s1.5.7 1.5 1.5m-5 7.73c-1.75 0-3.29-.73-4.19-1.81L9.23 14c.45.72 1.52 1.23 2.77 1.23s2.32-.51 2.77-1.23l1.42 1.42c-.9 1.08-2.44 1.81-4.19 1.81"/></svg>
+            </button>
+          
+            <button class="md-feedback__icon md-icon" type="submit" title="This page could be improved" data-md-value="0">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8 8 8 0 0 0 8-8m2 0a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10m-6.5-4c.8 0 1.5.7 1.5 1.5s-.7 1.5-1.5 1.5-1.5-.7-1.5-1.5.7-1.5 1.5-1.5M10 9.5c0 .8-.7 1.5-1.5 1.5S7 10.3 7 9.5 7.7 8 8.5 8s1.5.7 1.5 1.5m2 4.5c1.75 0 3.29.72 4.19 1.81l-1.42 1.42C14.32 16.5 13.25 16 12 16s-2.32.5-2.77 1.23l-1.42-1.42C8.71 14.72 10.25 14 12 14"/></svg>
+            </button>
+          
+        </div>
+        <div class="md-feedback__note">
+          
+            <div data-md-value="1" hidden>
+              
+              
+                
+              
+              
+              
+                
+                
+              
+              Thanks for your feedback!
+            </div>
+          
+            <div data-md-value="0" hidden>
+              
+              
+                
+              
+              
+              
+                
+                
+              
+              Thanks for your feedback! Help us improve this page by <a href="https://github.com/ethanolivertroy/GWS-Security-Suite/issues/new/?title=[Feedback]+Email%20Security+-+/email-security/" target="_blank" rel="noopener">telling us what you're missing</a>.
+            </div>
+          
+        </div>
+      </div>
+    </fieldset>
+  </form>
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../data-protection/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Data Protection">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Data Protection
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../endpoint-security/" class="md-footer__link md-footer__link--next" aria-label="Next: Endpoint Security">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Endpoint Security
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2025
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/ethanolivertroy/GWS-Security-Suite" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://twitter.com/ethanolivertroy" target="_blank" rel="noopener" title="twitter.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://linkedin.com/in/ethanolivertroy" target="_blank" rel="noopener" title="linkedin.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3M135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5m282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+      <div class="md-consent" data-md-component="consent" id="__consent" hidden>
+        <div class="md-consent__overlay"></div>
+        <aside class="md-consent__inner">
+          <form class="md-consent__form md-grid md-typeset" name="consent">
+            
+
+
+
+<h4>Cookie consent</h4>
+<p>We use cookies to recognize your repeated visits and preferences, as well as to measure the effectiveness of our documentation and whether users find what they're searching for. With your consent, you're helping us to make our documentation better.</p>
+<input class="md-toggle" type="checkbox" id="__settings" >
+<div class="md-consent__settings">
+  <ul class="task-list">
+    
+    
+      
+        
+  
+  
+    
+    
+  
+  <li class="task-list-item">
+    <label class="task-list-control">
+      <input type="checkbox" name="analytics" checked>
+      <span class="task-list-indicator"></span>
+      Google Analytics
+    </label>
+  </li>
+
+      
+    
+    
+      
+        
+  
+  
+    
+    
+  
+  <li class="task-list-item">
+    <label class="task-list-control">
+      <input type="checkbox" name="github" checked>
+      <span class="task-list-indicator"></span>
+      GitHub
+    </label>
+  </li>
+
+      
+    
+    
+  </ul>
+</div>
+<div class="md-consent__controls">
+  
+    
+      <button class="md-button md-button--primary">Accept</button>
+    
+    
+    
+  
+    
+    
+      <button type="reset" class="md-button md-button--primary">Reject</button>
+    
+    
+  
+    
+    
+    
+      <label class="md-button" for="__settings">Manage settings</label>
+    
+  
+</div>
+          </form>
+        </aside>
+      </div>
+      <script>var consent=__md_get("__consent");if(consent)for(var input of document.forms.consent.elements)input.name&&(input.checked=consent[input.name]||!1);else"file:"!==location.protocol&&setTimeout((function(){document.querySelector("[data-md-component=consent]").hidden=!1}),250);var form=document.forms.consent;for(var action of["submit","reset"])form.addEventListener(action,(function(e){if(e.preventDefault(),"reset"===e.type)for(var n of document.forms.consent.elements)n.name&&(n.checked=!1);__md_set("__consent",Object.fromEntries(Array.from(new FormData(form).keys()).map((function(e){return[e,!0]})))),location.hash="",location.reload()}))</script>
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.indexes", "navigation.path", "navigation.top", "navigation.footer", "navigation.expand", "toc.follow", "toc.integrate", "search.suggest", "search.highlight", "search.share", "content.tabs.link", "content.code.copy", "content.code.annotate", "content.code.select", "content.code.select.copy", "content.action.edit", "content.action.view", "content.action.feedback", "content.action.star", "content.action.issue", "content.authors", "content.contributors", "content.git", "content.footer", "content.source", "header.autohide"], "search": "../assets/javascripts/workers/search.d50fe291.min.js", "tags": true, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.13a4f30d.min.js"></script>
+      
+    
+  <script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(() => { lightbox.reload() });
+</script></body>
+</html>

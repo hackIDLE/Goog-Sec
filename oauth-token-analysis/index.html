@@ -1,0 +1,3902 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A comprehensive security guide and toolkit for Google Workspace, Google Cloud Platform, and other Google products">
+      
+      
+        <meta name="author" content="Google Security Research Team">
+      
+      
+        <link rel="canonical" href="https://ethanolivertroy.github.io/Goog-Sec/oauth-token-analysis/">
+      
+      
+        <link rel="prev" href="../msp-implementation/">
+      
+      
+        <link rel="next" href="../organizational-units/">
+      
+      
+      <link rel="icon" href="/assets/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.14">
+    
+    
+      
+        <title>OAuth Token Analysis - Google Security Suite</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.342714a4.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+    
+    
+    
+   <link href="../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><style>
+    html.glightbox-open { overflow: initial; height: 100%; }
+    .gslide-title { margin-top: 0px; user-select: text; }
+    .gslide-desc { color: #666; user-select: text; }
+    .gslide-image img { background: white; }
+    .gscrollbar-fixer { padding-right: 15px; }
+    .gdesc-inner { font-size: 0.75rem; }
+    body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color);}
+    body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color);}
+    body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color);}</style> <script src="../assets/javascripts/glightbox.min.js"></script></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="green" data-md-color-accent="green">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#oauth-token-analysis-and-authentication-audit-log-interpretation" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Google Security Suite" class="md-header__button md-logo" aria-label="Google Security Suite" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 1 3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5zm0 6c1.4 0 2.8 1.1 2.8 2.5V11c.6 0 1.2.6 1.2 1.3v3.5c0 .6-.6 1.2-1.3 1.2H9.2c-.6 0-1.2-.6-1.2-1.3v-3.5c0-.6.6-1.2 1.2-1.2V9.5C9.2 8.1 10.6 7 12 7m0 1.2c-.8 0-1.5.5-1.5 1.3V11h3V9.5c0-.8-.7-1.3-1.5-1.3"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Google Security Suite
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              OAuth Token Analysis
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="green" data-md-color-accent="green"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="green" data-md-color-accent="green"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/ethanolivertroy/Goog-Sec" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Goog-Sec
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../workspace/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Google Workspace Security
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../gcp/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Google Cloud Platform Security
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../chrome/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Google Chrome Security
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../cross-product/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Cross-Product Security
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../nist-fedramp/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  NIST/FedRAMP Controls
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../resources/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Resources
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../contributing/documentation-guidelines/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Contributing
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Google Security Suite" class="md-nav__button md-logo" aria-label="Google Security Suite" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 1 3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5zm0 6c1.4 0 2.8 1.1 2.8 2.5V11c.6 0 1.2.6 1.2 1.3v3.5c0 .6-.6 1.2-1.3 1.2H9.2c-.6 0-1.2-.6-1.2-1.3v-3.5c0-.6.6-1.2 1.2-1.2V9.5C9.2 8.1 10.6 7 12 7m0 1.2c-.8 0-1.5.5-1.5 1.3V11h3V9.5c0-.8-.7-1.3-1.5-1.3"/></svg>
+
+    </a>
+    Google Security Suite
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/ethanolivertroy/Goog-Sec" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Goog-Sec
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../workspace/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Google Workspace Security
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Google Workspace Security
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    Core Security Components
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            Core Security Components
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../identity-security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Identity Security
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../data-protection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Data Protection
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../email-security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Email Security
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../endpoint-security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Endpoint Security
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../drive-document-security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Drive & Document Security
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../threat-hunting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Threat Hunting
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../detection-rules/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Detection Rules
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../security-checklists/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Security Checklists
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    Advanced Security Topics
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            Advanced Security Topics
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apps-script-security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Apps Script Security
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../attack-vectors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Attack Vectors
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../exploitation-examples/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Exploitation Examples
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../google-groups-security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Google Groups Security
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../incident-response-playbooks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Incident Response Playbooks
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../log-analysis/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Log Analysis
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../marketplace-security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Marketplace Security
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../msp-implementation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    MSP Implementation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    OAuth Token Analysis
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    OAuth Token Analysis
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#oauth-token-security-fundamentals" class="md-nav__link">
+    <span class="md-ellipsis">
+      OAuth Token Security Fundamentals
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="OAuth Token Security Fundamentals">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#understanding-oauth-token-architecture-in-google-workspace" class="md-nav__link">
+    <span class="md-ellipsis">
+      Understanding OAuth Token Architecture in Google Workspace
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Understanding OAuth Token Architecture in Google Workspace">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#token-types-and-security-implications" class="md-nav__link">
+    <span class="md-ellipsis">
+      Token Types and Security Implications
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#oauth-scope-security-classification" class="md-nav__link">
+    <span class="md-ellipsis">
+      OAuth Scope Security Classification
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#token-abuse-detection-techniques" class="md-nav__link">
+    <span class="md-ellipsis">
+      Token Abuse Detection Techniques
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Token Abuse Detection Techniques">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#analyzing-token-audit-logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Analyzing Token Audit Logs
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Analyzing Token Audit Logs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#critical-token-events" class="md-nav__link">
+    <span class="md-ellipsis">
+      Critical Token Events
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#behavioral-analysis-for-token-activity" class="md-nav__link">
+    <span class="md-ellipsis">
+      Behavioral Analysis for Token Activity
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Behavioral Analysis for Token Activity">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#token-velocity-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Token Velocity Analysis
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#token-usage-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Token Usage Analysis
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cross-user-token-pattern-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cross-User Token Pattern Analysis
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#authentication-log-analysis-framework" class="md-nav__link">
+    <span class="md-ellipsis">
+      Authentication Log Analysis Framework
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Authentication Log Analysis Framework">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-authentication-event-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Authentication Event Types
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#advanced-authentication-analysis-techniques" class="md-nav__link">
+    <span class="md-ellipsis">
+      Advanced Authentication Analysis Techniques
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Advanced Authentication Analysis Techniques">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#frequency-based-detection" class="md-nav__link">
+    <span class="md-ellipsis">
+      Frequency-Based Detection
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#location-based-detection" class="md-nav__link">
+    <span class="md-ellipsis">
+      Location-Based Detection
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#time-based-detection" class="md-nav__link">
+    <span class="md-ellipsis">
+      Time-Based Detection
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#device-based-detection" class="md-nav__link">
+    <span class="md-ellipsis">
+      Device-Based Detection
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#practical-token-attack-detection" class="md-nav__link">
+    <span class="md-ellipsis">
+      Practical Token Attack Detection
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Practical Token Attack Detection">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#oauth-phishing-detection" class="md-nav__link">
+    <span class="md-ellipsis">
+      OAuth Phishing Detection
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#token-theft-detection" class="md-nav__link">
+    <span class="md-ellipsis">
+      Token Theft Detection
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#service-account-token-abuse" class="md-nav__link">
+    <span class="md-ellipsis">
+      Service Account Token Abuse
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#real-world-attack-scenario-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Real-World Attack Scenario Analysis
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Real-World Attack Scenario Analysis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#case-study-1-targeted-oauth-phishing-campaign" class="md-nav__link">
+    <span class="md-ellipsis">
+      Case Study 1: Targeted OAuth Phishing Campaign
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#case-study-2-refresh-token-persistence" class="md-nav__link">
+    <span class="md-ellipsis">
+      Case Study 2: Refresh Token Persistence
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#case-study-3-service-account-key-compromise" class="md-nav__link">
+    <span class="md-ellipsis">
+      Case Study 3: Service Account Key Compromise
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementation-of-token-focused-security-controls" class="md-nav__link">
+    <span class="md-ellipsis">
+      Implementation of Token-Focused Security Controls
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Implementation of Token-Focused Security Controls">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#preventative-controls" class="md-nav__link">
+    <span class="md-ellipsis">
+      Preventative Controls
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#detective-controls" class="md-nav__link">
+    <span class="md-ellipsis">
+      Detective Controls
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#responsive-controls" class="md-nav__link">
+    <span class="md-ellipsis">
+      Responsive Controls
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#advanced-token-forensic-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Advanced Token Forensic Analysis
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Advanced Token Forensic Analysis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#extracting-intelligence-from-token-metadata" class="md-nav__link">
+    <span class="md-ellipsis">
+      Extracting Intelligence from Token Metadata
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reverse-engineering-token-usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reverse Engineering Token Usage
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#token-security-roadmap-for-msps" class="md-nav__link">
+    <span class="md-ellipsis">
+      Token Security Roadmap for MSPs
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Token Security Roadmap for MSPs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#implementation-phases" class="md-nav__link">
+    <span class="md-ellipsis">
+      Implementation Phases
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cross-tenant-token-threat-intelligence" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cross-Tenant Token Threat Intelligence
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#resources-and-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      Resources and Tools
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Resources and Tools">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#google-workspace-security-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      Google Workspace Security Tools
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#open-source-analysis-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      Open Source Analysis Tools
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#additional-resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      Additional Resources
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../organizational-units/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Organizational Units
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pentesting-insights/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Pentesting Insights
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../vulnerability-management/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Vulnerability Management
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../executive-dashboards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Executive Dashboards
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../gcp/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Google Cloud Platform Security
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Google Cloud Platform Security
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gcp/iam/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Identity & Access Management
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gcp/network-security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Network Security
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gcp/compute-security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Compute Security
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gcp/storage-security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Storage & Database Security
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_6" id="__nav_3_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Kubernetes & Container Security
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_6">
+            <span class="md-nav__icon md-icon"></span>
+            Kubernetes & Container Security
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gcp/container-security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_6_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../gcp/gke/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Google Kubernetes Engine (GKE)
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3_6_2" id="__nav_3_6_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_6_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_6_2">
+            <span class="md-nav__icon md-icon"></span>
+            Google Kubernetes Engine (GKE)
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gcp/gke/fips-compliance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    FIPS 140-2 Compliance
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gcp/logging-monitoring/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Cloud Logging & Monitoring
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gcp/security-command-center/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Security Command Center
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gcp/saif-framework/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    AI/ML Security (SAIF)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gcp/compliance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Compliance & Regulatory Controls
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../chrome/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Google Chrome Security
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Google Chrome Security
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chrome/chrome-enterprise/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Chrome Enterprise
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chrome/policy-config/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Policy Configuration
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chrome/extension-security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Extension Security
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chrome/web-filtering/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Web Filtering
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chrome/authentication/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Authentication & SSO
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chrome/zero-trust/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Zero Trust Browsing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../cross-product/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Cross-Product Security
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Cross-Product Security
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cross-product/identity-federation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Identity Federation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cross-product/zero-trust/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Zero Trust Architecture
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cross-product/security-operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Security Operations
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cross-product/threat-intelligence/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Threat Intelligence
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cross-product/compliance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Compliance Management
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../nist-fedramp/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    NIST/FedRAMP Controls
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_6" id="__nav_6_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            NIST/FedRAMP Controls
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_2" id="__nav_6_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Google Cloud Platform
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_2">
+            <span class="md-nav__icon md-icon"></span>
+            Google Cloud Platform
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../nist-fedramp/gcp/access-control/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Access Control (AC)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../nist-fedramp/gcp/configuration-management/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Configuration Management (CM)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../nist-fedramp/gcp/identification-authentication/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Identification & Authentication (IA)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../nist-fedramp/gcp/system-communications-protection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    System & Communications Protection (SC)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../nist-fedramp/gcp/system-information-integrity/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    System & Information Integrity (SI)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../nist-fedramp/workspace/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Google Workspace
+    
+  </span>
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_3">
+            <span class="md-nav__icon md-icon"></span>
+            Google Workspace
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../resources/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Resources
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Contributing
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            Contributing
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contributing/documentation-guidelines/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Documentation Guidelines
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contributing/code-blocks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Code Block Features
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contributing/plugin-installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Plugin Installation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/ethanolivertroy/Goog-Sec/edit/main/docs/oauth-token-analysis.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+    
+      
+    
+    <a href="https://github.com/ethanolivertroy/Goog-Sec/raw/main/docs/oauth-token-analysis.md" title="View source of this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"/></svg>
+    </a>
+  
+
+
+<div class="admonition warning">
+<p class="admonition-title">Under Construction</p>
+<p>This page is under construction. Please check back later for comprehensive guidance</p>
+</div>
+<h1 id="oauth-token-analysis-and-authentication-audit-log-interpretation">OAuth Token Analysis and Authentication Audit Log Interpretation<a class="headerlink" href="#oauth-token-analysis-and-authentication-audit-log-interpretation" title="Permanent link">&para;</a></h1>
+<p>This guide provides security professionals with detailed techniques for analyzing OAuth tokens and interpreting authentication audit logs in Google Workspace environments to detect and respond to security threats.</p>
+<h2 id="oauth-token-security-fundamentals">OAuth Token Security Fundamentals<a class="headerlink" href="#oauth-token-security-fundamentals" title="Permanent link">&para;</a></h2>
+<h3 id="understanding-oauth-token-architecture-in-google-workspace">Understanding OAuth Token Architecture in Google Workspace<a class="headerlink" href="#understanding-oauth-token-architecture-in-google-workspace" title="Permanent link">&para;</a></h3>
+<p>OAuth tokens serve as the foundation for service-to-service and third-party application authentication in Google Workspace. Their compromise can lead to persistent access without requiring user credentials.</p>
+<h4 id="token-types-and-security-implications">Token Types and Security Implications<a class="headerlink" href="#token-types-and-security-implications" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Token Type</th>
+<th>Description</th>
+<th>Security Considerations</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Access Tokens</strong></td>
+<td>Short-lived tokens (1-hour typical lifespan) that grant immediate access</td>
+<td>Theft allows temporary access; limited persistence value</td>
+</tr>
+<tr>
+<td><strong>Refresh Tokens</strong></td>
+<td>Long-lived tokens that can obtain new access tokens</td>
+<td>Primary persistence mechanism; theft enables long-term access</td>
+</tr>
+<tr>
+<td><strong>ID Tokens</strong></td>
+<td>JWT tokens containing identity information</td>
+<td>Can leak user identity information if intercepted</td>
+</tr>
+<tr>
+<td><strong>Service Account Keys</strong></td>
+<td>JSON credentials for service accounts</td>
+<td>Highest risk; equivalent to permanent credentials</td>
+</tr>
+<tr>
+<td><strong>Authorization Codes</strong></td>
+<td>Short-lived codes exchanged for tokens</td>
+<td>Vulnerable during exchange process; MITM attack target</td>
+</tr>
+</tbody>
+</table>
+<h4 id="oauth-scope-security-classification">OAuth Scope Security Classification<a class="headerlink" href="#oauth-scope-security-classification" title="Permanent link">&para;</a></h4>
+<p>Develop a risk-based classification system for OAuth scopes:</p>
+<p><strong>Critical Risk Scopes:</strong>
+- <code>https://www.googleapis.com/auth/admin.directory.user</code> (User management)
+- <code>https://mail.google.com/</code> (Full Gmail access)
+- <code>https://www.googleapis.com/auth/drive</code> (Full Drive access)
+- <code>https://www.googleapis.com/auth/cloud-platform</code> (GCP access)
+- <code>https://www.googleapis.com/auth/admin.directory.*</code> (Any admin directory access)</p>
+<p><strong>High Risk Scopes:</strong>
+- <code>https://www.googleapis.com/auth/gmail.modify</code> (Gmail modification)
+- <code>https://www.googleapis.com/auth/drive.file</code> (Access to files created/opened by app)
+- <code>https://www.googleapis.com/auth/calendar</code> (Full calendar access)
+- <code>https://www.googleapis.com/auth/contacts</code> (Contact access)</p>
+<p><strong>Moderate Risk Scopes:</strong>
+- <code>https://www.googleapis.com/auth/gmail.readonly</code> (Read-only Gmail)
+- <code>https://www.googleapis.com/auth/drive.readonly</code> (Read-only Drive)
+- <code>https://www.googleapis.com/auth/calendar.readonly</code> (Read-only Calendar)</p>
+<h2 id="token-abuse-detection-techniques">Token Abuse Detection Techniques<a class="headerlink" href="#token-abuse-detection-techniques" title="Permanent link">&para;</a></h2>
+<h3 id="analyzing-token-audit-logs">Analyzing Token Audit Logs<a class="headerlink" href="#analyzing-token-audit-logs" title="Permanent link">&para;</a></h3>
+<p>Google Workspace provides token-related audit events that can reveal suspicious activity. Key events to monitor:</p>
+<h4 id="critical-token-events">Critical Token Events<a class="headerlink" href="#critical-token-events" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Event Type</th>
+<th>Description</th>
+<th>Suspicious Indicators</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>AUTHORIZE</code></td>
+<td>User authorization of OAuth application</td>
+<td>First-time appearance of application, unusual scope combinations, authorization outside business hours</td>
+</tr>
+<tr>
+<td><code>REVOKE</code></td>
+<td>Token revocation</td>
+<td>Immediate reauthorization after revocation, selective token revocation</td>
+</tr>
+<tr>
+<td><code>TOKEN_REVOKE</code></td>
+<td>Admin revocation of tokens</td>
+<td>Revocation followed by suspicious auth attempts</td>
+</tr>
+<tr>
+<td><code>AUTHENTICATION</code></td>
+<td>Service account token issuance</td>
+<td>Unusual service account activity, excessive token generation</td>
+</tr>
+<tr>
+<td><code>SERVICE_ACCOUNT_KEY_CREATED</code></td>
+<td>Creation of service account key</td>
+<td>Unauthorized creation, excessive key creation</td>
+</tr>
+</tbody>
+</table>
+<h3 id="behavioral-analysis-for-token-activity">Behavioral Analysis for Token Activity<a class="headerlink" href="#behavioral-analysis-for-token-activity" title="Permanent link">&para;</a></h3>
+<p>Implement detection rules based on token behavior patterns:</p>
+<h4 id="token-velocity-analysis">Token Velocity Analysis<a class="headerlink" href="#token-velocity-analysis" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Baseline</strong>: Establish normal token request patterns per user/application</li>
+<li><strong>Detection</strong>: Alert on significant deviations in token request frequency</li>
+<li><strong>Implementation</strong>: 
+  <div class="language-sql highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">user_email</span><span class="p">,</span><span class="w"> </span><span class="n">application_name</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="n">token_id</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">token_count</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">FROM</span><span class="w"> </span><span class="n">token_audit_logs</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">WHERE</span><span class="w"> </span><span class="k">timestamp</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">TIMESTAMP_SUB</span><span class="p">(</span><span class="k">CURRENT_TIMESTAMP</span><span class="p">(),</span><span class="w"> </span><span class="nb">INTERVAL</span><span class="w"> </span><span class="mi">24</span><span class="w"> </span><span class="n">HOUR</span><span class="p">)</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">user_email</span><span class="p">,</span><span class="w"> </span><span class="n">application_name</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="k">HAVING</span><span class="w"> </span><span class="n">token_count</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">  </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="k">AVG</span><span class="p">(</span><span class="n">daily_tokens</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">3</span><span class="o">*</span><span class="n">STDDEV</span><span class="p">(</span><span class="n">daily_tokens</span><span class="p">)</span><span class="w"> </span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">   </span><span class="k">FROM</span><span class="w"> </span><span class="n">token_baselines</span><span class="w"> </span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">   </span><span class="k">WHERE</span><span class="w"> </span><span class="n">app_category</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;same_category&#39;</span><span class="p">)</span>
+</span></code></pre></div></li>
+</ul>
+<h4 id="token-usage-analysis">Token Usage Analysis<a class="headerlink" href="#token-usage-analysis" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Baseline</strong>: Document normal resource access patterns per token</li>
+<li><strong>Detection</strong>: Identify tokens accessing unusual resource combinations</li>
+<li><strong>Implementation</strong>: Track API endpoint access patterns and look for anomalies</li>
+</ul>
+<h4 id="cross-user-token-pattern-analysis">Cross-User Token Pattern Analysis<a class="headerlink" href="#cross-user-token-pattern-analysis" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Baseline</strong>: Identify normal application adoption patterns</li>
+<li><strong>Detection</strong>: Alert on applications obtaining authorization from unusual user combinations</li>
+<li><strong>Example</strong>: Application suddenly authorized by finance, HR, and executive users in short timeframe</li>
+</ul>
+<h2 id="authentication-log-analysis-framework">Authentication Log Analysis Framework<a class="headerlink" href="#authentication-log-analysis-framework" title="Permanent link">&para;</a></h2>
+<h3 id="key-authentication-event-types">Key Authentication Event Types<a class="headerlink" href="#key-authentication-event-types" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Event Type</th>
+<th>Description</th>
+<th>Security Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>login_success</code></td>
+<td>Successful login event</td>
+<td>Establish authentication baseline, detect account takeover</td>
+</tr>
+<tr>
+<td><code>login_failure</code></td>
+<td>Failed login attempt</td>
+<td>Identify brute force, password spraying, credential stuffing</td>
+</tr>
+<tr>
+<td><code>login_verification</code></td>
+<td>Second factor verification</td>
+<td>Track MFA usage, detect MFA bypass attempts</td>
+</tr>
+<tr>
+<td><code>login_challenge</code></td>
+<td>Additional verification prompted</td>
+<td>Monitor risk-based challenges, detect unusual auth patterns</td>
+</tr>
+<tr>
+<td><code>password_edit</code></td>
+<td>Password change event</td>
+<td>Detect unauthorized credential changes, potential persistence</td>
+</tr>
+<tr>
+<td><code>2sv_disable</code></td>
+<td>Two-step verification disabled</td>
+<td>Critical security control modification, potential account takeover</td>
+</tr>
+<tr>
+<td><code>reauth</code></td>
+<td>Re-authentication event</td>
+<td>Track session management, detect session hijacking attempts</td>
+</tr>
+<tr>
+<td><code>account_disabled</code></td>
+<td>Account suspension or disabling</td>
+<td>Monitor administrative actions, detect unauthorized changes</td>
+</tr>
+<tr>
+<td><code>recovery_email_edit</code></td>
+<td>Change to recovery email</td>
+<td>Critical security control modification, potential account takeover</td>
+</tr>
+</tbody>
+</table>
+<h3 id="advanced-authentication-analysis-techniques">Advanced Authentication Analysis Techniques<a class="headerlink" href="#advanced-authentication-analysis-techniques" title="Permanent link">&para;</a></h3>
+<h4 id="frequency-based-detection">Frequency-Based Detection<a class="headerlink" href="#frequency-based-detection" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Login Velocity</strong>: Alert on rapid authentication attempts exceeding normal patterns</li>
+<li><strong>Failed Attempt Patterns</strong>: Identify distributed credential stuffing through pattern recognition</li>
+<li><strong>Successful/Failed Ratio Analysis</strong>: Detect credential testing through changing success ratio</li>
+</ul>
+<h4 id="location-based-detection">Location-Based Detection<a class="headerlink" href="#location-based-detection" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Impossible Travel</strong>: Alert on authentications from geographically distant locations</li>
+<li><strong>First-Time Location</strong>: Identify first-time access from new countries/regions</li>
+<li><strong>Location-Role Mismatch</strong>: Detect authentications from locations inappropriate for role</li>
+</ul>
+<h4 id="time-based-detection">Time-Based Detection<a class="headerlink" href="#time-based-detection" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>After-Hours Authentication</strong>: Alert on access during unusual hours for specific user roles</li>
+<li><strong>Authentication Gap Analysis</strong>: Identify unusual gaps or changes in authentication patterns</li>
+<li><strong>Time of Day Shift</strong>: Detect gradual shifts in authentication timing (potential compromise)</li>
+</ul>
+<h4 id="device-based-detection">Device-Based Detection<a class="headerlink" href="#device-based-detection" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Device Switching</strong>: Alert on rapid changes between multiple devices</li>
+<li><strong>New Device + Sensitive Access</strong>: Detect new devices immediately accessing sensitive resources</li>
+<li><strong>Device Factor Changes</strong>: Monitor changes in device identification factors</li>
+</ul>
+<h2 id="practical-token-attack-detection">Practical Token Attack Detection<a class="headerlink" href="#practical-token-attack-detection" title="Permanent link">&para;</a></h2>
+<h3 id="oauth-phishing-detection">OAuth Phishing Detection<a class="headerlink" href="#oauth-phishing-detection" title="Permanent link">&para;</a></h3>
+<p>OAuth phishing involves tricking users into authorizing malicious applications. Detection techniques:</p>
+<ol>
+<li><strong>Application Reputation Analysis</strong></li>
+<li>Maintain database of known-good applications with expected scopes</li>
+<li>Alert on first-time appearance of applications in your environment</li>
+<li>
+<p>Implement application risk scoring based on developer reputation, user base</p>
+</li>
+<li>
+<p><strong>Scope Mismatch Detection</strong></p>
+</li>
+<li>Document expected scope combinations for application types</li>
+<li>Alert on applications requesting scope combinations that don't match their declared purpose</li>
+<li>
+<p>Example: A document viewer requesting Gmail modification scopes</p>
+</li>
+<li>
+<p><strong>Authorization Timing Analysis</strong></p>
+</li>
+<li>Monitor for authorizations that occur immediately after suspicious email clicks</li>
+<li>Correlate phishing email reports with OAuth authorization events</li>
+<li>Track authorizations that follow unusual login patterns</li>
+</ol>
+<h3 id="token-theft-detection">Token Theft Detection<a class="headerlink" href="#token-theft-detection" title="Permanent link">&para;</a></h3>
+<p>Detect scenarios where valid tokens are stolen and used by unauthorized parties:</p>
+<ol>
+<li><strong>Access Pattern Changes</strong></li>
+<li>Establish baseline API call patterns per token/application</li>
+<li>Alert on sudden changes in API call patterns or accessed resources</li>
+<li>
+<p>Monitor for tokens suddenly accessing sensitive data they haven't before</p>
+</li>
+<li>
+<p><strong>Client Fingerprint Analysis</strong></p>
+</li>
+<li>Track client attributes associated with token usage (IP, user agent, TLS fingerprint)</li>
+<li>Alert on token usage from new client fingerprints</li>
+<li>
+<p>Detect simultaneous token usage from multiple client fingerprints</p>
+</li>
+<li>
+<p><strong>Usage Timing Analysis</strong></p>
+</li>
+<li>Document normal token usage time patterns</li>
+<li>Alert on token usage outside expected hours/days</li>
+<li>Detect unusual gaps followed by high-activity periods</li>
+</ol>
+<h3 id="service-account-token-abuse">Service Account Token Abuse<a class="headerlink" href="#service-account-token-abuse" title="Permanent link">&para;</a></h3>
+<p>Service accounts present special security challenges due to their privileged access:</p>
+<ol>
+<li><strong>Service Account Inventory Management</strong></li>
+<li>Maintain complete inventory of authorized service accounts</li>
+<li>Document expected usage patterns, access needs, and owners</li>
+<li>
+<p>Regularly audit service account permissions</p>
+</li>
+<li>
+<p><strong>Key Creation and Usage Monitoring</strong></p>
+</li>
+<li>Alert on new service account key creation</li>
+<li>Monitor service account key age and implement rotation policies</li>
+<li>
+<p>Track key usage patterns and alert on deviations</p>
+</li>
+<li>
+<p><strong>Domain-Wide Delegation Monitoring</strong></p>
+</li>
+<li>Document service accounts with domain-wide delegation</li>
+<li>Strictly limit and monitor scope assignments</li>
+<li>Implement additional monitoring for delegated access activities</li>
+</ol>
+<h2 id="real-world-attack-scenario-analysis">Real-World Attack Scenario Analysis<a class="headerlink" href="#real-world-attack-scenario-analysis" title="Permanent link">&para;</a></h2>
+<h3 id="case-study-1-targeted-oauth-phishing-campaign">Case Study 1: Targeted OAuth Phishing Campaign<a class="headerlink" href="#case-study-1-targeted-oauth-phishing-campaign" title="Permanent link">&para;</a></h3>
+<p><strong>Attack Scenario:</strong>
+1. Attacker sends convincing document sharing email appearing to come from a colleague
+2. Link leads to a fake document viewer requiring OAuth authorization
+3. Application requests Gmail and Drive access scopes
+4. Upon authorization, attacker uses access to:
+   - Search emails for sensitive information
+   - Exfiltrate targeted documents
+   - Set up mail forwarding rules for persistence</p>
+<p><strong>Detection Opportunities:</strong>
+- Application authorization from multiple users in short timeframe
+- Unusual scope combinations for document viewer application
+- Suspicious API call patterns following authorization
+- Mail rule creation after OAuth authorization</p>
+<p><strong>Detection Rule Example:</strong>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">user_email</span><span class="p">,</span><span class="w"> </span><span class="n">application_name</span><span class="p">,</span><span class="w"> </span><span class="n">requested_scopes</span><span class="p">,</span><span class="w"> </span><span class="k">timestamp</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="k">FROM</span><span class="w"> </span><span class="n">token_audit_logs</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">event_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;AUTHORIZE&#39;</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="k">AND</span><span class="w"> </span><span class="k">timestamp</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">TIMESTAMP_SUB</span><span class="p">(</span><span class="k">CURRENT_TIMESTAMP</span><span class="p">(),</span><span class="w"> </span><span class="nb">INTERVAL</span><span class="w"> </span><span class="mi">24</span><span class="w"> </span><span class="n">HOUR</span><span class="p">)</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">  </span><span class="k">AND</span><span class="w"> </span><span class="n">application_name</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="n">app_name</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">approved_applications</span><span class="p">)</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">  </span><span class="k">AND</span><span class="w"> </span><span class="p">(</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">    </span><span class="n">requested_scopes</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;%gmail.modify%&#39;</span><span class="w"> </span><span class="k">OR</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">    </span><span class="n">requested_scopes</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;%gmail.compose%&#39;</span><span class="w"> </span><span class="k">OR</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">    </span><span class="n">requested_scopes</span><span class="w"> </span><span class="k">LIKE</span><span class="w"> </span><span class="s1">&#39;%gmail.settings%&#39;</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">  </span><span class="p">)</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">  </span><span class="k">AND</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="p">(</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">    </span><span class="k">SELECT</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">mail_rule_logs</span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">    </span><span class="k">WHERE</span><span class="w"> </span><span class="n">created_by</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">user_email</span>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">      </span><span class="k">AND</span><span class="w"> </span><span class="n">rule_creation_time</span><span class="w"> </span><span class="k">BETWEEN</span><span class="w"> </span><span class="k">timestamp</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="n">TIMESTAMP_ADD</span><span class="p">(</span><span class="k">timestamp</span><span class="p">,</span><span class="w"> </span><span class="nb">INTERVAL</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">HOUR</span><span class="p">)</span>
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="w">      </span><span class="k">AND</span><span class="w"> </span><span class="n">rule_action</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;forward&#39;</span>
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="w">  </span><span class="p">)</span>
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="k">timestamp</span><span class="p">;</span>
+</span></code></pre></div></p>
+<h3 id="case-study-2-refresh-token-persistence">Case Study 2: Refresh Token Persistence<a class="headerlink" href="#case-study-2-refresh-token-persistence" title="Permanent link">&para;</a></h3>
+<p><strong>Attack Scenario:</strong>
+1. Attacker initially gains access through phishing or other means
+2. Creates OAuth application requesting Drive and Gmail access
+3. Tricks legitimate user into authorizing application
+4. Attacker maintains access through refresh token even after credential changes
+5. Uses access intermittently to avoid detection</p>
+<p><strong>Detection Opportunities:</strong>
+- Unusual application authorization patterns
+- API calls from application continuing after password reset
+- Sporadic access patterns inconsistent with legitimate use
+- Access from unusual geographic locations for the application</p>
+<p><strong>Response Procedure:</strong>
+1. Identify all tokens issued to the suspicious application
+2. Review access logs to determine data exposure
+3. Revoke all tokens for the identified application
+4. Block application by client ID at the organizational level
+5. Search for similar applications using pattern matching
+6. Scan for any persistence mechanisms established during access</p>
+<h3 id="case-study-3-service-account-key-compromise">Case Study 3: Service Account Key Compromise<a class="headerlink" href="#case-study-3-service-account-key-compromise" title="Permanent link">&para;</a></h3>
+<p><strong>Attack Scenario:</strong>
+1. Attacker gains access to development environment or code repository
+2. Extracts embedded service account key with broad permissions
+3. Uses service account access to extract data across multiple users
+4. Creates additional service accounts for persistence</p>
+<p><strong>Detection Opportunities:</strong>
+- Service account usage from unusual IP addresses
+- Access pattern changes for the service account
+- Unusual API call volume or resource access
+- New service account creation or key generation</p>
+<p><strong>Detection Rule Example:</strong>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">sa_email</span><span class="p">,</span><span class="w"> </span><span class="n">client_ip</span><span class="p">,</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="k">DISTINCT</span><span class="w"> </span><span class="n">accessed_resource</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">resource_count</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="k">FROM</span><span class="w"> </span><span class="n">service_account_logs</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="k">WHERE</span><span class="w"> </span><span class="k">timestamp</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">TIMESTAMP_SUB</span><span class="p">(</span><span class="k">CURRENT_TIMESTAMP</span><span class="p">(),</span><span class="w"> </span><span class="nb">INTERVAL</span><span class="w"> </span><span class="mi">24</span><span class="w"> </span><span class="n">HOUR</span><span class="p">)</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">  </span><span class="k">AND</span><span class="w"> </span><span class="n">sa_email</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;compromised-service@project-id.iam.gserviceaccount.com&#39;</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">  </span><span class="k">AND</span><span class="w"> </span><span class="n">client_ip</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span><span class="n">allowed_ip</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">service_account_allow_list</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">sa_email</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;compromised-service@project-id.iam.gserviceaccount.com&#39;</span><span class="p">)</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">sa_email</span><span class="p">,</span><span class="w"> </span><span class="n">client_ip</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="k">HAVING</span><span class="w"> </span><span class="n">resource_count</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">10</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">resource_count</span><span class="w"> </span><span class="k">DESC</span><span class="p">;</span>
+</span></code></pre></div></p>
+<h2 id="implementation-of-token-focused-security-controls">Implementation of Token-Focused Security Controls<a class="headerlink" href="#implementation-of-token-focused-security-controls" title="Permanent link">&para;</a></h2>
+<h3 id="preventative-controls">Preventative Controls<a class="headerlink" href="#preventative-controls" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>OAuth App Whitelisting</strong></li>
+<li>Implement domain-wide app access control in Google Admin Console</li>
+<li>Configure API access control settings</li>
+<li>
+<p>Create an application approval process</p>
+</li>
+<li>
+<p><strong>Sensitive Scope Restrictions</strong></p>
+</li>
+<li>Limit access to sensitive scopes (Gmail, Drive, Admin)</li>
+<li>Require advanced verification for apps requesting sensitive scopes</li>
+<li>
+<p>Implement additional approval for critical scopes</p>
+</li>
+<li>
+<p><strong>Service Account Governance</strong></p>
+</li>
+<li>Implement service account key rotation requirements</li>
+<li>Configure service account access boundaries</li>
+<li>Establish approval process for domain-wide delegation</li>
+</ol>
+<h3 id="detective-controls">Detective Controls<a class="headerlink" href="#detective-controls" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Token Activity Monitoring</strong></li>
+<li>Create alerts for critical scope authorizations</li>
+<li>Monitor application usage across users</li>
+<li>
+<p>Track token usage patterns and anomalies</p>
+</li>
+<li>
+<p><strong>Authorization Analytics</strong></p>
+</li>
+<li>Develop risk scoring for application authorizations</li>
+<li>Create dashboards for OAuth application visibility</li>
+<li>
+<p>Implement anomaly detection for authorization patterns</p>
+</li>
+<li>
+<p><strong>Authentication Correlation</strong></p>
+</li>
+<li>Link authentication events with token activities</li>
+<li>Correlate MFA changes with token issuance</li>
+<li>Track relationship between password changes and token usage</li>
+</ol>
+<h3 id="responsive-controls">Responsive Controls<a class="headerlink" href="#responsive-controls" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Token Revocation Capabilities</strong></li>
+<li>Implement bulk token revocation procedures</li>
+<li>Create automated response playbooks</li>
+<li>
+<p>Test token revocation impact before implementation</p>
+</li>
+<li>
+<p><strong>Application Blocking</strong></p>
+</li>
+<li>Establish procedures for blacklisting malicious applications</li>
+<li>Implement client ID blocking mechanisms</li>
+<li>
+<p>Create application block list with known malicious apps</p>
+</li>
+<li>
+<p><strong>User Communication Procedures</strong></p>
+</li>
+<li>Develop template for notifying users of suspicious authorizations</li>
+<li>Create self-service token review capabilities</li>
+<li>Implement automated notifications for high-risk authorizations</li>
+</ol>
+<h2 id="advanced-token-forensic-analysis">Advanced Token Forensic Analysis<a class="headerlink" href="#advanced-token-forensic-analysis" title="Permanent link">&para;</a></h2>
+<h3 id="extracting-intelligence-from-token-metadata">Extracting Intelligence from Token Metadata<a class="headerlink" href="#extracting-intelligence-from-token-metadata" title="Permanent link">&para;</a></h3>
+<p>Token-related logs contain valuable metadata for forensic analysis:</p>
+<ol>
+<li><strong>Client Analysis</strong></li>
+<li>Extract and analyze user agent patterns</li>
+<li>Identify anomalous client fingerprints</li>
+<li>
+<p>Correlate client information across multiple token uses</p>
+</li>
+<li>
+<p><strong>Developer Identity Analysis</strong></p>
+</li>
+<li>Extract application developer information</li>
+<li>Research developer reputation and history</li>
+<li>
+<p>Identify patterns of suspicious developer activities</p>
+</li>
+<li>
+<p><strong>Token Lifecycle Analysis</strong></p>
+</li>
+<li>Map complete token lifecycle from issuance to use to revocation</li>
+<li>Identify unusual gaps or patterns in usage</li>
+<li>Correlate token usage with other user activities</li>
+</ol>
+<h3 id="reverse-engineering-token-usage">Reverse Engineering Token Usage<a class="headerlink" href="#reverse-engineering-token-usage" title="Permanent link">&para;</a></h3>
+<p>When investigating suspicious token activity:</p>
+<ol>
+<li><strong>API Call Reconstruction</strong></li>
+<li>Map sequence of API calls made using the token</li>
+<li>Reconstruct attacker methodologies and targets</li>
+<li>
+<p>Identify data potentially accessed or exfiltrated</p>
+</li>
+<li>
+<p><strong>Access Pattern Analysis</strong></p>
+</li>
+<li>Determine temporal patterns in resource access</li>
+<li>Identify search patterns indicating targeting</li>
+<li>
+<p>Map potential data exfiltration pathways</p>
+</li>
+<li>
+<p><strong>Cross-Service Correlation</strong></p>
+</li>
+<li>Track lateral movement between Google services</li>
+<li>Identify relationships between token access and other activities</li>
+<li>Correlate token usage with authentication events</li>
+</ol>
+<h2 id="token-security-roadmap-for-msps">Token Security Roadmap for MSPs<a class="headerlink" href="#token-security-roadmap-for-msps" title="Permanent link">&para;</a></h2>
+<h3 id="implementation-phases">Implementation Phases<a class="headerlink" href="#implementation-phases" title="Permanent link">&para;</a></h3>
+<p><strong>Phase 1: Visibility and Baseline</strong>
+- Implement comprehensive token logging
+- Establish application inventory and baseline
+- Develop token usage baselines for clients</p>
+<p><strong>Phase 2: Monitoring and Detection</strong>
+- Deploy basic token monitoring alerts
+- Implement critical scope authorization approval
+- Develop application risk assessment methodology</p>
+<p><strong>Phase 3: Advanced Controls</strong>
+- Deploy machine learning for token anomaly detection
+- Implement automated response for suspicious tokens
+- Develop cross-tenant token threat intelligence</p>
+<h3 id="cross-tenant-token-threat-intelligence">Cross-Tenant Token Threat Intelligence<a class="headerlink" href="#cross-tenant-token-threat-intelligence" title="Permanent link">&para;</a></h3>
+<p>MSPs should leverage insights across multiple tenants:</p>
+<ol>
+<li><strong>Anonymous Threat Sharing</strong></li>
+<li>Share suspicious application indicators across clients</li>
+<li>Develop common IOCs for token-based attacks</li>
+<li>
+<p>Create centralized risk scoring for OAuth applications</p>
+</li>
+<li>
+<p><strong>Common Detection Content</strong></p>
+</li>
+<li>Develop standardized detection rules deployable across tenants</li>
+<li>Create common response playbooks</li>
+<li>
+<p>Establish consistent security standards for token governance</p>
+</li>
+<li>
+<p><strong>Collective Defense Strategy</strong></p>
+</li>
+<li>Implement rapid blocking of known malicious applications</li>
+<li>Share anonymized attack pattern information</li>
+<li>Develop joint incident response capabilities</li>
+</ol>
+<h2 id="resources-and-tools">Resources and Tools<a class="headerlink" href="#resources-and-tools" title="Permanent link">&para;</a></h2>
+<h3 id="google-workspace-security-tools">Google Workspace Security Tools<a class="headerlink" href="#google-workspace-security-tools" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Token Audit API</strong>: <a href="https://developers.google.com/admin-sdk/reports/v1/guides/manage-audit-tokens">https://developers.google.com/admin-sdk/reports/v1/guides/manage-audit-tokens</a></li>
+<li><strong>OAuth Application Verification</strong>: <a href="https://support.google.com/cloud/answer/7454865">https://support.google.com/cloud/answer/7454865</a></li>
+<li><strong>Service Account Best Practices</strong>: <a href="https://cloud.google.com/iam/docs/best-practices-for-managing-service-accounts">https://cloud.google.com/iam/docs/best-practices-for-managing-service-accounts</a></li>
+</ul>
+<h3 id="open-source-analysis-tools">Open Source Analysis Tools<a class="headerlink" href="#open-source-analysis-tools" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Token Analyzer</strong>: Tools for parsing and analyzing OAuth token structure</li>
+<li><strong>JWT Decoder</strong>: <a href="https://jwt.io/">https://jwt.io/</a> for analyzing token contents</li>
+<li><strong>OAuth Scanner</strong>: Tools for identifying risky OAuth applications</li>
+</ul>
+<h3 id="additional-resources">Additional Resources<a class="headerlink" href="#additional-resources" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Google API Explorer</strong>: <a href="https://developers.google.com/apis-explorer">https://developers.google.com/apis-explorer</a></li>
+<li><strong>OAuth 2.0 Security Best Practices</strong>: <a href="https://tools.ietf.org/html/draft-ietf-oauth-security-topics">https://tools.ietf.org/html/draft-ietf-oauth-security-topics</a></li>
+<li><strong>MITRE ATT&amp;CK for OAuth Abuse</strong>: <a href="https://attack.mitre.org/techniques/T1550/001/">https://attack.mitre.org/techniques/T1550/001/</a></li>
+</ul>
+<hr />
+<p><strong>Note</strong>: This guide should be adapted to your specific environment and integrated with your broader security monitoring strategy.</p>
+
+
+
+
+
+
+
+  
+    
+  
+  
+    
+  
+
+
+  <aside class="md-source-file">
+    
+      
+  <span class="md-source-file__fact">
+    <span class="md-icon" title="Last update">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
+    </span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="June 1, 2025 02:13:27 UTC">June 1, 2025</span>
+  </span>
+
+    
+    
+      
+  <span class="md-source-file__fact">
+    <span class="md-icon" title="Created">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
+    </span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="June 1, 2025 02:13:27 UTC">June 1, 2025</span>
+  </span>
+
+    
+    
+    
+      
+  <span class="md-source-file__fact">
+    
+      
+  <span class="md-icon" title="Contributors">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33s1.71.11 2.5.33c1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2"/></svg>
+  </span>
+  <span>GitHub</span>
+
+    
+    <nav>
+      
+        <a href="https://github.com/ethanolivertroy" class="md-author" title="@ethanolivertroy">
+          
+          <img src="https://avatars.githubusercontent.com/u/63926014?v=4&size=72" alt="ethanolivertroy">
+        </a>
+      
+      
+      
+    </nav>
+  </span>
+
+    
+  </aside>
+
+
+  
+
+
+
+  <form class="md-feedback" name="feedback" hidden>
+    <fieldset>
+      <legend class="md-feedback__title">
+        Was this page helpful?
+      </legend>
+      <div class="md-feedback__inner">
+        <div class="md-feedback__list">
+          
+            <button class="md-feedback__icon md-icon" type="submit" title="This page was helpful" data-md-value="1">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8 8 8 0 0 0 8-8m2 0a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10M10 9.5c0 .8-.7 1.5-1.5 1.5S7 10.3 7 9.5 7.7 8 8.5 8s1.5.7 1.5 1.5m7 0c0 .8-.7 1.5-1.5 1.5S14 10.3 14 9.5 14.7 8 15.5 8s1.5.7 1.5 1.5m-5 7.73c-1.75 0-3.29-.73-4.19-1.81L9.23 14c.45.72 1.52 1.23 2.77 1.23s2.32-.51 2.77-1.23l1.42 1.42c-.9 1.08-2.44 1.81-4.19 1.81"/></svg>
+            </button>
+          
+            <button class="md-feedback__icon md-icon" type="submit" title="This page could be improved" data-md-value="0">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8 8 8 0 0 0 8-8m2 0a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10m-6.5-4c.8 0 1.5.7 1.5 1.5s-.7 1.5-1.5 1.5-1.5-.7-1.5-1.5.7-1.5 1.5-1.5M10 9.5c0 .8-.7 1.5-1.5 1.5S7 10.3 7 9.5 7.7 8 8.5 8s1.5.7 1.5 1.5m2 4.5c1.75 0 3.29.72 4.19 1.81l-1.42 1.42C14.32 16.5 13.25 16 12 16s-2.32.5-2.77 1.23l-1.42-1.42C8.71 14.72 10.25 14 12 14"/></svg>
+            </button>
+          
+        </div>
+        <div class="md-feedback__note">
+          
+            <div data-md-value="1" hidden>
+              
+              
+                
+              
+              
+              
+                
+                
+              
+              Thanks for your feedback!
+            </div>
+          
+            <div data-md-value="0" hidden>
+              
+              
+                
+              
+              
+              
+                
+                
+              
+              Thanks for your feedback! Help us improve this page by <a href="https://github.com/ethanolivertroy/GWS-Security-Suite/issues/new/?title=[Feedback]+OAuth%20Token%20Analysis+-+/oauth-token-analysis/" target="_blank" rel="noopener">telling us what you're missing</a>.
+            </div>
+          
+        </div>
+      </div>
+    </fieldset>
+  </form>
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../msp-implementation/" class="md-footer__link md-footer__link--prev" aria-label="Previous: MSP Implementation">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                MSP Implementation
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../organizational-units/" class="md-footer__link md-footer__link--next" aria-label="Next: Organizational Units">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Organizational Units
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2025
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/ethanolivertroy/GWS-Security-Suite" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://twitter.com/ethanolivertroy" target="_blank" rel="noopener" title="twitter.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://linkedin.com/in/ethanolivertroy" target="_blank" rel="noopener" title="linkedin.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3M135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5m282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+      <div class="md-consent" data-md-component="consent" id="__consent" hidden>
+        <div class="md-consent__overlay"></div>
+        <aside class="md-consent__inner">
+          <form class="md-consent__form md-grid md-typeset" name="consent">
+            
+
+
+
+<h4>Cookie consent</h4>
+<p>We use cookies to recognize your repeated visits and preferences, as well as to measure the effectiveness of our documentation and whether users find what they're searching for. With your consent, you're helping us to make our documentation better.</p>
+<input class="md-toggle" type="checkbox" id="__settings" >
+<div class="md-consent__settings">
+  <ul class="task-list">
+    
+    
+      
+        
+  
+  
+    
+    
+  
+  <li class="task-list-item">
+    <label class="task-list-control">
+      <input type="checkbox" name="analytics" checked>
+      <span class="task-list-indicator"></span>
+      Google Analytics
+    </label>
+  </li>
+
+      
+    
+    
+      
+        
+  
+  
+    
+    
+  
+  <li class="task-list-item">
+    <label class="task-list-control">
+      <input type="checkbox" name="github" checked>
+      <span class="task-list-indicator"></span>
+      GitHub
+    </label>
+  </li>
+
+      
+    
+    
+  </ul>
+</div>
+<div class="md-consent__controls">
+  
+    
+      <button class="md-button md-button--primary">Accept</button>
+    
+    
+    
+  
+    
+    
+      <button type="reset" class="md-button md-button--primary">Reject</button>
+    
+    
+  
+    
+    
+    
+      <label class="md-button" for="__settings">Manage settings</label>
+    
+  
+</div>
+          </form>
+        </aside>
+      </div>
+      <script>var consent=__md_get("__consent");if(consent)for(var input of document.forms.consent.elements)input.name&&(input.checked=consent[input.name]||!1);else"file:"!==location.protocol&&setTimeout((function(){document.querySelector("[data-md-component=consent]").hidden=!1}),250);var form=document.forms.consent;for(var action of["submit","reset"])form.addEventListener(action,(function(e){if(e.preventDefault(),"reset"===e.type)for(var n of document.forms.consent.elements)n.name&&(n.checked=!1);__md_set("__consent",Object.fromEntries(Array.from(new FormData(form).keys()).map((function(e){return[e,!0]})))),location.hash="",location.reload()}))</script>
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.indexes", "navigation.path", "navigation.top", "navigation.footer", "navigation.expand", "toc.follow", "toc.integrate", "search.suggest", "search.highlight", "search.share", "content.tabs.link", "content.code.copy", "content.code.annotate", "content.code.select", "content.code.select.copy", "content.action.edit", "content.action.view", "content.action.feedback", "content.action.star", "content.action.issue", "content.authors", "content.contributors", "content.git", "content.footer", "content.source", "header.autohide"], "search": "../assets/javascripts/workers/search.d50fe291.min.js", "tags": true, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.13a4f30d.min.js"></script>
+      
+    
+  <script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(() => { lightbox.reload() });
+</script></body>
+</html>

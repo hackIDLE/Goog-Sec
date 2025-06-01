@@ -1,0 +1,85 @@
+/* Styling for Material for MkDocs grid cards */
+
+/* Ensure cards have proper styling */
+.grid.cards {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Add Google-style card styling */
+.grid.cards > ul {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1rem;
+}
+
+.grid.cards > ul > li,
+.grid.cards > ul > li:only-child {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  background-color: white;
+  padding: 1.5rem !important;
+  margin: 0 !important;
+}
+
+.grid.cards > ul > li:hover {
+  box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+  border-color: var(--gws-green);
+}
+
+/* Fix link colors */
+.grid.cards > ul > li p a,
+.grid.cards > ul > li h2 a,
+.grid.cards > ul > li h3 a {
+  color: var(--gws-green);
+  transition: color 0.2s ease;
+}
+
+.grid.cards > ul > li p a:hover,
+.grid.cards > ul > li h2 a:hover,
+.grid.cards > ul > li h3 a:hover {
+  color: var(--gws-dark-gray);
+}
+
+/* Style headings */
+.grid.cards > ul > li:first-child h2,
+.grid.cards > ul > li:first-child h3,
+.grid.cards > ul > li h2,
+.grid.cards > ul > li h3 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  font-size: 1.2rem;
+  color: var(--gws-dark-gray);
+  font-weight: 600;
+}
+
+/* Style emoji icons */
+.grid.cards > ul > li p:first-child {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: var(--gws-green);
+  text-align: center;
+}
+
+/* Style the divider */
+.grid.cards > ul > li hr {
+  margin: 0.7rem 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+}
+
+/* Dark mode adjustments */
+[data-md-color-scheme="slate"] .grid.cards > ul > li {
+  background-color: hsla(220, 13%, 18%, 1);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-md-color-scheme="slate"] .grid.cards > ul > li hr {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+[data-md-color-scheme="slate"] .grid.cards > ul > li:hover {
+  border-color: var(--gws-green);
+}

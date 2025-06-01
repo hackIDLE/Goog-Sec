@@ -1,0 +1,4029 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A comprehensive security guide and toolkit for Google Workspace, Google Cloud Platform, and other Google products">
+      
+      
+        <meta name="author" content="Google Security Research Team">
+      
+      
+        <link rel="canonical" href="https://ethanolivertroy.github.io/Goog-Sec/detection-rules/">
+      
+      
+        <link rel="prev" href="../threat-hunting/">
+      
+      
+        <link rel="next" href="../security-checklists/">
+      
+      
+      <link rel="icon" href="/assets/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.14">
+    
+    
+      
+        <title>Detection Rules - Google Security Suite</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.342714a4.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+    
+    
+    
+   <link href="../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><style>
+    html.glightbox-open { overflow: initial; height: 100%; }
+    .gslide-title { margin-top: 0px; user-select: text; }
+    .gslide-desc { color: #666; user-select: text; }
+    .gslide-image img { background: white; }
+    .gscrollbar-fixer { padding-right: 15px; }
+    .gdesc-inner { font-size: 0.75rem; }
+    body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color);}
+    body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color);}
+    body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color);}</style> <script src="../assets/javascripts/glightbox.min.js"></script></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="green" data-md-color-accent="green">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#automated-detection-rules-for-google-workspace" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Google Security Suite" class="md-header__button md-logo" aria-label="Google Security Suite" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 1 3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5zm0 6c1.4 0 2.8 1.1 2.8 2.5V11c.6 0 1.2.6 1.2 1.3v3.5c0 .6-.6 1.2-1.3 1.2H9.2c-.6 0-1.2-.6-1.2-1.3v-3.5c0-.6.6-1.2 1.2-1.2V9.5C9.2 8.1 10.6 7 12 7m0 1.2c-.8 0-1.5.5-1.5 1.3V11h3V9.5c0-.8-.7-1.3-1.5-1.3"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Google Security Suite
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Detection Rules
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="green" data-md-color-accent="green"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="green" data-md-color-accent="green"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/ethanolivertroy/Goog-Sec" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Goog-Sec
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../workspace/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Google Workspace Security
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../gcp/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Google Cloud Platform Security
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../chrome/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Google Chrome Security
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../cross-product/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Cross-Product Security
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../nist-fedramp/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  NIST/FedRAMP Controls
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../resources/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Resources
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../contributing/documentation-guidelines/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Contributing
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Google Security Suite" class="md-nav__button md-logo" aria-label="Google Security Suite" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 1 3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5zm0 6c1.4 0 2.8 1.1 2.8 2.5V11c.6 0 1.2.6 1.2 1.3v3.5c0 .6-.6 1.2-1.3 1.2H9.2c-.6 0-1.2-.6-1.2-1.3v-3.5c0-.6.6-1.2 1.2-1.2V9.5C9.2 8.1 10.6 7 12 7m0 1.2c-.8 0-1.5.5-1.5 1.3V11h3V9.5c0-.8-.7-1.3-1.5-1.3"/></svg>
+
+    </a>
+    Google Security Suite
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/ethanolivertroy/Goog-Sec" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Goog-Sec
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../workspace/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Google Workspace Security
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Google Workspace Security
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    Core Security Components
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            Core Security Components
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../identity-security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Identity Security
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../data-protection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Data Protection
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../email-security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Email Security
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../endpoint-security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Endpoint Security
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../drive-document-security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Drive & Document Security
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../threat-hunting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Threat Hunting
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Detection Rules
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Detection Rules
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#understanding-detection-engineering-for-google-workspace" class="md-nav__link">
+    <span class="md-ellipsis">
+      Understanding Detection Engineering for Google Workspace
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#detection-rule-components" class="md-nav__link">
+    <span class="md-ellipsis">
+      Detection Rule Components
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementation-platforms" class="md-nav__link">
+    <span class="md-ellipsis">
+      Implementation Platforms
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#core-detection-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      Core Detection Rules
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Core Detection Rules">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#authentication-access" class="md-nav__link">
+    <span class="md-ellipsis">
+      Authentication &amp; Access
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Authentication &amp; Access">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#impossible-travel-detection" class="md-nav__link">
+    <span class="md-ellipsis">
+      Impossible Travel Detection
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#brute-force-authentication-attempts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Brute Force Authentication Attempts
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mfa-disablement" class="md-nav__link">
+    <span class="md-ellipsis">
+      MFA Disablement
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#off-hours-administrative-actions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Off-Hours Administrative Actions
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#data-access-exfiltration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Data Access &amp; Exfiltration
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Data Access &amp; Exfiltration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#unusual-download-volume" class="md-nav__link">
+    <span class="md-ellipsis">
+      Unusual Download Volume
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sensitive-data-access" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sensitive Data Access
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#unusual-email-forwarding-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      Unusual Email Forwarding Rules
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#administration-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Administration &amp; Configuration
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Administration &amp; Configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#security-setting-modification" class="md-nav__link">
+    <span class="md-ellipsis">
+      Security Setting Modification
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#new-administrator-creation" class="md-nav__link">
+    <span class="md-ellipsis">
+      New Administrator Creation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#oauth-application-authorization" class="md-nav__link">
+    <span class="md-ellipsis">
+      OAuth Application Authorization
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#third-party-activity" class="md-nav__link">
+    <span class="md-ellipsis">
+      Third-Party Activity
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Third-Party Activity">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#api-usage-anomalies" class="md-nav__link">
+    <span class="md-ellipsis">
+      API Usage Anomalies
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#service-account-key-creation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Service Account Key Creation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#advanced-detection-techniques" class="md-nav__link">
+    <span class="md-ellipsis">
+      Advanced Detection Techniques
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Advanced Detection Techniques">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#behavioral-analytics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Behavioral Analytics
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Behavioral Analytics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#user-behavioral-baseline-detection" class="md-nav__link">
+    <span class="md-ellipsis">
+      User Behavioral Baseline Detection
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#peer-group-analytics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Peer Group Analytics
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#detection-rule-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      Detection Rule Management
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Detection Rule Management">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tuning-and-optimization" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tuning and Optimization
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rule-deployment-framework" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rule Deployment Framework
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#integration-with-security-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Integration with Security Operations
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Integration with Security Operations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#prioritization-framework" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prioritization Framework
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#automated-response-playbooks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Automated Response Playbooks
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Automated Response Playbooks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#account-compromise-response" class="md-nav__link">
+    <span class="md-ellipsis">
+      Account Compromise Response
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#data-exfiltration-response" class="md-nav__link">
+    <span class="md-ellipsis">
+      Data Exfiltration Response
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      Resources
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../security-checklists/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Security Checklists
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    Advanced Security Topics
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            Advanced Security Topics
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apps-script-security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Apps Script Security
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../attack-vectors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Attack Vectors
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../exploitation-examples/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Exploitation Examples
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../google-groups-security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Google Groups Security
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../incident-response-playbooks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Incident Response Playbooks
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../log-analysis/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Log Analysis
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../marketplace-security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Marketplace Security
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../msp-implementation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    MSP Implementation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../oauth-token-analysis/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    OAuth Token Analysis
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../organizational-units/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Organizational Units
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pentesting-insights/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Pentesting Insights
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../vulnerability-management/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Vulnerability Management
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../executive-dashboards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Executive Dashboards
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../gcp/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Google Cloud Platform Security
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Google Cloud Platform Security
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gcp/iam/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Identity & Access Management
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gcp/network-security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Network Security
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gcp/compute-security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Compute Security
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gcp/storage-security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Storage & Database Security
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_6" id="__nav_3_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Kubernetes & Container Security
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_6">
+            <span class="md-nav__icon md-icon"></span>
+            Kubernetes & Container Security
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gcp/container-security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_6_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../gcp/gke/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Google Kubernetes Engine (GKE)
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3_6_2" id="__nav_3_6_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_6_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_6_2">
+            <span class="md-nav__icon md-icon"></span>
+            Google Kubernetes Engine (GKE)
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gcp/gke/fips-compliance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    FIPS 140-2 Compliance
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gcp/logging-monitoring/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Cloud Logging & Monitoring
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gcp/security-command-center/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Security Command Center
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gcp/saif-framework/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    AI/ML Security (SAIF)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gcp/compliance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Compliance & Regulatory Controls
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../chrome/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Google Chrome Security
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Google Chrome Security
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chrome/chrome-enterprise/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Chrome Enterprise
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chrome/policy-config/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Policy Configuration
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chrome/extension-security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Extension Security
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chrome/web-filtering/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Web Filtering
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chrome/authentication/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Authentication & SSO
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chrome/zero-trust/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Zero Trust Browsing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../cross-product/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Cross-Product Security
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Cross-Product Security
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cross-product/identity-federation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Identity Federation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cross-product/zero-trust/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Zero Trust Architecture
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cross-product/security-operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Security Operations
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cross-product/threat-intelligence/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Threat Intelligence
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cross-product/compliance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Compliance Management
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../nist-fedramp/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    NIST/FedRAMP Controls
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_6" id="__nav_6_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            NIST/FedRAMP Controls
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_2" id="__nav_6_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Google Cloud Platform
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_2">
+            <span class="md-nav__icon md-icon"></span>
+            Google Cloud Platform
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../nist-fedramp/gcp/access-control/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Access Control (AC)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../nist-fedramp/gcp/configuration-management/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Configuration Management (CM)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../nist-fedramp/gcp/identification-authentication/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Identification & Authentication (IA)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../nist-fedramp/gcp/system-communications-protection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    System & Communications Protection (SC)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../nist-fedramp/gcp/system-information-integrity/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    System & Information Integrity (SI)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../nist-fedramp/workspace/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Google Workspace
+    
+  </span>
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_3">
+            <span class="md-nav__icon md-icon"></span>
+            Google Workspace
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../resources/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Resources
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Contributing
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            Contributing
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contributing/documentation-guidelines/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Documentation Guidelines
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contributing/code-blocks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Code Block Features
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contributing/plugin-installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Plugin Installation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/ethanolivertroy/Goog-Sec/edit/main/docs/detection-rules.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+    
+      
+    
+    <a href="https://github.com/ethanolivertroy/Goog-Sec/raw/main/docs/detection-rules.md" title="View source of this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"/></svg>
+    </a>
+  
+
+
+<div class="admonition warning">
+<p class="admonition-title">Under Construction</p>
+<p>This page is under construction. Please check back later for comprehensive guidance</p>
+</div>
+<h1 id="automated-detection-rules-for-google-workspace">Automated Detection Rules for Google Workspace<a class="headerlink" href="#automated-detection-rules-for-google-workspace" title="Permanent link">&para;</a></h1>
+<p>This guide provides detailed, implementable detection rules for identifying suspicious and malicious activities in Google Workspace environments. These rules can be implemented in SIEM systems, Google Security Center, or custom monitoring solutions.</p>
+<h2 id="understanding-detection-engineering-for-google-workspace">Understanding Detection Engineering for Google Workspace<a class="headerlink" href="#understanding-detection-engineering-for-google-workspace" title="Permanent link">&para;</a></h2>
+<p>Effective detection in Google Workspace environments requires a strategic approach that combines:</p>
+<ul>
+<li>Log data collection from multiple Google services</li>
+<li>Well-crafted detection logic with appropriate thresholds</li>
+<li>Baseline understanding of normal user behavior</li>
+<li>Tuning to reduce false positives while maintaining detection efficacy</li>
+<li>Regular updates to address emerging threats</li>
+</ul>
+<h2 id="detection-rule-components">Detection Rule Components<a class="headerlink" href="#detection-rule-components" title="Permanent link">&para;</a></h2>
+<p>Each detection rule in this guide includes:</p>
+<ul>
+<li><strong>Rule name</strong>: Clear, descriptive name</li>
+<li><strong>MITRE ATT&amp;CK mapping</strong>: Relevant tactics and techniques</li>
+<li><strong>Data sources</strong>: Required log sources</li>
+<li><strong>Detection logic</strong>: Specific conditions to trigger alerts</li>
+<li><strong>Severity</strong>: Recommended alert priority (Critical, High, Medium, Low)</li>
+<li><strong>False positive scenarios</strong>: Common benign triggers</li>
+<li><strong>Validation steps</strong>: How to validate true positives</li>
+<li><strong>Response actions</strong>: Recommended investigation steps</li>
+</ul>
+<h2 id="implementation-platforms">Implementation Platforms<a class="headerlink" href="#implementation-platforms" title="Permanent link">&para;</a></h2>
+<p>These rules can be implemented on:</p>
+<ul>
+<li><strong>Google Security Center</strong>: Natively in Google Workspace</li>
+<li><strong>SIEM platforms</strong>: Splunk, Microsoft Sentinel, Elastic, etc.</li>
+<li><strong>Cloud logging solutions</strong>: Google Cloud Logging, BigQuery</li>
+<li><strong>Custom detection tools</strong>: Internally developed monitoring solutions</li>
+<li><strong>Third-party GWS monitoring tools</strong>: Specialized Google Workspace security tools</li>
+</ul>
+<h2 id="core-detection-rules">Core Detection Rules<a class="headerlink" href="#core-detection-rules" title="Permanent link">&para;</a></h2>
+<h3 id="authentication-access">Authentication &amp; Access<a class="headerlink" href="#authentication-access" title="Permanent link">&para;</a></h3>
+<h4 id="impossible-travel-detection">Impossible Travel Detection<a class="headerlink" href="#impossible-travel-detection" title="Permanent link">&para;</a></h4>
+<p><strong>Rule name</strong>: GWS-AUTH-001: Authentication Impossible Travel</p>
+<p><strong>MITRE ATT&amp;CK</strong>: Initial Access (T1078), Valid Accounts</p>
+<p><strong>Data sources</strong>: Login audit logs</p>
+<p><strong>Detection logic</strong>:
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>SELECT 
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>  user_email,
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>  timestamp AS current_login_time,
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>  ip_address AS current_ip,
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>  country AS current_country,
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>  LAG(timestamp) OVER (PARTITION BY user_email ORDER BY timestamp) AS previous_login_time,
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>  LAG(ip_address) OVER (PARTITION BY user_email ORDER BY timestamp) AS previous_ip,
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>  LAG(country) OVER (PARTITION BY user_email ORDER BY timestamp) AS previous_country,
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>  TIMESTAMP_DIFF(timestamp, LAG(timestamp) OVER (PARTITION BY user_email ORDER BY timestamp), MINUTE) AS minutes_between_logins
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>FROM login_events
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>WHERE timestamp &gt; TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 24 HOUR)
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>HAVING 
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>  previous_country IS NOT NULL 
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>  AND current_country != previous_country 
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>  AND minutes_between_logins &lt; 240  /* 4 hours */
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>  AND previous_country NOT IN (&#39;UNKNOWN&#39;, &#39;&#39;)
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>  AND current_country NOT IN (&#39;UNKNOWN&#39;, &#39;&#39;)
+</span></code></pre></div></p>
+<p><strong>Severity</strong>: High</p>
+<p><strong>False positive scenarios</strong>:
+- VPN usage causing location changes
+- Corporate travel with connections in transit
+- Inaccurate IP geolocation data</p>
+<p><strong>Validation steps</strong>:
+1. Verify user travel status with HR or manager
+2. Check if user is using VPN services
+3. Confirm device used for authentication
+4. Review activity following the suspicious login</p>
+<p><strong>Response actions</strong>:
+1. Reset user password and enforce re-authentication
+2. Review account activity for signs of compromise
+3. If confirmed suspicious, initiate incident response
+4. Consider implementing location-based access restrictions</p>
+<h4 id="brute-force-authentication-attempts">Brute Force Authentication Attempts<a class="headerlink" href="#brute-force-authentication-attempts" title="Permanent link">&para;</a></h4>
+<p><strong>Rule name</strong>: GWS-AUTH-002: Authentication Brute Force Attempt</p>
+<p><strong>MITRE ATT&amp;CK</strong>: Credential Access (T1110), Brute Force</p>
+<p><strong>Data sources</strong>: Login audit logs</p>
+<p><strong>Detection logic</strong>:
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>SELECT 
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>  user_email,
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>  ip_address,
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>  COUNT(*) AS failure_count
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>FROM login_events
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>WHERE 
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>  timestamp &gt; TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 1 HOUR)
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>  AND login_success = false
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>GROUP BY user_email, ip_address
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>HAVING failure_count &gt;= 10
+</span></code></pre></div></p>
+<p><strong>Severity</strong>: High</p>
+<p><strong>False positive scenarios</strong>:
+- Forgotten password by legitimate user
+- Application misconfiguration causing repeated login attempts
+- Password manager issues</p>
+<p><strong>Validation steps</strong>:
+1. Check if user reports password issues
+2. Review IP address reputation and location
+3. Examine login attempt patterns (timing, frequency)
+4. Check for successful login following failed attempts</p>
+<p><strong>Response actions</strong>:
+1. Temporarily lock account if still under attack
+2. Reset user password if account was compromised
+3. Block suspicious IP address if clearly malicious
+4. Contact user to verify if attempts were legitimate</p>
+<h4 id="mfa-disablement">MFA Disablement<a class="headerlink" href="#mfa-disablement" title="Permanent link">&para;</a></h4>
+<p><strong>Rule name</strong>: GWS-AUTH-003: MFA Disabled for User</p>
+<p><strong>MITRE ATT&amp;CK</strong>: Defense Evasion (T1562), Impair Defenses</p>
+<p><strong>Data sources</strong>: Admin audit logs</p>
+<p><strong>Detection logic</strong>:
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>SELECT 
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>  admin_email,
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>  target_user_email,
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>  timestamp,
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>  ip_address,
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>  user_agent
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>FROM admin_events
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>WHERE 
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>  timestamp &gt; TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 24 HOUR)
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>  AND event_type = &#39;TWO_FACTOR_DISABLE&#39;
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>  AND (
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>    target_user_email IN (SELECT email FROM privileged_users)
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>    OR admin_email != &#39;scheduled-maintenance@company.com&#39;
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>  )
+</span></code></pre></div></p>
+<p><strong>Severity</strong>: High</p>
+<p><strong>False positive scenarios</strong>:
+- Authorized MFA reset due to lost device
+- Scheduled maintenance activities
+- Help desk assisting with legitimate MFA issues</p>
+<p><strong>Validation steps</strong>:
+1. Verify if change was authorized through proper channels
+2. Confirm if admin account was authorized to make change
+3. Check for associated help desk ticket
+4. Review other activities by the admin account</p>
+<p><strong>Response actions</strong>:
+1. Re-enable MFA if unauthorized
+2. Reset admin password if admin account was compromised
+3. Force password reset for affected user
+4. Review admin account activities for other suspicious actions</p>
+<h4 id="off-hours-administrative-actions">Off-Hours Administrative Actions<a class="headerlink" href="#off-hours-administrative-actions" title="Permanent link">&para;</a></h4>
+<p><strong>Rule name</strong>: GWS-ADMIN-001: Administrative Actions During Off-Hours</p>
+<p><strong>MITRE ATT&amp;CK</strong>: Privilege Escalation (T1078), Valid Accounts</p>
+<p><strong>Data sources</strong>: Admin audit logs</p>
+<p><strong>Detection logic</strong>:
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>SELECT 
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>  admin_email,
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>  event_type,
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>  target_resource,
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>  timestamp,
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>  ip_address
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>FROM admin_events
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>WHERE 
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>  timestamp &gt; TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 24 HOUR)
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>  AND (
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>    EXTRACT(HOUR FROM timestamp) &lt; 6
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>    OR EXTRACT(HOUR FROM timestamp) &gt; 22
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>  )
+</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>  AND EXTRACT(DAYOFWEEK FROM timestamp) BETWEEN 2 AND 6  /* Monday to Friday */
+</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a>  AND event_type IN (&#39;USER_PRIVILEGE_CHANGE&#39;, &#39;SECURITY_SETTING_CHANGE&#39;, &#39;PASSWORD_RESET&#39;)
+</span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a>  AND admin_email NOT IN (SELECT email FROM authorized_after_hours_admins)
+</span></code></pre></div></p>
+<p><strong>Severity</strong>: Medium</p>
+<p><strong>False positive scenarios</strong>:
+- Authorized emergency maintenance
+- Admins in different time zones
+- Planned after-hours changes
+- Response to security incidents</p>
+<p><strong>Validation steps</strong>:
+1. Verify if change was planned and approved
+2. Confirm admin's regular working hours
+3. Check for associated change management ticket
+4. Review nature of the administrative action</p>
+<p><strong>Response actions</strong>:
+1. Contact admin to verify if actions were legitimate
+2. Review specific settings changed for security impact
+3. Revert unauthorized changes
+4. Implement approval workflow for off-hours admin actions</p>
+<h3 id="data-access-exfiltration">Data Access &amp; Exfiltration<a class="headerlink" href="#data-access-exfiltration" title="Permanent link">&para;</a></h3>
+<h4 id="unusual-download-volume">Unusual Download Volume<a class="headerlink" href="#unusual-download-volume" title="Permanent link">&para;</a></h4>
+<p><strong>Rule name</strong>: GWS-DATA-001: Unusual Download Volume</p>
+<p><strong>MITRE ATT&amp;CK</strong>: Exfiltration (T1530), Data from Cloud Storage</p>
+<p><strong>Data sources</strong>: Drive audit logs</p>
+<p><strong>Detection logic</strong>:
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>SELECT 
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>  user_email,
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>  COUNT(*) AS download_count,
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>  SUM(file_size) AS total_download_size_bytes
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>FROM drive_activity
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>WHERE 
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>  timestamp &gt; TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 24 HOUR)
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>  AND activity_type = &#39;DOWNLOAD&#39;
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>GROUP BY user_email
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>HAVING 
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>  download_count &gt; 50
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>  OR total_download_size_bytes &gt; 500000000  /* 500MB */
+</span></code></pre></div></p>
+<p><strong>Severity</strong>: Medium</p>
+<p><strong>False positive scenarios</strong>:
+- User backing up data for legitimate purposes
+- Data migration activities
+- New employee downloading relevant documents
+- Development activities requiring bulk downloads</p>
+<p><strong>Validation steps</strong>:
+1. Check if user is involved in data migration project
+2. Verify types of files downloaded
+3. Look for business justification for bulk downloads
+4. Confirm if user's role typically requires bulk access</p>
+<p><strong>Response actions</strong>:
+1. Contact user to verify purpose of downloads
+2. Review specific files accessed for sensitivity
+3. Examine user's historical download patterns
+4. Consider implementing download quotas if unauthorized</p>
+<h4 id="sensitive-data-access">Sensitive Data Access<a class="headerlink" href="#sensitive-data-access" title="Permanent link">&para;</a></h4>
+<p><strong>Rule name</strong>: GWS-DATA-002: Sensitive Data Access from Unusual Location</p>
+<p><strong>MITRE ATT&amp;CK</strong>: Exfiltration (T1530), Data from Cloud Storage</p>
+<p><strong>Data sources</strong>: Drive audit logs, DLP classification data</p>
+<p><strong>Detection logic</strong>:
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>SELECT 
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>  user_email,
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>  file_id,
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>  file_name,
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>  sensitivity_level,
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>  ip_address,
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>  country,
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>  timestamp
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>FROM drive_activity
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>JOIN file_sensitivity ON drive_activity.file_id = file_sensitivity.file_id
+</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>WHERE 
+</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>  timestamp &gt; TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 24 HOUR)
+</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>  AND sensitivity_level IN (&#39;CONFIDENTIAL&#39;, &#39;RESTRICTED&#39;)
+</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a>  AND country NOT IN (SELECT allowed_country FROM approved_access_locations)
+</span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a>  AND activity_type IN (&#39;VIEW&#39;, &#39;DOWNLOAD&#39;, &#39;COPY&#39;)
+</span></code></pre></div></p>
+<p><strong>Severity</strong>: High</p>
+<p><strong>False positive scenarios</strong>:
+- Executive traveling internationally
+- Approved remote work from non-standard location
+- Third-party consultant with legitimate access
+- VPN endpoint causing location misidentification</p>
+<p><strong>Validation steps</strong>:
+1. Verify user's travel status
+2. Confirm if access was from approved device
+3. Check if user has history of accessing these files
+4. Review business justification for remote access</p>
+<p><strong>Response actions</strong>:
+1. Temporarily revoke access if clearly suspicious
+2. Contact user to verify legitimacy of access
+3. Review nature and sensitivity of data accessed
+4. Implement geographic access restrictions if needed</p>
+<h4 id="unusual-email-forwarding-rules">Unusual Email Forwarding Rules<a class="headerlink" href="#unusual-email-forwarding-rules" title="Permanent link">&para;</a></h4>
+<p><strong>Rule name</strong>: GWS-EMAIL-001: Suspicious Email Forwarding Rule Creation</p>
+<p><strong>MITRE ATT&amp;CK</strong>: Collection (T1114), Email Collection</p>
+<p><strong>Data sources</strong>: Gmail settings logs</p>
+<p><strong>Detection logic</strong>:
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>SELECT 
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>  user_email,
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>  rule_id,
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>  forwarding_address,
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>  creation_time,
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>  ip_address
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>FROM email_settings_changes
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>WHERE 
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>  timestamp &gt; TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 24 HOUR)
+</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>  AND change_type = &#39;CREATE_FORWARDING_RULE&#39;
+</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>  AND (
+</span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>    SPLIT(forwarding_address, &#39;@&#39;)[OFFSET(1)] NOT IN (SELECT domain FROM approved_email_domains)
+</span><span id="__span-6-13"><a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a>    OR user_email IN (SELECT email FROM executive_users)
+</span><span id="__span-6-14"><a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a>  )
+</span></code></pre></div></p>
+<p><strong>Severity</strong>: High</p>
+<p><strong>False positive scenarios</strong>:
+- Employee forwarding to personal address for legitimate work
+- Executive assistant setting up approved forwarding
+- Temporary forwarding during planned absence
+- Integration with ticketing or workflow systems</p>
+<p><strong>Validation steps</strong>:
+1. Verify if forwarding was authorized by user
+2. Check if forwarding address is known/trusted
+3. Review recent login history for the user
+4. Determine if user is aware of the forwarding rule</p>
+<p><strong>Response actions</strong>:
+1. Remove unauthorized forwarding rules
+2. Reset user password if account compromise suspected
+3. Review email logs for potential data exfiltration
+4. Implement forwarding restrictions if needed</p>
+<h3 id="administration-configuration">Administration &amp; Configuration<a class="headerlink" href="#administration-configuration" title="Permanent link">&para;</a></h3>
+<h4 id="security-setting-modification">Security Setting Modification<a class="headerlink" href="#security-setting-modification" title="Permanent link">&para;</a></h4>
+<p><strong>Rule name</strong>: GWS-ADMIN-002: Critical Security Setting Changed</p>
+<p><strong>MITRE ATT&amp;CK</strong>: Defense Evasion (T1562), Impair Defenses</p>
+<p><strong>Data sources</strong>: Admin audit logs</p>
+<p><strong>Detection logic</strong>:
+<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>SELECT 
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>  admin_email,
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>  setting_name,
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>  old_value,
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>  new_value,
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>  timestamp,
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>  ip_address
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>FROM admin_setting_changes
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>WHERE 
+</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>  timestamp &gt; TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 24 HOUR)
+</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>  AND setting_category = &#39;SECURITY&#39;
+</span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>  AND setting_name IN (
+</span><span id="__span-7-13"><a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a>    &#39;REQUIRE_MFA&#39;,
+</span><span id="__span-7-14"><a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a>    &#39;EXTERNAL_SHARING_RESTRICTED&#39;,
+</span><span id="__span-7-15"><a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a>    &#39;ENFORCE_STRONG_PASSWORD&#39;,
+</span><span id="__span-7-16"><a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a>    &#39;OAUTH_APP_ACCESS&#39;,
+</span><span id="__span-7-17"><a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a>    &#39;ALLOW_LESS_SECURE_APPS&#39;,
+</span><span id="__span-7-18"><a id="__codelineno-7-18" name="__codelineno-7-18" href="#__codelineno-7-18"></a>    &#39;LOGIN_CHALLENGES&#39;,
+</span><span id="__span-7-19"><a id="__codelineno-7-19" name="__codelineno-7-19" href="#__codelineno-7-19"></a>    &#39;DATA_LOSS_PREVENTION&#39;
+</span><span id="__span-7-20"><a id="__codelineno-7-20" name="__codelineno-7-20" href="#__codelineno-7-20"></a>  )
+</span><span id="__span-7-21"><a id="__codelineno-7-21" name="__codelineno-7-21" href="#__codelineno-7-21"></a>  AND admin_email NOT IN (SELECT email FROM security_administrators)
+</span></code></pre></div></p>
+<p><strong>Severity</strong>: Critical</p>
+<p><strong>False positive scenarios</strong>:
+- Authorized security configuration changes
+- Temporary adjustments for troubleshooting
+- Planned security control modifications
+- New admin learning the environment</p>
+<p><strong>Validation steps</strong>:
+1. Verify if change was planned and approved
+2. Confirm admin is authorized for security settings
+3. Check for associated change management documentation
+4. Review the specific security impact of the change</p>
+<p><strong>Response actions</strong>:
+1. Revert unauthorized security setting changes
+2. Revoke admin access if unauthorized
+3. Document all impacted settings and potential exposure
+4. Review logs for exploitation during reduced security</p>
+<h4 id="new-administrator-creation">New Administrator Creation<a class="headerlink" href="#new-administrator-creation" title="Permanent link">&para;</a></h4>
+<p><strong>Rule name</strong>: GWS-ADMIN-003: New Super Admin Created</p>
+<p><strong>MITRE ATT&amp;CK</strong>: Persistence (T1136), Create Account</p>
+<p><strong>Data sources</strong>: Admin audit logs</p>
+<p><strong>Detection logic</strong>:
+<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>SELECT 
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>  admin_email AS assigning_admin,
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>  target_user AS new_admin_user,
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>  timestamp,
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>  ip_address,
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>  user_agent
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>FROM admin_privilege_changes
+</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>WHERE 
+</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>  timestamp &gt; TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 24 HOUR)
+</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>  AND privilege_name = &#39;SUPER_ADMIN&#39;
+</span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>  AND change_type = &#39;ASSIGN&#39;
+</span></code></pre></div></p>
+<p><strong>Severity</strong>: Critical</p>
+<p><strong>False positive scenarios</strong>:
+- Legitimate admin succession planning
+- Approved expansion of admin team
+- Recovery from admin departure
+- Temporary admin assignment during project</p>
+<p><strong>Validation steps</strong>:
+1. Verify if new admin was approved through proper channels
+2. Confirm if assigning admin was authorized to grant Super Admin
+3. Check for associated change management documentation
+4. Validate new admin's identity and role requirements</p>
+<p><strong>Response actions</strong>:
+1. Revoke unauthorized admin privileges
+2. Investigate the assigning admin account for compromise
+3. Review actions taken by the new admin account
+4. Implement admin privilege review process</p>
+<h4 id="oauth-application-authorization">OAuth Application Authorization<a class="headerlink" href="#oauth-application-authorization" title="Permanent link">&para;</a></h4>
+<p><strong>Rule name</strong>: GWS-APPS-001: Suspicious OAuth Application Authorization</p>
+<p><strong>MITRE ATT&amp;CK</strong>: Persistence (T1098), Account Manipulation</p>
+<p><strong>Data sources</strong>: OAuth token logs</p>
+<p><strong>Detection logic</strong>:
+<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>SELECT 
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>  user_email,
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>  application_name,
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>  application_id,
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>  scopes,
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>  timestamp,
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>  ip_address,
+</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>  user_agent
+</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>FROM oauth_token_grants
+</span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a>WHERE 
+</span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a>  timestamp &gt; TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 24 HOUR)
+</span><span id="__span-9-12"><a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a>  AND (
+</span><span id="__span-9-13"><a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a>    ARRAY_LENGTH(SPLIT(scopes, &#39; &#39;)) &gt; 5
+</span><span id="__span-9-14"><a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a>    OR scopes LIKE &#39;%https://www.googleapis.com/auth/gmail%&#39;
+</span><span id="__span-9-15"><a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a>    OR scopes LIKE &#39;%https://www.googleapis.com/auth/drive%&#39;
+</span><span id="__span-9-16"><a id="__codelineno-9-16" name="__codelineno-9-16" href="#__codelineno-9-16"></a>  )
+</span><span id="__span-9-17"><a id="__codelineno-9-17" name="__codelineno-9-17" href="#__codelineno-9-17"></a>  AND application_id NOT IN (SELECT app_id FROM approved_applications)
+</span><span id="__span-9-18"><a id="__codelineno-9-18" name="__codelineno-9-18" href="#__codelineno-9-18"></a>  AND user_email IN (SELECT email FROM privileged_users)
+</span></code></pre></div></p>
+<p><strong>Severity</strong>: High</p>
+<p><strong>False positive scenarios</strong>:
+- New approved application deployment
+- User testing legitimate application
+- Authorized third-party integration
+- Admin testing security controls</p>
+<p><strong>Validation steps</strong>:
+1. Review application details and publisher
+2. Check if application is widely used in organization
+3. Verify if user intended to grant specified permissions
+4. Assess the specific permissions (scopes) granted</p>
+<p><strong>Response actions</strong>:
+1. Revoke suspicious application access
+2. Reset user password if credential theft suspected
+3. Block unapproved application at organization level
+4. Review logs for data access by the application</p>
+<h3 id="third-party-activity">Third-Party Activity<a class="headerlink" href="#third-party-activity" title="Permanent link">&para;</a></h3>
+<h4 id="api-usage-anomalies">API Usage Anomalies<a class="headerlink" href="#api-usage-anomalies" title="Permanent link">&para;</a></h4>
+<p><strong>Rule name</strong>: GWS-API-001: Abnormal API Request Volume</p>
+<p><strong>MITRE ATT&amp;CK</strong>: Exfiltration (T1530), Data from Cloud Storage</p>
+<p><strong>Data sources</strong>: API access logs</p>
+<p><strong>Detection logic</strong>:
+<div class="language-text highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>SELECT 
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>  user_email,
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>  api_method,
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>  COUNT(*) AS api_call_count,
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>  AVG(COUNT(*)) OVER (
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>    PARTITION BY user_email, api_method
+</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>    ORDER BY DATE_TRUNC(timestamp, DAY)
+</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>    ROWS BETWEEN 7 PRECEDING AND 1 PRECEDING
+</span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a>  ) AS daily_average_past_week
+</span><span id="__span-10-10"><a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a>FROM api_access_logs
+</span><span id="__span-10-11"><a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a>WHERE timestamp &gt; TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 24 HOUR)
+</span><span id="__span-10-12"><a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a>GROUP BY user_email, api_method, DATE_TRUNC(timestamp, DAY)
+</span><span id="__span-10-13"><a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a>HAVING 
+</span><span id="__span-10-14"><a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a>  api_call_count &gt; 5 * IFNULL(daily_average_past_week, 10)
+</span><span id="__span-10-15"><a id="__codelineno-10-15" name="__codelineno-10-15" href="#__codelineno-10-15"></a>  AND api_call_count &gt; 100
+</span></code></pre></div></p>
+<p><strong>Severity</strong>: Medium</p>
+<p><strong>False positive scenarios</strong>:
+- New automated system deployment
+- Bulk operations for legitimate business purposes
+- Migration or backup activities
+- System testing or validation</p>
+<p><strong>Validation steps</strong>:
+1. Verify if high volume API usage was planned
+2. Check specific API methods for sensitivity
+3. Determine if user role requires this API access
+4. Review historical API usage patterns</p>
+<p><strong>Response actions</strong>:
+1. Temporarily restrict API access if clearly abnormal
+2. Investigate data accessed through API calls
+3. Implement API rate limiting if needed
+4. Review service account permissions</p>
+<h4 id="service-account-key-creation">Service Account Key Creation<a class="headerlink" href="#service-account-key-creation" title="Permanent link">&para;</a></h4>
+<p><strong>Rule name</strong>: GWS-SVC-001: Service Account Key Created</p>
+<p><strong>MITRE ATT&amp;CK</strong>: Credential Access (T1528), Steal Application Access Token</p>
+<p><strong>Data sources</strong>: Service account audit logs</p>
+<p><strong>Detection logic</strong>:
+<div class="language-text highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>SELECT 
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>  admin_email,
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>  service_account_email,
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>  key_id,
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>  key_type,
+</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>  timestamp,
+</span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>  ip_address
+</span><span id="__span-11-8"><a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>FROM service_account_key_events
+</span><span id="__span-11-9"><a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a>WHERE 
+</span><span id="__span-11-10"><a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a>  timestamp &gt; TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL 24 HOUR)
+</span><span id="__span-11-11"><a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a>  AND event_type = &#39;CREATE&#39;
+</span><span id="__span-11-12"><a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a>  AND service_account_email LIKE &#39;%@*.gserviceaccount.com&#39;
+</span><span id="__span-11-13"><a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a>  AND admin_email NOT IN (SELECT email FROM authorized_service_account_admins)
+</span></code></pre></div></p>
+<p><strong>Severity</strong>: High</p>
+<p><strong>False positive scenarios</strong>:
+- Authorized key rotation
+- New service deployment
+- Development and testing activities
+- Automation setup by authorized personnel</p>
+<p><strong>Validation steps</strong>:
+1. Verify if key creation was authorized
+2. Check service account permissions and access
+3. Confirm admin is authorized for service account management
+4. Review the purpose of the service account</p>
+<p><strong>Response actions</strong>:
+1. Disable unauthorized service account keys
+2. Review service account activity for suspicious usage
+3. Implement approval process for key creation
+4. Ensure key rotation policies are in place</p>
+<h2 id="advanced-detection-techniques">Advanced Detection Techniques<a class="headerlink" href="#advanced-detection-techniques" title="Permanent link">&para;</a></h2>
+<h3 id="behavioral-analytics">Behavioral Analytics<a class="headerlink" href="#behavioral-analytics" title="Permanent link">&para;</a></h3>
+<p>Implement these more sophisticated detection approaches for mature security programs:</p>
+<h4 id="user-behavioral-baseline-detection">User Behavioral Baseline Detection<a class="headerlink" href="#user-behavioral-baseline-detection" title="Permanent link">&para;</a></h4>
+<p><strong>Rule name</strong>: GWS-UBA-001: User Behavior Anomaly Detection</p>
+<p><strong>MITRE ATT&amp;CK</strong>: Multiple</p>
+<p><strong>Data sources</strong>: Login logs, Drive logs, Gmail logs, API logs</p>
+<p><strong>Detection approach</strong>:</p>
+<ol>
+<li>Establish behavioral baselines for each user:</li>
+<li>Typical working hours</li>
+<li>Normal device and location patterns</li>
+<li>Common file access patterns</li>
+<li>Regular collaboration partners</li>
+<li>Usual email communication patterns</li>
+<li>
+<p>Standard API usage</p>
+</li>
+<li>
+<p>Calculate deviation scores for current activity:</p>
+</li>
+<li>Time-of-day anomaly score</li>
+<li>Location anomaly score</li>
+<li>Device anomaly score</li>
+<li>Resource access anomaly score</li>
+<li>Communication anomaly score</li>
+<li>
+<p>Volume anomaly score</p>
+</li>
+<li>
+<p>Generate alerts on significant composite score deviations:
+   <div class="language-text highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>SELECT
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>  user_email,
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>  activity_date,
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>  time_anomaly_score,
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>  location_anomaly_score,
+</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>  device_anomaly_score,
+</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>  resource_anomaly_score,
+</span><span id="__span-12-8"><a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>  communication_anomaly_score,
+</span><span id="__span-12-9"><a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a>  volume_anomaly_score,
+</span><span id="__span-12-10"><a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a>  (time_anomaly_score + location_anomaly_score + device_anomaly_score + 
+</span><span id="__span-12-11"><a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a>   resource_anomaly_score + communication_anomaly_score + volume_anomaly_score) AS composite_score
+</span><span id="__span-12-12"><a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a>FROM user_daily_anomaly_scores
+</span><span id="__span-12-13"><a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a>WHERE activity_date = CURRENT_DATE()
+</span><span id="__span-12-14"><a id="__codelineno-12-14" name="__codelineno-12-14" href="#__codelineno-12-14"></a>AND composite_score &gt; 15  /* Threshold determined through tuning */
+</span></code></pre></div></p>
+</li>
+</ol>
+<p><strong>Severity</strong>: High (based on composite score)</p>
+<p><strong>Implementation considerations</strong>:
+- Requires significant historical data (30+ days minimum)
+- Machine learning capabilities strongly recommended
+- Regular retraining to adapt to changing user behaviors
+- Tuning process to minimize false positives</p>
+<h4 id="peer-group-analytics">Peer Group Analytics<a class="headerlink" href="#peer-group-analytics" title="Permanent link">&para;</a></h4>
+<p><strong>Rule name</strong>: GWS-UBA-002: Peer Group Anomaly Detection</p>
+<p><strong>MITRE ATT&amp;CK</strong>: Multiple</p>
+<p><strong>Data sources</strong>: Login logs, Drive logs, Gmail logs, API logs</p>
+<p><strong>Detection approach</strong>:</p>
+<ol>
+<li>Define peer groups based on:</li>
+<li>Department or organizational unit</li>
+<li>Job role and responsibilities</li>
+<li>Access patterns and permissions</li>
+<li>
+<p>Location and work schedules</p>
+</li>
+<li>
+<p>Establish peer group behavioral norms:</p>
+</li>
+<li>Average document access counts</li>
+<li>Typical external communication patterns</li>
+<li>Normal sharing behaviors</li>
+<li>
+<p>Common application usage</p>
+</li>
+<li>
+<p>Detect individual deviations from peer group:
+   <div class="language-text highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>SELECT
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>  user_email,
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>  department,
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>  user_download_count,
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>  AVG(download_count) OVER (PARTITION BY department) AS dept_avg_downloads,
+</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>  STDDEV(download_count) OVER (PARTITION BY department) AS dept_stddev_downloads,
+</span><span id="__span-13-7"><a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a>  (user_download_count - dept_avg_downloads) / NULLIF(dept_stddev_downloads, 0) AS z_score
+</span><span id="__span-13-8"><a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a>FROM user_activity_summary
+</span><span id="__span-13-9"><a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a>WHERE activity_date &gt;= DATE_SUB(CURRENT_DATE(), INTERVAL 7 DAY)
+</span><span id="__span-13-10"><a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a>HAVING ABS(z_score) &gt; 3  /* Exceeds 3 standard deviations */
+</span></code></pre></div></p>
+</li>
+</ol>
+<p><strong>Severity</strong>: Medium (requires investigation)</p>
+<p><strong>Implementation considerations</strong>:
+- Need accurate and updated organizational structure data
+- Regular review of peer group definitions
+- Multiple behavioral dimensions for comprehensive analysis
+- Adjustment for legitimate role differences within groups</p>
+<h2 id="detection-rule-management">Detection Rule Management<a class="headerlink" href="#detection-rule-management" title="Permanent link">&para;</a></h2>
+<h3 id="tuning-and-optimization">Tuning and Optimization<a class="headerlink" href="#tuning-and-optimization" title="Permanent link">&para;</a></h3>
+<p>Effective rule tuning requires a structured approach:</p>
+<ol>
+<li><strong>Baseline establishment</strong>:</li>
+<li>Monitor alert volumes initially without taking action</li>
+<li>Identify normal activity patterns that trigger alerts</li>
+<li>
+<p>Document legitimate business processes that may appear suspicious</p>
+</li>
+<li>
+<p><strong>Threshold adjustment</strong>:</p>
+</li>
+<li>Gradually adjust thresholds to reduce false positives</li>
+<li>Document justification for threshold changes</li>
+<li>
+<p>Re-validate detection efficacy after adjustments</p>
+</li>
+<li>
+<p><strong>Exclusion management</strong>:</p>
+</li>
+<li>Create specific, documented exclusions for known good activities</li>
+<li>Review exclusions periodically (at least quarterly)</li>
+<li>Implement sunset dates for temporary exclusions</li>
+<li>
+<p>Document business justification for each exclusion</p>
+</li>
+<li>
+<p><strong>Continuous improvement</strong>:</p>
+</li>
+<li>Schedule regular rule reviews (quarterly recommended)</li>
+<li>Adjust rules based on changes to organization and threat landscape</li>
+<li>Document rule performance metrics over time</li>
+<li>Test rule modifications in staging environment when possible</li>
+</ol>
+<h3 id="rule-deployment-framework">Rule Deployment Framework<a class="headerlink" href="#rule-deployment-framework" title="Permanent link">&para;</a></h3>
+<p>Implement a structured approach to rule deployment:</p>
+<ol>
+<li><strong>Development phase</strong>:</li>
+<li>Research threat and create detection hypothesis</li>
+<li>Document expected behaviors to detect</li>
+<li>Create initial rule logic</li>
+<li>
+<p>Test against historical data if available</p>
+</li>
+<li>
+<p><strong>Testing phase</strong>:</p>
+</li>
+<li>Deploy in "alert only" mode without automated actions</li>
+<li>Document false positive rate</li>
+<li>Refine rule logic based on testing results</li>
+<li>
+<p>Validate against known good and bad samples</p>
+</li>
+<li>
+<p><strong>Production deployment</strong>:</p>
+</li>
+<li>Document final rule logic and thresholds</li>
+<li>Create runbook for alert handling</li>
+<li>Train security team on investigation procedures</li>
+<li>
+<p>Set review date for rule effectiveness</p>
+</li>
+<li>
+<p><strong>Maintenance phase</strong>:</p>
+</li>
+<li>Track alert metrics (volume, false positive rate, MTTD, MTTR)</li>
+<li>Schedule periodic reviews of rule effectiveness</li>
+<li>Update rules to address emerging threats</li>
+<li>Document rule version history and changes</li>
+</ol>
+<h2 id="integration-with-security-operations">Integration with Security Operations<a class="headerlink" href="#integration-with-security-operations" title="Permanent link">&para;</a></h2>
+<h3 id="prioritization-framework">Prioritization Framework<a class="headerlink" href="#prioritization-framework" title="Permanent link">&para;</a></h3>
+<p>Use this framework to prioritize alerts for investigation:</p>
+<ol>
+<li><strong>Primary factors</strong>:</li>
+<li>Asset criticality (user account, data sensitivity)</li>
+<li>Rule confidence level</li>
+<li>Attack stage (early reconnaissance vs. active exfiltration)</li>
+<li>
+<p>Potential business impact</p>
+</li>
+<li>
+<p><strong>Secondary factors</strong>:</p>
+</li>
+<li>Historical user behavior</li>
+<li>Correlation with other alerts</li>
+<li>External threat intelligence</li>
+<li>
+<p>Business context (M&amp;A activity, sensitive projects, etc.)</p>
+</li>
+<li>
+<p><strong>Scoring model</strong>:
+   <div class="language-text highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>Alert Priority = 
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>  (Asset Criticality * 0.3) + 
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>  (Rule Confidence * 0.2) + 
+</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>  (Attack Stage * 0.3) + 
+</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>  (Business Impact * 0.2)
+</span></code></pre></div></p>
+</li>
+<li>
+<p><strong>Priority levels</strong>:</p>
+</li>
+<li>P1: Critical (SOC response within 15 minutes)</li>
+<li>P2: High (SOC response within 1 hour)</li>
+<li>P3: Medium (SOC response within 8 hours)</li>
+<li>P4: Low (SOC response within 24 hours)</li>
+</ol>
+<h3 id="automated-response-playbooks">Automated Response Playbooks<a class="headerlink" href="#automated-response-playbooks" title="Permanent link">&para;</a></h3>
+<p>These detection rules can trigger automated response actions:</p>
+<h4 id="account-compromise-response">Account Compromise Response<a class="headerlink" href="#account-compromise-response" title="Permanent link">&para;</a></h4>
+<p>For high-confidence account compromise detections:</p>
+<ol>
+<li><strong>Immediate containment</strong>:</li>
+<li>Force password reset</li>
+<li>Revoke active sessions</li>
+<li>
+<p>Enable MFA or increase MFA strength</p>
+</li>
+<li>
+<p><strong>Automated investigation</strong>:</p>
+</li>
+<li>Collect recent login history</li>
+<li>Gather OAuth token grants</li>
+<li>Identify recently accessed sensitive documents</li>
+<li>
+<p>Check for email forwarding rules</p>
+</li>
+<li>
+<p><strong>Threat containment</strong>:</p>
+</li>
+<li>Quarantine suspicious emails</li>
+<li>Restrict access to sensitive applications</li>
+<li>Block unusual IP addresses</li>
+<li>Raise authentication requirements</li>
+</ol>
+<h4 id="data-exfiltration-response">Data Exfiltration Response<a class="headerlink" href="#data-exfiltration-response" title="Permanent link">&para;</a></h4>
+<p>For potential data theft scenarios:</p>
+<ol>
+<li><strong>Access control</strong>:</li>
+<li>Revoke suspicious sharing permissions</li>
+<li>Remove unauthorized forwarding rules</li>
+<li>Temporarily restrict download capabilities</li>
+<li>
+<p>Suspend suspicious OAuth applications</p>
+</li>
+<li>
+<p><strong>Data assessment</strong>:</p>
+</li>
+<li>Inventory potentially exposed documents</li>
+<li>Evaluate sensitivity of accessed information</li>
+<li>Identify recipients of shared content</li>
+<li>
+<p>Document timeline of suspicious access</p>
+</li>
+<li>
+<p><strong>Evidence preservation</strong>:</p>
+</li>
+<li>Capture access logs for investigation</li>
+<li>Preserve copies of exposed documents</li>
+<li>Document sharing and access patterns</li>
+<li>Create timeline of relevant events</li>
+</ol>
+<h2 id="resources">Resources<a class="headerlink" href="#resources" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="https://developers.google.com/admin-sdk">Google Workspace Admin SDK API</a></li>
+<li><a href="https://cloud.google.com/logging/docs">Google Cloud Logging Documentation</a></li>
+<li><a href="https://attack.mitre.org/">MITRE ATT&amp;CK Framework</a></li>
+<li><a href="https://support.google.com/a/answer/7587183">Google Workspace Security Best Practices</a></li>
+<li><a href="https://support.google.com/a/answer/7587832">Google Workspace Investigation Tool</a></li>
+</ul>
+<hr />
+<p><strong>Note</strong>: Actual implementation details will vary based on your specific environment, log availability, and security tools. Adapt these detection rules to match your organization's requirements and technical capabilities.</p>
+
+
+
+
+
+
+
+  
+    
+  
+  
+    
+  
+
+
+  <aside class="md-source-file">
+    
+      
+  <span class="md-source-file__fact">
+    <span class="md-icon" title="Last update">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
+    </span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="June 1, 2025 02:13:27 UTC">June 1, 2025</span>
+  </span>
+
+    
+    
+      
+  <span class="md-source-file__fact">
+    <span class="md-icon" title="Created">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
+    </span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="June 1, 2025 02:13:27 UTC">June 1, 2025</span>
+  </span>
+
+    
+    
+    
+      
+  <span class="md-source-file__fact">
+    
+      
+  <span class="md-icon" title="Contributors">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33s1.71.11 2.5.33c1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2"/></svg>
+  </span>
+  <span>GitHub</span>
+
+    
+    <nav>
+      
+        <a href="https://github.com/ethanolivertroy" class="md-author" title="@ethanolivertroy">
+          
+          <img src="https://avatars.githubusercontent.com/u/63926014?v=4&size=72" alt="ethanolivertroy">
+        </a>
+      
+      
+      
+    </nav>
+  </span>
+
+    
+  </aside>
+
+
+  
+
+
+
+  <form class="md-feedback" name="feedback" hidden>
+    <fieldset>
+      <legend class="md-feedback__title">
+        Was this page helpful?
+      </legend>
+      <div class="md-feedback__inner">
+        <div class="md-feedback__list">
+          
+            <button class="md-feedback__icon md-icon" type="submit" title="This page was helpful" data-md-value="1">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8 8 8 0 0 0 8-8m2 0a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10M10 9.5c0 .8-.7 1.5-1.5 1.5S7 10.3 7 9.5 7.7 8 8.5 8s1.5.7 1.5 1.5m7 0c0 .8-.7 1.5-1.5 1.5S14 10.3 14 9.5 14.7 8 15.5 8s1.5.7 1.5 1.5m-5 7.73c-1.75 0-3.29-.73-4.19-1.81L9.23 14c.45.72 1.52 1.23 2.77 1.23s2.32-.51 2.77-1.23l1.42 1.42c-.9 1.08-2.44 1.81-4.19 1.81"/></svg>
+            </button>
+          
+            <button class="md-feedback__icon md-icon" type="submit" title="This page could be improved" data-md-value="0">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8 8 8 0 0 0 8-8m2 0a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10m-6.5-4c.8 0 1.5.7 1.5 1.5s-.7 1.5-1.5 1.5-1.5-.7-1.5-1.5.7-1.5 1.5-1.5M10 9.5c0 .8-.7 1.5-1.5 1.5S7 10.3 7 9.5 7.7 8 8.5 8s1.5.7 1.5 1.5m2 4.5c1.75 0 3.29.72 4.19 1.81l-1.42 1.42C14.32 16.5 13.25 16 12 16s-2.32.5-2.77 1.23l-1.42-1.42C8.71 14.72 10.25 14 12 14"/></svg>
+            </button>
+          
+        </div>
+        <div class="md-feedback__note">
+          
+            <div data-md-value="1" hidden>
+              
+              
+                
+              
+              
+              
+                
+                
+              
+              Thanks for your feedback!
+            </div>
+          
+            <div data-md-value="0" hidden>
+              
+              
+                
+              
+              
+              
+                
+                
+              
+              Thanks for your feedback! Help us improve this page by <a href="https://github.com/ethanolivertroy/GWS-Security-Suite/issues/new/?title=[Feedback]+Detection%20Rules+-+/detection-rules/" target="_blank" rel="noopener">telling us what you're missing</a>.
+            </div>
+          
+        </div>
+      </div>
+    </fieldset>
+  </form>
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../threat-hunting/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Threat Hunting">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Threat Hunting
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../security-checklists/" class="md-footer__link md-footer__link--next" aria-label="Next: Security Checklists">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Security Checklists
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2025
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/ethanolivertroy/GWS-Security-Suite" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://twitter.com/ethanolivertroy" target="_blank" rel="noopener" title="twitter.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://linkedin.com/in/ethanolivertroy" target="_blank" rel="noopener" title="linkedin.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3M135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5m282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+      <div class="md-consent" data-md-component="consent" id="__consent" hidden>
+        <div class="md-consent__overlay"></div>
+        <aside class="md-consent__inner">
+          <form class="md-consent__form md-grid md-typeset" name="consent">
+            
+
+
+
+<h4>Cookie consent</h4>
+<p>We use cookies to recognize your repeated visits and preferences, as well as to measure the effectiveness of our documentation and whether users find what they're searching for. With your consent, you're helping us to make our documentation better.</p>
+<input class="md-toggle" type="checkbox" id="__settings" >
+<div class="md-consent__settings">
+  <ul class="task-list">
+    
+    
+      
+        
+  
+  
+    
+    
+  
+  <li class="task-list-item">
+    <label class="task-list-control">
+      <input type="checkbox" name="analytics" checked>
+      <span class="task-list-indicator"></span>
+      Google Analytics
+    </label>
+  </li>
+
+      
+    
+    
+      
+        
+  
+  
+    
+    
+  
+  <li class="task-list-item">
+    <label class="task-list-control">
+      <input type="checkbox" name="github" checked>
+      <span class="task-list-indicator"></span>
+      GitHub
+    </label>
+  </li>
+
+      
+    
+    
+  </ul>
+</div>
+<div class="md-consent__controls">
+  
+    
+      <button class="md-button md-button--primary">Accept</button>
+    
+    
+    
+  
+    
+    
+      <button type="reset" class="md-button md-button--primary">Reject</button>
+    
+    
+  
+    
+    
+    
+      <label class="md-button" for="__settings">Manage settings</label>
+    
+  
+</div>
+          </form>
+        </aside>
+      </div>
+      <script>var consent=__md_get("__consent");if(consent)for(var input of document.forms.consent.elements)input.name&&(input.checked=consent[input.name]||!1);else"file:"!==location.protocol&&setTimeout((function(){document.querySelector("[data-md-component=consent]").hidden=!1}),250);var form=document.forms.consent;for(var action of["submit","reset"])form.addEventListener(action,(function(e){if(e.preventDefault(),"reset"===e.type)for(var n of document.forms.consent.elements)n.name&&(n.checked=!1);__md_set("__consent",Object.fromEntries(Array.from(new FormData(form).keys()).map((function(e){return[e,!0]})))),location.hash="",location.reload()}))</script>
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.indexes", "navigation.path", "navigation.top", "navigation.footer", "navigation.expand", "toc.follow", "toc.integrate", "search.suggest", "search.highlight", "search.share", "content.tabs.link", "content.code.copy", "content.code.annotate", "content.code.select", "content.code.select.copy", "content.action.edit", "content.action.view", "content.action.feedback", "content.action.star", "content.action.issue", "content.authors", "content.contributors", "content.git", "content.footer", "content.source", "header.autohide"], "search": "../assets/javascripts/workers/search.d50fe291.min.js", "tags": true, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.13a4f30d.min.js"></script>
+      
+    
+  <script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(() => { lightbox.reload() });
+</script></body>
+</html>

@@ -1,0 +1,3904 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A comprehensive security guide and toolkit for Google Workspace, Google Cloud Platform, and other Google products">
+      
+      
+        <meta name="author" content="Google Security Research Team">
+      
+      
+        <link rel="canonical" href="https://ethanolivertroy.github.io/Goog-Sec/google-groups-security/">
+      
+      
+        <link rel="prev" href="../exploitation-examples/">
+      
+      
+        <link rel="next" href="../incident-response-playbooks/">
+      
+      
+      <link rel="icon" href="/assets/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.14">
+    
+    
+      
+        <title>Google Groups Security - Google Security Suite</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.342714a4.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+    
+    
+    
+   <link href="../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><style>
+    html.glightbox-open { overflow: initial; height: 100%; }
+    .gslide-title { margin-top: 0px; user-select: text; }
+    .gslide-desc { color: #666; user-select: text; }
+    .gslide-image img { background: white; }
+    .gscrollbar-fixer { padding-right: 15px; }
+    .gdesc-inner { font-size: 0.75rem; }
+    body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color);}
+    body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color);}
+    body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color);}</style> <script src="../assets/javascripts/glightbox.min.js"></script></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="green" data-md-color-accent="green">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#google-groups-security-guide" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Google Security Suite" class="md-header__button md-logo" aria-label="Google Security Suite" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 1 3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5zm0 6c1.4 0 2.8 1.1 2.8 2.5V11c.6 0 1.2.6 1.2 1.3v3.5c0 .6-.6 1.2-1.3 1.2H9.2c-.6 0-1.2-.6-1.2-1.3v-3.5c0-.6.6-1.2 1.2-1.2V9.5C9.2 8.1 10.6 7 12 7m0 1.2c-.8 0-1.5.5-1.5 1.3V11h3V9.5c0-.8-.7-1.3-1.5-1.3"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Google Security Suite
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Google Groups Security
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="green" data-md-color-accent="green"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="green" data-md-color-accent="green"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/ethanolivertroy/Goog-Sec" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Goog-Sec
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../workspace/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Google Workspace Security
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../gcp/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Google Cloud Platform Security
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../chrome/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Google Chrome Security
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../cross-product/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Cross-Product Security
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../nist-fedramp/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  NIST/FedRAMP Controls
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../resources/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Resources
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../contributing/documentation-guidelines/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Contributing
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Google Security Suite" class="md-nav__button md-logo" aria-label="Google Security Suite" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 1 3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5zm0 6c1.4 0 2.8 1.1 2.8 2.5V11c.6 0 1.2.6 1.2 1.3v3.5c0 .6-.6 1.2-1.3 1.2H9.2c-.6 0-1.2-.6-1.2-1.3v-3.5c0-.6.6-1.2 1.2-1.2V9.5C9.2 8.1 10.6 7 12 7m0 1.2c-.8 0-1.5.5-1.5 1.3V11h3V9.5c0-.8-.7-1.3-1.5-1.3"/></svg>
+
+    </a>
+    Google Security Suite
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/ethanolivertroy/Goog-Sec" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Goog-Sec
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../workspace/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Google Workspace Security
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Google Workspace Security
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    Core Security Components
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            Core Security Components
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../identity-security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Identity Security
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../data-protection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Data Protection
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../email-security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Email Security
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../endpoint-security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Endpoint Security
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../drive-document-security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Drive & Document Security
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../threat-hunting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Threat Hunting
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../detection-rules/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Detection Rules
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../security-checklists/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Security Checklists
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    Advanced Security Topics
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            Advanced Security Topics
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../apps-script-security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Apps Script Security
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../attack-vectors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Attack Vectors
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../exploitation-examples/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Exploitation Examples
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Google Groups Security
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Google Groups Security
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#understanding-the-google-groups-security-landscape" class="md-nav__link">
+    <span class="md-ellipsis">
+      Understanding the Google Groups Security Landscape
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Understanding the Google Groups Security Landscape">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#security-challenges-with-google-groups" class="md-nav__link">
+    <span class="md-ellipsis">
+      Security Challenges with Google Groups
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#common-security-misconfigurations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Common Security Misconfigurations
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#attack-vectors-and-security-implications" class="md-nav__link">
+    <span class="md-ellipsis">
+      Attack Vectors and Security Implications
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Attack Vectors and Security Implications">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#google-groups-as-a-phishing-vector" class="md-nav__link">
+    <span class="md-ellipsis">
+      Google Groups as a Phishing Vector
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reconnaissance-through-public-groups" class="md-nav__link">
+    <span class="md-ellipsis">
+      Reconnaissance Through Public Groups
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#group-based-privilege-escalation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Group-Based Privilege Escalation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#secure-configuration-framework" class="md-nav__link">
+    <span class="md-ellipsis">
+      Secure Configuration Framework
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Secure Configuration Framework">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#essential-security-controls" class="md-nav__link">
+    <span class="md-ellipsis">
+      Essential Security Controls
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#group-type-specific-security-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Group Type-Specific Security Configuration
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Group Type-Specific Security Configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-internal-collaboration-groups" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Internal Collaboration Groups
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-external-collaboration-groups" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. External Collaboration Groups
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-announcement-groups" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Announcement Groups
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-security-and-admin-groups" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Security and Admin Groups
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enhanced-security-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Enhanced Security Configuration
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#security-monitoring-and-remediation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Security Monitoring and Remediation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Security Monitoring and Remediation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#group-security-auditing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Group Security Auditing
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#remediation-procedures" class="md-nav__link">
+    <span class="md-ellipsis">
+      Remediation Procedures
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Remediation Procedures">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-excessive-public-access-remediation" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Excessive Public Access Remediation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-self-service-group-joining-remediation" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Self-Service Group Joining Remediation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-unauthorized-external-access-remediation" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Unauthorized External Access Remediation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#incident-response-for-group-based-attacks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Incident Response for Group-Based Attacks
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#advanced-group-security-strategies" class="md-nav__link">
+    <span class="md-ellipsis">
+      Advanced Group Security Strategies
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Advanced Group Security Strategies">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#group-security-governance-framework" class="md-nav__link">
+    <span class="md-ellipsis">
+      Group Security Governance Framework
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#security-optimization-techniques" class="md-nav__link">
+    <span class="md-ellipsis">
+      Security Optimization Techniques
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#msp-specific-considerations" class="md-nav__link">
+    <span class="md-ellipsis">
+      MSP-Specific Considerations
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="MSP-Specific Considerations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#multi-tenant-group-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      Multi-Tenant Group Management
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#client-onboarding-and-migration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Client Onboarding and Migration
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tools-for-google-groups-security-assessment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tools for Google Groups Security Assessment
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Tools for Google Groups Security Assessment">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gubble-google-groups-security-auditing-tool" class="md-nav__link">
+    <span class="md-ellipsis">
+      Gubble: Google Groups Security Auditing Tool
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#additional-resources-and-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Additional Resources and Documentation
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../incident-response-playbooks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Incident Response Playbooks
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../log-analysis/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Log Analysis
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../marketplace-security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Marketplace Security
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../msp-implementation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    MSP Implementation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../oauth-token-analysis/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    OAuth Token Analysis
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../organizational-units/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Organizational Units
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pentesting-insights/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Pentesting Insights
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../vulnerability-management/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Vulnerability Management
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../executive-dashboards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Executive Dashboards
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../gcp/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Google Cloud Platform Security
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Google Cloud Platform Security
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gcp/iam/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Identity & Access Management
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gcp/network-security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Network Security
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gcp/compute-security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Compute Security
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gcp/storage-security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Storage & Database Security
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_6" id="__nav_3_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Kubernetes & Container Security
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_6">
+            <span class="md-nav__icon md-icon"></span>
+            Kubernetes & Container Security
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gcp/container-security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_6_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../gcp/gke/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Google Kubernetes Engine (GKE)
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3_6_2" id="__nav_3_6_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_6_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_6_2">
+            <span class="md-nav__icon md-icon"></span>
+            Google Kubernetes Engine (GKE)
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gcp/gke/fips-compliance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    FIPS 140-2 Compliance
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gcp/logging-monitoring/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Cloud Logging & Monitoring
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gcp/security-command-center/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Security Command Center
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gcp/saif-framework/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    AI/ML Security (SAIF)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gcp/compliance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Compliance & Regulatory Controls
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../chrome/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Google Chrome Security
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Google Chrome Security
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chrome/chrome-enterprise/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Chrome Enterprise
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chrome/policy-config/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Policy Configuration
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chrome/extension-security/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Extension Security
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chrome/web-filtering/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Web Filtering
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chrome/authentication/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Authentication & SSO
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chrome/zero-trust/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Zero Trust Browsing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../cross-product/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Cross-Product Security
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Cross-Product Security
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cross-product/identity-federation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Identity Federation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cross-product/zero-trust/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Zero Trust Architecture
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cross-product/security-operations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Security Operations
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cross-product/threat-intelligence/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Threat Intelligence
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cross-product/compliance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Compliance Management
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../nist-fedramp/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    NIST/FedRAMP Controls
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_6" id="__nav_6_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            NIST/FedRAMP Controls
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_2" id="__nav_6_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Google Cloud Platform
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_2">
+            <span class="md-nav__icon md-icon"></span>
+            Google Cloud Platform
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../nist-fedramp/gcp/access-control/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Access Control (AC)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../nist-fedramp/gcp/configuration-management/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Configuration Management (CM)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../nist-fedramp/gcp/identification-authentication/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Identification & Authentication (IA)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../nist-fedramp/gcp/system-communications-protection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    System & Communications Protection (SC)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../nist-fedramp/gcp/system-information-integrity/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    System & Information Integrity (SI)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../nist-fedramp/workspace/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Google Workspace
+    
+  </span>
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_3">
+            <span class="md-nav__icon md-icon"></span>
+            Google Workspace
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../resources/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Resources
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Contributing
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            Contributing
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contributing/documentation-guidelines/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Documentation Guidelines
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contributing/code-blocks/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Code Block Features
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contributing/plugin-installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Plugin Installation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/ethanolivertroy/Goog-Sec/edit/main/docs/google-groups-security.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+    
+      
+    
+    <a href="https://github.com/ethanolivertroy/Goog-Sec/raw/main/docs/google-groups-security.md" title="View source of this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"/></svg>
+    </a>
+  
+
+
+<div class="admonition warning">
+<p class="admonition-title">Under Construction</p>
+<p>This page is under construction. Please check back later for comprehensive guidance</p>
+</div>
+<h1 id="google-groups-security-guide">Google Groups Security Guide<a class="headerlink" href="#google-groups-security-guide" title="Permanent link">&para;</a></h1>
+<p>This comprehensive guide provides security professionals and MSPs with detailed strategies for securing Google Groups, focusing on common attack vectors, security configuration, monitoring, and remediation.</p>
+<h2 id="understanding-the-google-groups-security-landscape">Understanding the Google Groups Security Landscape<a class="headerlink" href="#understanding-the-google-groups-security-landscape" title="Permanent link">&para;</a></h2>
+<h3 id="security-challenges-with-google-groups">Security Challenges with Google Groups<a class="headerlink" href="#security-challenges-with-google-groups" title="Permanent link">&para;</a></h3>
+<p>Google Groups presents unique security challenges within Google Workspace:</p>
+<ol>
+<li><strong>Access Control Complexity</strong></li>
+<li>Group-based access to resources across Google services</li>
+<li>Complex permission inheritance and propagation</li>
+<li>Default configurations that may be overly permissive</li>
+<li>
+<p>Potential for unintended information disclosure</p>
+</li>
+<li>
+<p><strong>Administration Challenges</strong></p>
+</li>
+<li>Decentralized group management capabilities</li>
+<li>Self-service group creation and membership in many organizations</li>
+<li>Limited visibility into cross-group permission effects</li>
+<li>
+<p>Potential for shadow groups outside administrator control</p>
+</li>
+<li>
+<p><strong>Attack Surface Considerations</strong></p>
+</li>
+<li>Groups used as vectors for phishing campaigns</li>
+<li>Potential information disclosure through public group content</li>
+<li>Lateral movement opportunities through group membership</li>
+<li>Data exfiltration via group-shared resources</li>
+</ol>
+<h3 id="common-security-misconfigurations">Common Security Misconfigurations<a class="headerlink" href="#common-security-misconfigurations" title="Permanent link">&para;</a></h3>
+<p>Several common misconfigurations create security vulnerabilities:</p>
+<table>
+<thead>
+<tr>
+<th>Misconfiguration</th>
+<th>Description</th>
+<th>Security Impact</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Default Public Settings</strong></td>
+<td>Groups created with overly permissive sharing settings</td>
+<td>Potential sensitive information exposure to unauthorized users</td>
+</tr>
+<tr>
+<td><strong>Unauthenticated Access</strong></td>
+<td>Groups configured to allow access without authentication</td>
+<td>Data exposure to external parties and search engines</td>
+</tr>
+<tr>
+<td><strong>Unrestricted Group Creation</strong></td>
+<td>All users allowed to create groups without oversight</td>
+<td>Proliferation of unmanaged groups with security risks</td>
+</tr>
+<tr>
+<td><strong>Self-Service Membership</strong></td>
+<td>Groups configured to allow users to join without approval</td>
+<td>Unauthorized access to shared resources and information</td>
+</tr>
+<tr>
+<td><strong>Excessive External Sharing</strong></td>
+<td>Groups with inappropriate external sharing capabilities</td>
+<td>Data leakage to external entities</td>
+</tr>
+</tbody>
+</table>
+<h2 id="attack-vectors-and-security-implications">Attack Vectors and Security Implications<a class="headerlink" href="#attack-vectors-and-security-implications" title="Permanent link">&para;</a></h2>
+<h3 id="google-groups-as-a-phishing-vector">Google Groups as a Phishing Vector<a class="headerlink" href="#google-groups-as-a-phishing-vector" title="Permanent link">&para;</a></h3>
+<p>Attackers leverage Google Groups for sophisticated phishing campaigns:</p>
+<ol>
+<li><strong>Trust Exploitation</strong></li>
+<li>Create groups with official-looking names</li>
+<li>Exploit the legitimate google.com domain</li>
+<li>
+<p>Leverage organization's branding in group settings</p>
+</li>
+<li>
+<p><strong>Email Spoofing via Groups</strong></p>
+</li>
+<li>Send emails that appear to come from legitimate Google Groups</li>
+<li>Bypass some anti-phishing controls through groups</li>
+<li>
+<p>Create convincing internal communications that contain malicious content</p>
+</li>
+<li>
+<p><strong>Targeted Distribution</strong></p>
+</li>
+<li>Add specific users to groups for targeted attacks</li>
+<li>Create groups for specific departments to increase relevance</li>
+<li>Use existing group information to craft context-aware attacks</li>
+</ol>
+<p><strong>Sample Attack Scenario:</strong>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>1. Attacker creates &quot;IT-Security-Announcements&quot; group
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>2. Configures group with organizational branding
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>3. Adds target users to the group
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>4. Sends &quot;urgent security update&quot; message with malicious link
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>5. Exploits trust in internal Google Groups communications
+</span></code></pre></div></p>
+<h3 id="reconnaissance-through-public-groups">Reconnaissance Through Public Groups<a class="headerlink" href="#reconnaissance-through-public-groups" title="Permanent link">&para;</a></h3>
+<p>Attackers mine public and improperly secured groups for intelligence:</p>
+<ol>
+<li><strong>Sensitive Information Exposure</strong></li>
+<li>Email addresses and organizational structure</li>
+<li>Internal communications and discussions</li>
+<li>Document links and shared resources</li>
+<li>
+<p>Project details and timelines</p>
+</li>
+<li>
+<p><strong>Technical Information Leakage</strong></p>
+</li>
+<li>System details and configurations</li>
+<li>Internal tool references</li>
+<li>Potential password or credential references</li>
+<li>
+<p>API keys or service information</p>
+</li>
+<li>
+<p><strong>Social Engineering Intelligence</strong></p>
+</li>
+<li>Employee names and roles</li>
+<li>Reporting structures and relationships</li>
+<li>Communication styles and patterns</li>
+<li>Company events and schedules</li>
+</ol>
+<h3 id="group-based-privilege-escalation">Group-Based Privilege Escalation<a class="headerlink" href="#group-based-privilege-escalation" title="Permanent link">&para;</a></h3>
+<p>Attackers exploit Google Groups for privilege escalation:</p>
+<ol>
+<li><strong>Self-Join Vulnerability</strong></li>
+<li>Identify groups with self-service join capabilities</li>
+<li>Join groups with elevated access to resources</li>
+<li>
+<p>Exploit transitive permissions across groups</p>
+</li>
+<li>
+<p><strong>Group Nesting Exploitation</strong></p>
+</li>
+<li>Identify nested group relationships</li>
+<li>Target parent groups for broad access</li>
+<li>
+<p>Exploit complex nested permissions that may be overlooked</p>
+</li>
+<li>
+<p><strong>Group-Based API Access</strong></p>
+</li>
+<li>Identify groups with API or service access</li>
+<li>Target membership in service account groups</li>
+<li>Exploit group-based authorization for APIs</li>
+</ol>
+<h2 id="secure-configuration-framework">Secure Configuration Framework<a class="headerlink" href="#secure-configuration-framework" title="Permanent link">&para;</a></h2>
+<h3 id="essential-security-controls">Essential Security Controls<a class="headerlink" href="#essential-security-controls" title="Permanent link">&para;</a></h3>
+<p>Implement these baseline controls for all Google Groups:</p>
+<ol>
+<li>
+<p><strong>Group Creation Policies</strong>
+   <div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Admin Console &gt; Groups &gt; Groups Settings
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>- Set &quot;Create groups&quot; to &quot;Only users in selected groups can create groups&quot;
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>- Create dedicated group creator groups with appropriate members
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>- Configure &quot;naming conventions&quot; for standardization
+</span></code></pre></div></p>
+</li>
+<li>
+<p><strong>Default Access Settings</strong>
+   <div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>Admin Console &gt; Groups &gt; Groups Settings &gt; Sharing settings
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>- Configure &quot;Default Access Setting&quot; appropriately
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>- Set &quot;External Access&quot; to &quot;Private&quot;
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>- Configure &quot;Who can view conversations&quot; to &quot;Only members&quot;
+</span></code></pre></div></p>
+</li>
+<li>
+<p><strong>Membership Controls</strong>
+   <div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>Admin Console &gt; Groups &gt; Groups Settings
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>- Set &quot;Join the group&quot; to &quot;Only invited users&quot;
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>- Configure &quot;Allow members to invite others&quot; to &quot;Off&quot;
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>- Set &quot;Allow members from outside your organization&quot; based on requirements
+</span></code></pre></div></p>
+</li>
+</ol>
+<h3 id="group-type-specific-security-configuration">Group Type-Specific Security Configuration<a class="headerlink" href="#group-type-specific-security-configuration" title="Permanent link">&para;</a></h3>
+<p>Different group types require specific security approaches:</p>
+<h4 id="1-internal-collaboration-groups">1. Internal Collaboration Groups<a class="headerlink" href="#1-internal-collaboration-groups" title="Permanent link">&para;</a></h4>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>Admin Console &gt; Groups &gt; Manage Group
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>- Configure &quot;Access Type&quot; as &quot;Team&quot;
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>- Set &quot;Who can join&quot; to &quot;Only invited users&quot;
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>- Configure &quot;Who can view conversations&quot; to &quot;All group members&quot;
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>- Set &quot;Who can view membership&quot; to &quot;All group members&quot;
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>- Configure &quot;Who can post&quot; to &quot;All group members&quot;
+</span></code></pre></div>
+<h4 id="2-external-collaboration-groups">2. External Collaboration Groups<a class="headerlink" href="#2-external-collaboration-groups" title="Permanent link">&para;</a></h4>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>Admin Console &gt; Groups &gt; Manage Group
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>- Configure &quot;Access Type&quot; as &quot;Team&quot;
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>- Set explicit membership with careful external additions
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>- Configure &quot;Who can view conversations&quot; to &quot;All group members&quot;
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>- Set &quot;Who can post&quot; to &quot;All group members or invited authors&quot;
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>- Implement moderation for external posts if needed
+</span></code></pre></div>
+<h4 id="3-announcement-groups">3. Announcement Groups<a class="headerlink" href="#3-announcement-groups" title="Permanent link">&para;</a></h4>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>Admin Console &gt; Groups &gt; Manage Group
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>- Configure &quot;Access Type&quot; as &quot;Announcement Only&quot;
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>- Restrict posting capabilities to authorized users
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>- Set &quot;Who can view conversations&quot; based on content sensitivity
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>- Configure &quot;Who can view membership&quot; based on requirements
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>- Set appropriate external access restrictions
+</span></code></pre></div>
+<h4 id="4-security-and-admin-groups">4. Security and Admin Groups<a class="headerlink" href="#4-security-and-admin-groups" title="Permanent link">&para;</a></h4>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>Admin Console &gt; Groups &gt; Manage Group
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>- Configure &quot;Access Type&quot; as &quot;Restricted&quot;
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>- Set &quot;Who can view conversations&quot; to &quot;Group members&quot;
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>- Configure &quot;Who can view membership&quot; to &quot;Group owners and managers&quot;
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>- Apply stricter naming conventions
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>- Implement regular membership reviews
+</span></code></pre></div>
+<h3 id="enhanced-security-configuration">Enhanced Security Configuration<a class="headerlink" href="#enhanced-security-configuration" title="Permanent link">&para;</a></h3>
+<p>Implement these additional controls for sensitive environments:</p>
+<ol>
+<li>
+<p><strong>Content Control Settings</strong>
+   <div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>Admin Console &gt; Groups &gt; Groups Settings
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>- Configure &quot;Message moderation&quot; for sensitive groups
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>- Set appropriate &quot;Attachment sharing&quot; restrictions
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>- Control &quot;External posting&quot; capabilities
+</span></code></pre></div></p>
+</li>
+<li>
+<p><strong>Information Rights Management</strong>
+   <div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>Admin Console &gt; Groups &gt; Groups Settings
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>- Configure appropriate &quot;Sharing outside the group&quot; settings
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>- Set &quot;Content sharing&quot; restrictions
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>- Implement DLP policies for group content
+</span></code></pre></div></p>
+</li>
+<li>
+<p><strong>Advanced Access Controls</strong>
+   <div class="language-text highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>Admin Console &gt; Groups &gt; Groups Settings &gt; Advanced settings
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>- Configure &quot;Subject prefix&quot; for easy identification
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>- Set appropriate &quot;Maximum message size&quot;
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>- Configure &quot;Collaborative inbox&quot; settings
+</span></code></pre></div></p>
+</li>
+</ol>
+<h2 id="security-monitoring-and-remediation">Security Monitoring and Remediation<a class="headerlink" href="#security-monitoring-and-remediation" title="Permanent link">&para;</a></h2>
+<h3 id="group-security-auditing">Group Security Auditing<a class="headerlink" href="#group-security-auditing" title="Permanent link">&para;</a></h3>
+<p>Implement comprehensive auditing procedures:</p>
+<ol>
+<li>
+<p><strong>Group Inventory Management</strong>
+   <div class="language-python highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="c1"># Python script to inventory all Google Groups</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">googleapiclient.discovery</span><span class="w"> </span><span class="kn">import</span> <span class="n">build</span>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">oauth2client.service_account</span><span class="w"> </span><span class="kn">import</span> <span class="n">ServiceAccountCredentials</span>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="k">def</span><span class="w"> </span><span class="nf">inventory_all_groups</span><span class="p">(</span><span class="n">admin_sdk_service</span><span class="p">):</span>
+</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Create comprehensive inventory of all Google Groups&quot;&quot;&quot;</span>
+</span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>    <span class="n">groups</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="__span-11-8"><a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a>    <span class="n">page_token</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span id="__span-11-9"><a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a>    
+</span><span id="__span-11-10"><a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a>    <span class="c1"># Retrieve all groups</span>
+</span><span id="__span-11-11"><a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a>    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+</span><span id="__span-11-12"><a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a>        <span class="n">results</span> <span class="o">=</span> <span class="n">admin_sdk_service</span><span class="o">.</span><span class="n">groups</span><span class="p">()</span><span class="o">.</span><span class="n">list</span><span class="p">(</span>
+</span><span id="__span-11-13"><a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a>            <span class="n">domain</span><span class="o">=</span><span class="s1">&#39;your-domain.com&#39;</span><span class="p">,</span>
+</span><span id="__span-11-14"><a id="__codelineno-11-14" name="__codelineno-11-14" href="#__codelineno-11-14"></a>            <span class="n">pageToken</span><span class="o">=</span><span class="n">page_token</span><span class="p">,</span>
+</span><span id="__span-11-15"><a id="__codelineno-11-15" name="__codelineno-11-15" href="#__codelineno-11-15"></a>            <span class="n">maxResults</span><span class="o">=</span><span class="mi">200</span>
+</span><span id="__span-11-16"><a id="__codelineno-11-16" name="__codelineno-11-16" href="#__codelineno-11-16"></a>        <span class="p">)</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span>
+</span><span id="__span-11-17"><a id="__codelineno-11-17" name="__codelineno-11-17" href="#__codelineno-11-17"></a>        
+</span><span id="__span-11-18"><a id="__codelineno-11-18" name="__codelineno-11-18" href="#__codelineno-11-18"></a>        <span class="n">groups</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">results</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;groups&#39;</span><span class="p">,</span> <span class="p">[]))</span>
+</span><span id="__span-11-19"><a id="__codelineno-11-19" name="__codelineno-11-19" href="#__codelineno-11-19"></a>        
+</span><span id="__span-11-20"><a id="__codelineno-11-20" name="__codelineno-11-20" href="#__codelineno-11-20"></a>        <span class="n">page_token</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;nextPageToken&#39;</span><span class="p">)</span>
+</span><span id="__span-11-21"><a id="__codelineno-11-21" name="__codelineno-11-21" href="#__codelineno-11-21"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">page_token</span><span class="p">:</span>
+</span><span id="__span-11-22"><a id="__codelineno-11-22" name="__codelineno-11-22" href="#__codelineno-11-22"></a>            <span class="k">break</span>
+</span><span id="__span-11-23"><a id="__codelineno-11-23" name="__codelineno-11-23" href="#__codelineno-11-23"></a>    
+</span><span id="__span-11-24"><a id="__codelineno-11-24" name="__codelineno-11-24" href="#__codelineno-11-24"></a>    <span class="c1"># Enrich with additional group information</span>
+</span><span id="__span-11-25"><a id="__codelineno-11-25" name="__codelineno-11-25" href="#__codelineno-11-25"></a>    <span class="n">enriched_groups</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="__span-11-26"><a id="__codelineno-11-26" name="__codelineno-11-26" href="#__codelineno-11-26"></a>    <span class="k">for</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">groups</span><span class="p">:</span>
+</span><span id="__span-11-27"><a id="__codelineno-11-27" name="__codelineno-11-27" href="#__codelineno-11-27"></a>        <span class="n">group_email</span> <span class="o">=</span> <span class="n">group</span><span class="p">[</span><span class="s1">&#39;email&#39;</span><span class="p">]</span>
+</span><span id="__span-11-28"><a id="__codelineno-11-28" name="__codelineno-11-28" href="#__codelineno-11-28"></a>        
+</span><span id="__span-11-29"><a id="__codelineno-11-29" name="__codelineno-11-29" href="#__codelineno-11-29"></a>        <span class="c1"># Get group settings</span>
+</span><span id="__span-11-30"><a id="__codelineno-11-30" name="__codelineno-11-30" href="#__codelineno-11-30"></a>        <span class="k">try</span><span class="p">:</span>
+</span><span id="__span-11-31"><a id="__codelineno-11-31" name="__codelineno-11-31" href="#__codelineno-11-31"></a>            <span class="n">settings</span> <span class="o">=</span> <span class="n">admin_sdk_service</span><span class="o">.</span><span class="n">groups</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+</span><span id="__span-11-32"><a id="__codelineno-11-32" name="__codelineno-11-32" href="#__codelineno-11-32"></a>                <span class="n">groupUniqueId</span><span class="o">=</span><span class="n">group_email</span>
+</span><span id="__span-11-33"><a id="__codelineno-11-33" name="__codelineno-11-33" href="#__codelineno-11-33"></a>            <span class="p">)</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span>
+</span><span id="__span-11-34"><a id="__codelineno-11-34" name="__codelineno-11-34" href="#__codelineno-11-34"></a>            
+</span><span id="__span-11-35"><a id="__codelineno-11-35" name="__codelineno-11-35" href="#__codelineno-11-35"></a>            <span class="c1"># Get group members</span>
+</span><span id="__span-11-36"><a id="__codelineno-11-36" name="__codelineno-11-36" href="#__codelineno-11-36"></a>            <span class="n">members</span> <span class="o">=</span> <span class="n">get_group_members</span><span class="p">(</span><span class="n">admin_sdk_service</span><span class="p">,</span> <span class="n">group_email</span><span class="p">)</span>
+</span><span id="__span-11-37"><a id="__codelineno-11-37" name="__codelineno-11-37" href="#__codelineno-11-37"></a>            
+</span><span id="__span-11-38"><a id="__codelineno-11-38" name="__codelineno-11-38" href="#__codelineno-11-38"></a>            <span class="n">enriched_groups</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+</span><span id="__span-11-39"><a id="__codelineno-11-39" name="__codelineno-11-39" href="#__codelineno-11-39"></a>                <span class="s1">&#39;email&#39;</span><span class="p">:</span> <span class="n">group_email</span><span class="p">,</span>
+</span><span id="__span-11-40"><a id="__codelineno-11-40" name="__codelineno-11-40" href="#__codelineno-11-40"></a>                <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">group</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">),</span>
+</span><span id="__span-11-41"><a id="__codelineno-11-41" name="__codelineno-11-41" href="#__codelineno-11-41"></a>                <span class="s1">&#39;description&#39;</span><span class="p">:</span> <span class="n">group</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;description&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">),</span>
+</span><span id="__span-11-42"><a id="__codelineno-11-42" name="__codelineno-11-42" href="#__codelineno-11-42"></a>                <span class="s1">&#39;settings&#39;</span><span class="p">:</span> <span class="n">settings</span><span class="p">,</span>
+</span><span id="__span-11-43"><a id="__codelineno-11-43" name="__codelineno-11-43" href="#__codelineno-11-43"></a>                <span class="s1">&#39;members&#39;</span><span class="p">:</span> <span class="n">members</span><span class="p">,</span>
+</span><span id="__span-11-44"><a id="__codelineno-11-44" name="__codelineno-11-44" href="#__codelineno-11-44"></a>                <span class="s1">&#39;member_count&#39;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">members</span><span class="p">)</span>
+</span><span id="__span-11-45"><a id="__codelineno-11-45" name="__codelineno-11-45" href="#__codelineno-11-45"></a>            <span class="p">})</span>
+</span><span id="__span-11-46"><a id="__codelineno-11-46" name="__codelineno-11-46" href="#__codelineno-11-46"></a>        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+</span><span id="__span-11-47"><a id="__codelineno-11-47" name="__codelineno-11-47" href="#__codelineno-11-47"></a>            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error processing group </span><span class="si">{</span><span class="n">group_email</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span id="__span-11-48"><a id="__codelineno-11-48" name="__codelineno-11-48" href="#__codelineno-11-48"></a>    
+</span><span id="__span-11-49"><a id="__codelineno-11-49" name="__codelineno-11-49" href="#__codelineno-11-49"></a>    <span class="k">return</span> <span class="n">enriched_groups</span>
+</span><span id="__span-11-50"><a id="__codelineno-11-50" name="__codelineno-11-50" href="#__codelineno-11-50"></a>
+</span><span id="__span-11-51"><a id="__codelineno-11-51" name="__codelineno-11-51" href="#__codelineno-11-51"></a><span class="k">def</span><span class="w"> </span><span class="nf">get_group_members</span><span class="p">(</span><span class="n">admin_sdk_service</span><span class="p">,</span> <span class="n">group_email</span><span class="p">):</span>
+</span><span id="__span-11-52"><a id="__codelineno-11-52" name="__codelineno-11-52" href="#__codelineno-11-52"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Get members for a specific group&quot;&quot;&quot;</span>
+</span><span id="__span-11-53"><a id="__codelineno-11-53" name="__codelineno-11-53" href="#__codelineno-11-53"></a>    <span class="n">members</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="__span-11-54"><a id="__codelineno-11-54" name="__codelineno-11-54" href="#__codelineno-11-54"></a>    <span class="n">page_token</span> <span class="o">=</span> <span class="kc">None</span>
+</span><span id="__span-11-55"><a id="__codelineno-11-55" name="__codelineno-11-55" href="#__codelineno-11-55"></a>    
+</span><span id="__span-11-56"><a id="__codelineno-11-56" name="__codelineno-11-56" href="#__codelineno-11-56"></a>    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+</span><span id="__span-11-57"><a id="__codelineno-11-57" name="__codelineno-11-57" href="#__codelineno-11-57"></a>        <span class="n">results</span> <span class="o">=</span> <span class="n">admin_sdk_service</span><span class="o">.</span><span class="n">members</span><span class="p">()</span><span class="o">.</span><span class="n">list</span><span class="p">(</span>
+</span><span id="__span-11-58"><a id="__codelineno-11-58" name="__codelineno-11-58" href="#__codelineno-11-58"></a>            <span class="n">groupKey</span><span class="o">=</span><span class="n">group_email</span><span class="p">,</span>
+</span><span id="__span-11-59"><a id="__codelineno-11-59" name="__codelineno-11-59" href="#__codelineno-11-59"></a>            <span class="n">pageToken</span><span class="o">=</span><span class="n">page_token</span><span class="p">,</span>
+</span><span id="__span-11-60"><a id="__codelineno-11-60" name="__codelineno-11-60" href="#__codelineno-11-60"></a>            <span class="n">maxResults</span><span class="o">=</span><span class="mi">200</span>
+</span><span id="__span-11-61"><a id="__codelineno-11-61" name="__codelineno-11-61" href="#__codelineno-11-61"></a>        <span class="p">)</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span>
+</span><span id="__span-11-62"><a id="__codelineno-11-62" name="__codelineno-11-62" href="#__codelineno-11-62"></a>        
+</span><span id="__span-11-63"><a id="__codelineno-11-63" name="__codelineno-11-63" href="#__codelineno-11-63"></a>        <span class="n">members</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">results</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;members&#39;</span><span class="p">,</span> <span class="p">[]))</span>
+</span><span id="__span-11-64"><a id="__codelineno-11-64" name="__codelineno-11-64" href="#__codelineno-11-64"></a>        
+</span><span id="__span-11-65"><a id="__codelineno-11-65" name="__codelineno-11-65" href="#__codelineno-11-65"></a>        <span class="n">page_token</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;nextPageToken&#39;</span><span class="p">)</span>
+</span><span id="__span-11-66"><a id="__codelineno-11-66" name="__codelineno-11-66" href="#__codelineno-11-66"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">page_token</span><span class="p">:</span>
+</span><span id="__span-11-67"><a id="__codelineno-11-67" name="__codelineno-11-67" href="#__codelineno-11-67"></a>            <span class="k">break</span>
+</span><span id="__span-11-68"><a id="__codelineno-11-68" name="__codelineno-11-68" href="#__codelineno-11-68"></a>    
+</span><span id="__span-11-69"><a id="__codelineno-11-69" name="__codelineno-11-69" href="#__codelineno-11-69"></a>    <span class="k">return</span> <span class="n">members</span>
+</span></code></pre></div></p>
+</li>
+<li>
+<p><strong>Security Configuration Assessment</strong>
+   <div class="language-python highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="c1"># Python script to assess group security configurations</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="k">def</span><span class="w"> </span><span class="nf">assess_group_security</span><span class="p">(</span><span class="n">groups</span><span class="p">):</span>
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Evaluate security posture of Google Groups&quot;&quot;&quot;</span>
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>    <span class="n">security_issues</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>    
+</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>    <span class="k">for</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">groups</span><span class="p">:</span>
+</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>        <span class="c1"># Check for public access</span>
+</span><span id="__span-12-8"><a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>        <span class="k">if</span> <span class="s1">&#39;whoCanViewGroup&#39;</span> <span class="ow">in</span> <span class="n">group</span><span class="p">[</span><span class="s1">&#39;settings&#39;</span><span class="p">]</span> <span class="ow">and</span> <span class="n">group</span><span class="p">[</span><span class="s1">&#39;settings&#39;</span><span class="p">][</span><span class="s1">&#39;whoCanViewGroup&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;ANYONE_CAN_VIEW&#39;</span><span class="p">:</span>
+</span><span id="__span-12-9"><a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a>            <span class="n">security_issues</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+</span><span id="__span-12-10"><a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a>                <span class="s1">&#39;group&#39;</span><span class="p">:</span> <span class="n">group</span><span class="p">[</span><span class="s1">&#39;email&#39;</span><span class="p">],</span>
+</span><span id="__span-12-11"><a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a>                <span class="s1">&#39;issue&#39;</span><span class="p">:</span> <span class="s1">&#39;public_access&#39;</span><span class="p">,</span>
+</span><span id="__span-12-12"><a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a>                <span class="s1">&#39;description&#39;</span><span class="p">:</span> <span class="s1">&#39;Group viewable by anyone&#39;</span><span class="p">,</span>
+</span><span id="__span-12-13"><a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a>                <span class="s1">&#39;severity&#39;</span><span class="p">:</span> <span class="s1">&#39;high&#39;</span>
+</span><span id="__span-12-14"><a id="__codelineno-12-14" name="__codelineno-12-14" href="#__codelineno-12-14"></a>            <span class="p">})</span>
+</span><span id="__span-12-15"><a id="__codelineno-12-15" name="__codelineno-12-15" href="#__codelineno-12-15"></a>        
+</span><span id="__span-12-16"><a id="__codelineno-12-16" name="__codelineno-12-16" href="#__codelineno-12-16"></a>        <span class="c1"># Check for external membership</span>
+</span><span id="__span-12-17"><a id="__codelineno-12-17" name="__codelineno-12-17" href="#__codelineno-12-17"></a>        <span class="k">if</span> <span class="s1">&#39;allowExternalMembers&#39;</span> <span class="ow">in</span> <span class="n">group</span><span class="p">[</span><span class="s1">&#39;settings&#39;</span><span class="p">]</span> <span class="ow">and</span> <span class="n">group</span><span class="p">[</span><span class="s1">&#39;settings&#39;</span><span class="p">][</span><span class="s1">&#39;allowExternalMembers&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;true&#39;</span><span class="p">:</span>
+</span><span id="__span-12-18"><a id="__codelineno-12-18" name="__codelineno-12-18" href="#__codelineno-12-18"></a>            <span class="n">security_issues</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+</span><span id="__span-12-19"><a id="__codelineno-12-19" name="__codelineno-12-19" href="#__codelineno-12-19"></a>                <span class="s1">&#39;group&#39;</span><span class="p">:</span> <span class="n">group</span><span class="p">[</span><span class="s1">&#39;email&#39;</span><span class="p">],</span>
+</span><span id="__span-12-20"><a id="__codelineno-12-20" name="__codelineno-12-20" href="#__codelineno-12-20"></a>                <span class="s1">&#39;issue&#39;</span><span class="p">:</span> <span class="s1">&#39;external_members_allowed&#39;</span><span class="p">,</span>
+</span><span id="__span-12-21"><a id="__codelineno-12-21" name="__codelineno-12-21" href="#__codelineno-12-21"></a>                <span class="s1">&#39;description&#39;</span><span class="p">:</span> <span class="s1">&#39;Group allows external members&#39;</span><span class="p">,</span>
+</span><span id="__span-12-22"><a id="__codelineno-12-22" name="__codelineno-12-22" href="#__codelineno-12-22"></a>                <span class="s1">&#39;severity&#39;</span><span class="p">:</span> <span class="s1">&#39;medium&#39;</span>
+</span><span id="__span-12-23"><a id="__codelineno-12-23" name="__codelineno-12-23" href="#__codelineno-12-23"></a>            <span class="p">})</span>
+</span><span id="__span-12-24"><a id="__codelineno-12-24" name="__codelineno-12-24" href="#__codelineno-12-24"></a>        
+</span><span id="__span-12-25"><a id="__codelineno-12-25" name="__codelineno-12-25" href="#__codelineno-12-25"></a>        <span class="c1"># Check for self-service joining</span>
+</span><span id="__span-12-26"><a id="__codelineno-12-26" name="__codelineno-12-26" href="#__codelineno-12-26"></a>        <span class="k">if</span> <span class="s1">&#39;whoCanJoin&#39;</span> <span class="ow">in</span> <span class="n">group</span><span class="p">[</span><span class="s1">&#39;settings&#39;</span><span class="p">]</span> <span class="ow">and</span> <span class="n">group</span><span class="p">[</span><span class="s1">&#39;settings&#39;</span><span class="p">][</span><span class="s1">&#39;whoCanJoin&#39;</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;ALL_IN_DOMAIN_CAN_JOIN&#39;</span><span class="p">,</span> <span class="s1">&#39;ANYONE_CAN_JOIN&#39;</span><span class="p">]:</span>
+</span><span id="__span-12-27"><a id="__codelineno-12-27" name="__codelineno-12-27" href="#__codelineno-12-27"></a>            <span class="n">security_issues</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+</span><span id="__span-12-28"><a id="__codelineno-12-28" name="__codelineno-12-28" href="#__codelineno-12-28"></a>                <span class="s1">&#39;group&#39;</span><span class="p">:</span> <span class="n">group</span><span class="p">[</span><span class="s1">&#39;email&#39;</span><span class="p">],</span>
+</span><span id="__span-12-29"><a id="__codelineno-12-29" name="__codelineno-12-29" href="#__codelineno-12-29"></a>                <span class="s1">&#39;issue&#39;</span><span class="p">:</span> <span class="s1">&#39;self_service_joining&#39;</span><span class="p">,</span>
+</span><span id="__span-12-30"><a id="__codelineno-12-30" name="__codelineno-12-30" href="#__codelineno-12-30"></a>                <span class="s1">&#39;description&#39;</span><span class="p">:</span> <span class="s1">&#39;Users can join without approval&#39;</span><span class="p">,</span>
+</span><span id="__span-12-31"><a id="__codelineno-12-31" name="__codelineno-12-31" href="#__codelineno-12-31"></a>                <span class="s1">&#39;severity&#39;</span><span class="p">:</span> <span class="s1">&#39;medium&#39;</span>
+</span><span id="__span-12-32"><a id="__codelineno-12-32" name="__codelineno-12-32" href="#__codelineno-12-32"></a>            <span class="p">})</span>
+</span><span id="__span-12-33"><a id="__codelineno-12-33" name="__codelineno-12-33" href="#__codelineno-12-33"></a>        
+</span><span id="__span-12-34"><a id="__codelineno-12-34" name="__codelineno-12-34" href="#__codelineno-12-34"></a>        <span class="c1"># Check for external message posting</span>
+</span><span id="__span-12-35"><a id="__codelineno-12-35" name="__codelineno-12-35" href="#__codelineno-12-35"></a>        <span class="k">if</span> <span class="s1">&#39;whoCanPostMessage&#39;</span> <span class="ow">in</span> <span class="n">group</span><span class="p">[</span><span class="s1">&#39;settings&#39;</span><span class="p">]</span> <span class="ow">and</span> <span class="n">group</span><span class="p">[</span><span class="s1">&#39;settings&#39;</span><span class="p">][</span><span class="s1">&#39;whoCanPostMessage&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;ANYONE_CAN_POST&#39;</span><span class="p">:</span>
+</span><span id="__span-12-36"><a id="__codelineno-12-36" name="__codelineno-12-36" href="#__codelineno-12-36"></a>            <span class="n">security_issues</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+</span><span id="__span-12-37"><a id="__codelineno-12-37" name="__codelineno-12-37" href="#__codelineno-12-37"></a>                <span class="s1">&#39;group&#39;</span><span class="p">:</span> <span class="n">group</span><span class="p">[</span><span class="s1">&#39;email&#39;</span><span class="p">],</span>
+</span><span id="__span-12-38"><a id="__codelineno-12-38" name="__codelineno-12-38" href="#__codelineno-12-38"></a>                <span class="s1">&#39;issue&#39;</span><span class="p">:</span> <span class="s1">&#39;anyone_can_post&#39;</span><span class="p">,</span>
+</span><span id="__span-12-39"><a id="__codelineno-12-39" name="__codelineno-12-39" href="#__codelineno-12-39"></a>                <span class="s1">&#39;description&#39;</span><span class="p">:</span> <span class="s1">&#39;Anyone can post messages&#39;</span><span class="p">,</span>
+</span><span id="__span-12-40"><a id="__codelineno-12-40" name="__codelineno-12-40" href="#__codelineno-12-40"></a>                <span class="s1">&#39;severity&#39;</span><span class="p">:</span> <span class="s1">&#39;medium&#39;</span>
+</span><span id="__span-12-41"><a id="__codelineno-12-41" name="__codelineno-12-41" href="#__codelineno-12-41"></a>            <span class="p">})</span>
+</span><span id="__span-12-42"><a id="__codelineno-12-42" name="__codelineno-12-42" href="#__codelineno-12-42"></a>        
+</span><span id="__span-12-43"><a id="__codelineno-12-43" name="__codelineno-12-43" href="#__codelineno-12-43"></a>        <span class="c1"># Check for sensitive group patterns</span>
+</span><span id="__span-12-44"><a id="__codelineno-12-44" name="__codelineno-12-44" href="#__codelineno-12-44"></a>        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">term</span> <span class="ow">in</span> <span class="n">group</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">or</span> <span class="n">term</span> <span class="ow">in</span> <span class="n">group</span><span class="p">[</span><span class="s1">&#39;email&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> 
+</span><span id="__span-12-45"><a id="__codelineno-12-45" name="__codelineno-12-45" href="#__codelineno-12-45"></a>               <span class="k">for</span> <span class="n">term</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;security&#39;</span><span class="p">,</span> <span class="s1">&#39;admin&#39;</span><span class="p">,</span> <span class="s1">&#39;finance&#39;</span><span class="p">,</span> <span class="s1">&#39;hr&#39;</span><span class="p">,</span> <span class="s1">&#39;exec&#39;</span><span class="p">]):</span>
+</span><span id="__span-12-46"><a id="__codelineno-12-46" name="__codelineno-12-46" href="#__codelineno-12-46"></a>            <span class="k">if</span> <span class="s1">&#39;whoCanViewMembership&#39;</span> <span class="ow">in</span> <span class="n">group</span><span class="p">[</span><span class="s1">&#39;settings&#39;</span><span class="p">]</span> <span class="ow">and</span> <span class="n">group</span><span class="p">[</span><span class="s1">&#39;settings&#39;</span><span class="p">][</span><span class="s1">&#39;whoCanViewMembership&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;ALL_MANAGERS_CAN_VIEW&#39;</span><span class="p">:</span>
+</span><span id="__span-12-47"><a id="__codelineno-12-47" name="__codelineno-12-47" href="#__codelineno-12-47"></a>                <span class="n">security_issues</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+</span><span id="__span-12-48"><a id="__codelineno-12-48" name="__codelineno-12-48" href="#__codelineno-12-48"></a>                    <span class="s1">&#39;group&#39;</span><span class="p">:</span> <span class="n">group</span><span class="p">[</span><span class="s1">&#39;email&#39;</span><span class="p">],</span>
+</span><span id="__span-12-49"><a id="__codelineno-12-49" name="__codelineno-12-49" href="#__codelineno-12-49"></a>                    <span class="s1">&#39;issue&#39;</span><span class="p">:</span> <span class="s1">&#39;sensitive_group_exposure&#39;</span><span class="p">,</span>
+</span><span id="__span-12-50"><a id="__codelineno-12-50" name="__codelineno-12-50" href="#__codelineno-12-50"></a>                    <span class="s1">&#39;description&#39;</span><span class="p">:</span> <span class="s1">&#39;Sensitive group with exposed membership&#39;</span><span class="p">,</span>
+</span><span id="__span-12-51"><a id="__codelineno-12-51" name="__codelineno-12-51" href="#__codelineno-12-51"></a>                    <span class="s1">&#39;severity&#39;</span><span class="p">:</span> <span class="s1">&#39;high&#39;</span>
+</span><span id="__span-12-52"><a id="__codelineno-12-52" name="__codelineno-12-52" href="#__codelineno-12-52"></a>                <span class="p">})</span>
+</span><span id="__span-12-53"><a id="__codelineno-12-53" name="__codelineno-12-53" href="#__codelineno-12-53"></a>    
+</span><span id="__span-12-54"><a id="__codelineno-12-54" name="__codelineno-12-54" href="#__codelineno-12-54"></a>    <span class="k">return</span> <span class="n">security_issues</span>
+</span></code></pre></div></p>
+</li>
+<li>
+<p><strong>Group Activity Monitoring</strong>
+   <div class="language-python highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="c1"># Python script to monitor Google Groups activity</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="k">def</span><span class="w"> </span><span class="nf">monitor_groups_activity</span><span class="p">(</span><span class="n">reports_service</span><span class="p">):</span>
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Monitor for suspicious Google Groups activities&quot;&quot;&quot;</span>
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>    <span class="c1"># Get groups activity events</span>
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>    <span class="n">group_events</span> <span class="o">=</span> <span class="n">reports_service</span><span class="o">.</span><span class="n">activities</span><span class="p">()</span><span class="o">.</span><span class="n">list</span><span class="p">(</span>
+</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>        <span class="n">userKey</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">,</span>
+</span><span id="__span-13-7"><a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a>        <span class="n">applicationName</span><span class="o">=</span><span class="s1">&#39;groups&#39;</span><span class="p">,</span>
+</span><span id="__span-13-8"><a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a>        <span class="n">eventName</span><span class="o">=</span><span class="s1">&#39;ADD_TO_GROUP,CREATE_GROUP,CHANGE_GROUP_SETTING&#39;</span><span class="p">,</span>
+</span><span id="__span-13-9"><a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a>        <span class="n">maxResults</span><span class="o">=</span><span class="mi">1000</span>
+</span><span id="__span-13-10"><a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a>    <span class="p">)</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span>
+</span><span id="__span-13-11"><a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a>    
+</span><span id="__span-13-12"><a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a>    <span class="n">suspicious_activities</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="__span-13-13"><a id="__codelineno-13-13" name="__codelineno-13-13" href="#__codelineno-13-13"></a>    
+</span><span id="__span-13-14"><a id="__codelineno-13-14" name="__codelineno-13-14" href="#__codelineno-13-14"></a>    <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">group_events</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;items&#39;</span><span class="p">,</span> <span class="p">[]):</span>
+</span><span id="__span-13-15"><a id="__codelineno-13-15" name="__codelineno-13-15" href="#__codelineno-13-15"></a>        <span class="c1"># Extract event details</span>
+</span><span id="__span-13-16"><a id="__codelineno-13-16" name="__codelineno-13-16" href="#__codelineno-13-16"></a>        <span class="n">event_name</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;events&#39;</span><span class="p">,</span> <span class="p">[{}])[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span>
+</span><span id="__span-13-17"><a id="__codelineno-13-17" name="__codelineno-13-17" href="#__codelineno-13-17"></a>        <span class="n">parameters</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;events&#39;</span><span class="p">,</span> <span class="p">[{}])[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;parameters&#39;</span><span class="p">,</span> <span class="p">[])</span>
+</span><span id="__span-13-18"><a id="__codelineno-13-18" name="__codelineno-13-18" href="#__codelineno-13-18"></a>        
+</span><span id="__span-13-19"><a id="__codelineno-13-19" name="__codelineno-13-19" href="#__codelineno-13-19"></a>        <span class="c1"># Check for suspicious group creation</span>
+</span><span id="__span-13-20"><a id="__codelineno-13-20" name="__codelineno-13-20" href="#__codelineno-13-20"></a>        <span class="k">if</span> <span class="n">event_name</span> <span class="o">==</span> <span class="s1">&#39;CREATE_GROUP&#39;</span><span class="p">:</span>
+</span><span id="__span-13-21"><a id="__codelineno-13-21" name="__codelineno-13-21" href="#__codelineno-13-21"></a>            <span class="n">group_name</span> <span class="o">=</span> <span class="nb">next</span><span class="p">((</span><span class="n">p</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">parameters</span> 
+</span><span id="__span-13-22"><a id="__codelineno-13-22" name="__codelineno-13-22" href="#__codelineno-13-22"></a>                              <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;group_name&#39;</span><span class="p">),</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+</span><span id="__span-13-23"><a id="__codelineno-13-23" name="__codelineno-13-23" href="#__codelineno-13-23"></a>            
+</span><span id="__span-13-24"><a id="__codelineno-13-24" name="__codelineno-13-24" href="#__codelineno-13-24"></a>            <span class="c1"># Check for suspicious naming patterns</span>
+</span><span id="__span-13-25"><a id="__codelineno-13-25" name="__codelineno-13-25" href="#__codelineno-13-25"></a>            <span class="n">suspicious_terms</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;admin&#39;</span><span class="p">,</span> <span class="s1">&#39;security&#39;</span><span class="p">,</span> <span class="s1">&#39;finance&#39;</span><span class="p">,</span> <span class="s1">&#39;payroll&#39;</span><span class="p">,</span> <span class="s1">&#39;hr&#39;</span><span class="p">,</span> <span class="s1">&#39;exec&#39;</span><span class="p">]</span>
+</span><span id="__span-13-26"><a id="__codelineno-13-26" name="__codelineno-13-26" href="#__codelineno-13-26"></a>            <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">term</span> <span class="ow">in</span> <span class="n">group_name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">term</span> <span class="ow">in</span> <span class="n">suspicious_terms</span><span class="p">):</span>
+</span><span id="__span-13-27"><a id="__codelineno-13-27" name="__codelineno-13-27" href="#__codelineno-13-27"></a>                <span class="n">suspicious_activities</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+</span><span id="__span-13-28"><a id="__codelineno-13-28" name="__codelineno-13-28" href="#__codelineno-13-28"></a>                    <span class="s1">&#39;user&#39;</span><span class="p">:</span> <span class="n">event</span><span class="p">[</span><span class="s1">&#39;actor&#39;</span><span class="p">][</span><span class="s1">&#39;email&#39;</span><span class="p">],</span>
+</span><span id="__span-13-29"><a id="__codelineno-13-29" name="__codelineno-13-29" href="#__codelineno-13-29"></a>                    <span class="s1">&#39;activity&#39;</span><span class="p">:</span> <span class="s1">&#39;suspicious_group_creation&#39;</span><span class="p">,</span>
+</span><span id="__span-13-30"><a id="__codelineno-13-30" name="__codelineno-13-30" href="#__codelineno-13-30"></a>                    <span class="s1">&#39;details&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;Created potentially sensitive group: </span><span class="si">{</span><span class="n">group_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+</span><span id="__span-13-31"><a id="__codelineno-13-31" name="__codelineno-13-31" href="#__codelineno-13-31"></a>                    <span class="s1">&#39;timestamp&#39;</span><span class="p">:</span> <span class="n">event</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;time&#39;</span><span class="p">)</span>
+</span><span id="__span-13-32"><a id="__codelineno-13-32" name="__codelineno-13-32" href="#__codelineno-13-32"></a>                <span class="p">})</span>
+</span><span id="__span-13-33"><a id="__codelineno-13-33" name="__codelineno-13-33" href="#__codelineno-13-33"></a>        
+</span><span id="__span-13-34"><a id="__codelineno-13-34" name="__codelineno-13-34" href="#__codelineno-13-34"></a>        <span class="c1"># Check for suspicious setting changes</span>
+</span><span id="__span-13-35"><a id="__codelineno-13-35" name="__codelineno-13-35" href="#__codelineno-13-35"></a>        <span class="k">if</span> <span class="n">event_name</span> <span class="o">==</span> <span class="s1">&#39;CHANGE_GROUP_SETTING&#39;</span><span class="p">:</span>
+</span><span id="__span-13-36"><a id="__codelineno-13-36" name="__codelineno-13-36" href="#__codelineno-13-36"></a>            <span class="n">group_email</span> <span class="o">=</span> <span class="nb">next</span><span class="p">((</span><span class="n">p</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">parameters</span> 
+</span><span id="__span-13-37"><a id="__codelineno-13-37" name="__codelineno-13-37" href="#__codelineno-13-37"></a>                               <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;group_email&#39;</span><span class="p">),</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+</span><span id="__span-13-38"><a id="__codelineno-13-38" name="__codelineno-13-38" href="#__codelineno-13-38"></a>            <span class="n">setting_name</span> <span class="o">=</span> <span class="nb">next</span><span class="p">((</span><span class="n">p</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">parameters</span> 
+</span><span id="__span-13-39"><a id="__codelineno-13-39" name="__codelineno-13-39" href="#__codelineno-13-39"></a>                                <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;setting_name&#39;</span><span class="p">),</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+</span><span id="__span-13-40"><a id="__codelineno-13-40" name="__codelineno-13-40" href="#__codelineno-13-40"></a>            <span class="n">new_value</span> <span class="o">=</span> <span class="nb">next</span><span class="p">((</span><span class="n">p</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">parameters</span> 
+</span><span id="__span-13-41"><a id="__codelineno-13-41" name="__codelineno-13-41" href="#__codelineno-13-41"></a>                             <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;new_value&#39;</span><span class="p">),</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+</span><span id="__span-13-42"><a id="__codelineno-13-42" name="__codelineno-13-42" href="#__codelineno-13-42"></a>            
+</span><span id="__span-13-43"><a id="__codelineno-13-43" name="__codelineno-13-43" href="#__codelineno-13-43"></a>            <span class="c1"># Check for security-weakening changes</span>
+</span><span id="__span-13-44"><a id="__codelineno-13-44" name="__codelineno-13-44" href="#__codelineno-13-44"></a>            <span class="k">if</span> <span class="n">is_security_weakening_change</span><span class="p">(</span><span class="n">setting_name</span><span class="p">,</span> <span class="n">new_value</span><span class="p">):</span>
+</span><span id="__span-13-45"><a id="__codelineno-13-45" name="__codelineno-13-45" href="#__codelineno-13-45"></a>                <span class="n">suspicious_activities</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+</span><span id="__span-13-46"><a id="__codelineno-13-46" name="__codelineno-13-46" href="#__codelineno-13-46"></a>                    <span class="s1">&#39;user&#39;</span><span class="p">:</span> <span class="n">event</span><span class="p">[</span><span class="s1">&#39;actor&#39;</span><span class="p">][</span><span class="s1">&#39;email&#39;</span><span class="p">],</span>
+</span><span id="__span-13-47"><a id="__codelineno-13-47" name="__codelineno-13-47" href="#__codelineno-13-47"></a>                    <span class="s1">&#39;activity&#39;</span><span class="p">:</span> <span class="s1">&#39;security_weakening_change&#39;</span><span class="p">,</span>
+</span><span id="__span-13-48"><a id="__codelineno-13-48" name="__codelineno-13-48" href="#__codelineno-13-48"></a>                    <span class="s1">&#39;details&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;Changed </span><span class="si">{</span><span class="n">setting_name</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="n">new_value</span><span class="si">}</span><span class="s2"> for group </span><span class="si">{</span><span class="n">group_email</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+</span><span id="__span-13-49"><a id="__codelineno-13-49" name="__codelineno-13-49" href="#__codelineno-13-49"></a>                    <span class="s1">&#39;timestamp&#39;</span><span class="p">:</span> <span class="n">event</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;time&#39;</span><span class="p">)</span>
+</span><span id="__span-13-50"><a id="__codelineno-13-50" name="__codelineno-13-50" href="#__codelineno-13-50"></a>                <span class="p">})</span>
+</span><span id="__span-13-51"><a id="__codelineno-13-51" name="__codelineno-13-51" href="#__codelineno-13-51"></a>    
+</span><span id="__span-13-52"><a id="__codelineno-13-52" name="__codelineno-13-52" href="#__codelineno-13-52"></a>    <span class="k">return</span> <span class="n">suspicious_activities</span>
+</span><span id="__span-13-53"><a id="__codelineno-13-53" name="__codelineno-13-53" href="#__codelineno-13-53"></a>
+</span><span id="__span-13-54"><a id="__codelineno-13-54" name="__codelineno-13-54" href="#__codelineno-13-54"></a><span class="k">def</span><span class="w"> </span><span class="nf">is_security_weakening_change</span><span class="p">(</span><span class="n">setting_name</span><span class="p">,</span> <span class="n">new_value</span><span class="p">):</span>
+</span><span id="__span-13-55"><a id="__codelineno-13-55" name="__codelineno-13-55" href="#__codelineno-13-55"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Determine if a setting change weakens security&quot;&quot;&quot;</span>
+</span><span id="__span-13-56"><a id="__codelineno-13-56" name="__codelineno-13-56" href="#__codelineno-13-56"></a>    <span class="n">weakening_changes</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="__span-13-57"><a id="__codelineno-13-57" name="__codelineno-13-57" href="#__codelineno-13-57"></a>        <span class="s1">&#39;WHO_CAN_JOIN&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;ALL_IN_DOMAIN_CAN_JOIN&#39;</span><span class="p">,</span> <span class="s1">&#39;ANYONE_CAN_JOIN&#39;</span><span class="p">],</span>
+</span><span id="__span-13-58"><a id="__codelineno-13-58" name="__codelineno-13-58" href="#__codelineno-13-58"></a>        <span class="s1">&#39;WHO_CAN_VIEW_GROUP&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;ALL_IN_DOMAIN_CAN_VIEW&#39;</span><span class="p">,</span> <span class="s1">&#39;ANYONE_CAN_VIEW&#39;</span><span class="p">],</span>
+</span><span id="__span-13-59"><a id="__codelineno-13-59" name="__codelineno-13-59" href="#__codelineno-13-59"></a>        <span class="s1">&#39;WHO_CAN_VIEW_MEMBERSHIP&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;ALL_IN_DOMAIN_CAN_VIEW&#39;</span><span class="p">,</span> <span class="s1">&#39;ANYONE_CAN_VIEW&#39;</span><span class="p">],</span>
+</span><span id="__span-13-60"><a id="__codelineno-13-60" name="__codelineno-13-60" href="#__codelineno-13-60"></a>        <span class="s1">&#39;WHO_CAN_POST_MESSAGE&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;ALL_IN_DOMAIN_CAN_POST&#39;</span><span class="p">,</span> <span class="s1">&#39;ANYONE_CAN_POST&#39;</span><span class="p">],</span>
+</span><span id="__span-13-61"><a id="__codelineno-13-61" name="__codelineno-13-61" href="#__codelineno-13-61"></a>        <span class="s1">&#39;ALLOW_EXTERNAL_MEMBERS&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;true&#39;</span><span class="p">],</span>
+</span><span id="__span-13-62"><a id="__codelineno-13-62" name="__codelineno-13-62" href="#__codelineno-13-62"></a>        <span class="s1">&#39;ALLOW_WEB_POSTING&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;true&#39;</span><span class="p">],</span>
+</span><span id="__span-13-63"><a id="__codelineno-13-63" name="__codelineno-13-63" href="#__codelineno-13-63"></a>        <span class="s1">&#39;IS_ARCHIVED&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;false&#39;</span><span class="p">]</span>
+</span><span id="__span-13-64"><a id="__codelineno-13-64" name="__codelineno-13-64" href="#__codelineno-13-64"></a>    <span class="p">}</span>
+</span><span id="__span-13-65"><a id="__codelineno-13-65" name="__codelineno-13-65" href="#__codelineno-13-65"></a>    
+</span><span id="__span-13-66"><a id="__codelineno-13-66" name="__codelineno-13-66" href="#__codelineno-13-66"></a>    <span class="k">return</span> <span class="n">setting_name</span> <span class="ow">in</span> <span class="n">weakening_changes</span> <span class="ow">and</span> <span class="n">new_value</span> <span class="ow">in</span> <span class="n">weakening_changes</span><span class="p">[</span><span class="n">setting_name</span><span class="p">]</span>
+</span></code></pre></div></p>
+</li>
+</ol>
+<h3 id="remediation-procedures">Remediation Procedures<a class="headerlink" href="#remediation-procedures" title="Permanent link">&para;</a></h3>
+<p>Implement structured remediation for common security issues:</p>
+<h4 id="1-excessive-public-access-remediation">1. Excessive Public Access Remediation<a class="headerlink" href="#1-excessive-public-access-remediation" title="Permanent link">&para;</a></h4>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>Admin Console &gt; Groups &gt; Select group &gt; Access Settings
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>- Change &quot;Access Type&quot; to appropriate level
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>- Set &quot;Who can view conversations&quot; to &quot;Group members&quot;
+</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>- Configure &quot;Who can view members&quot; to &quot;Group members&quot;
+</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>- Apply consistent settings to similar groups
+</span></code></pre></div>
+<h4 id="2-self-service-group-joining-remediation">2. Self-Service Group Joining Remediation<a class="headerlink" href="#2-self-service-group-joining-remediation" title="Permanent link">&para;</a></h4>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>Admin Console &gt; Groups &gt; Select group &gt; Membership Settings
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>- Set &quot;Who can join the group&quot; to &quot;Only invited users&quot;
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>- Review current membership for unauthorized access
+</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>- Configure appropriate management settings
+</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>- Consider migration to more secure group if needed
+</span></code></pre></div>
+<h4 id="3-unauthorized-external-access-remediation">3. Unauthorized External Access Remediation<a class="headerlink" href="#3-unauthorized-external-access-remediation" title="Permanent link">&para;</a></h4>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>Admin Console &gt; Groups &gt; Select group &gt; Members
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>- Review external members for appropriateness
+</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>- Remove unauthorized external members
+</span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>- Configure &quot;Allow members from outside your organization&quot; based on requirements
+</span><span id="__span-16-5"><a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a>- Implement monitoring for external member addition
+</span></code></pre></div>
+<h3 id="incident-response-for-group-based-attacks">Incident Response for Group-Based Attacks<a class="headerlink" href="#incident-response-for-group-based-attacks" title="Permanent link">&para;</a></h3>
+<p>Develop incident response procedures for Google Groups security incidents:</p>
+<ol>
+<li><strong>Initial Assessment</strong></li>
+<li>Identify affected groups and potential information exposure</li>
+<li>Determine scope of unauthorized access</li>
+<li>Assess any data exfiltration or missuse</li>
+<li>
+<p>Review group activity logs for suspicious patterns</p>
+</li>
+<li>
+<p><strong>Containment Actions</strong></p>
+</li>
+<li>Change group security settings to restrict access</li>
+<li>Suspend unauthorized users or external members</li>
+<li>Remove unapproved content from group</li>
+<li>
+<p>Block external access if necessary</p>
+</li>
+<li>
+<p><strong>Group Security Restoration</strong></p>
+</li>
+<li>Implement appropriate security settings</li>
+<li>Review and update membership list</li>
+<li>Verify content is appropriate and authorized</li>
+<li>Configure enhanced monitoring</li>
+</ol>
+<h2 id="advanced-group-security-strategies">Advanced Group Security Strategies<a class="headerlink" href="#advanced-group-security-strategies" title="Permanent link">&para;</a></h2>
+<h3 id="group-security-governance-framework">Group Security Governance Framework<a class="headerlink" href="#group-security-governance-framework" title="Permanent link">&para;</a></h3>
+<p>Implement a comprehensive governance approach:</p>
+<ol>
+<li><strong>Group Lifecycle Management</strong></li>
+<li>Develop formal group creation approval process</li>
+<li>Implement standardized group configuration templates</li>
+<li>Create periodic review and recertification procedures</li>
+<li>
+<p>Establish group deprecation and archiving workflows</p>
+</li>
+<li>
+<p><strong>Group Classification System</strong></p>
+</li>
+<li>Develop group sensitivity classification scheme</li>
+<li>Implement naming conventions indicating security level</li>
+<li>Configure security controls based on classification</li>
+<li>
+<p>Apply appropriate monitoring based on sensitivity</p>
+</li>
+<li>
+<p><strong>Group Owner Responsibilities</strong></p>
+</li>
+<li>Define clear ownership responsibilities</li>
+<li>Provide security training for group owners</li>
+<li>Create owner acknowledgment process</li>
+<li>Implement regular compliance checking</li>
+</ol>
+<h3 id="security-optimization-techniques">Security Optimization Techniques<a class="headerlink" href="#security-optimization-techniques" title="Permanent link">&para;</a></h3>
+<p>Implement these advanced techniques for enhanced security:</p>
+<ol>
+<li><strong>Group Consolidation</strong></li>
+<li>Identify redundant or overlapping groups</li>
+<li>Merge similar groups to reduce management overhead</li>
+<li>Standardize group purposes and membership</li>
+<li>
+<p>Implement consistent security across similar groups</p>
+</li>
+<li>
+<p><strong>Group Access Reviews</strong></p>
+</li>
+<li>Conduct quarterly membership reviews</li>
+<li>Verify appropriate external access</li>
+<li>Validate group purpose still relevant</li>
+<li>
+<p>Confirm security settings meet requirements</p>
+</li>
+<li>
+<p><strong>Group Security Metrics</strong></p>
+</li>
+<li>Track security posture across groups</li>
+<li>Measure remediation effectiveness</li>
+<li>Monitor group proliferation and usage</li>
+<li>Report on security trends and improvements</li>
+</ol>
+<h2 id="msp-specific-considerations">MSP-Specific Considerations<a class="headerlink" href="#msp-specific-considerations" title="Permanent link">&para;</a></h2>
+<h3 id="multi-tenant-group-management">Multi-Tenant Group Management<a class="headerlink" href="#multi-tenant-group-management" title="Permanent link">&para;</a></h3>
+<p>For MSPs managing multiple Google Workspace environments:</p>
+<ol>
+<li><strong>Cross-Client Standardization</strong></li>
+<li>Develop consistent group security baselines</li>
+<li>Create standardized naming conventions</li>
+<li>Implement common governance framework</li>
+<li>
+<p>Establish consistent monitoring approach</p>
+</li>
+<li>
+<p><strong>Client-Specific Customization</strong></p>
+</li>
+<li>Adapt security controls to client requirements</li>
+<li>Document client-specific exceptions</li>
+<li>Implement appropriate delegation model</li>
+<li>
+<p>Create client-specific reporting</p>
+</li>
+<li>
+<p><strong>Efficient Management Practices</strong></p>
+</li>
+<li>Develop multi-tenant management tools</li>
+<li>Create efficient audit procedures</li>
+<li>Implement security templates by client type</li>
+<li>Establish cross-client metrics and benchmarks</li>
+</ol>
+<h3 id="client-onboarding-and-migration">Client Onboarding and Migration<a class="headerlink" href="#client-onboarding-and-migration" title="Permanent link">&para;</a></h3>
+<p>Implement specific procedures for client Google Groups migration:</p>
+<ol>
+<li><strong>Group Discovery and Assessment</strong></li>
+<li>Inventory existing groups across platforms</li>
+<li>Assess current security configurations</li>
+<li>Identify high-risk or sensitive groups</li>
+<li>
+<p>Document external sharing relationships</p>
+</li>
+<li>
+<p><strong>Security-Focused Migration</strong></p>
+</li>
+<li>Implement "secure by default" configurations</li>
+<li>Apply appropriate security templates</li>
+<li>Validate security settings post-migration</li>
+<li>
+<p>Create enhanced monitoring for migrated groups</p>
+</li>
+<li>
+<p><strong>Post-Migration Security Review</strong></p>
+</li>
+<li>Conduct comprehensive security assessment</li>
+<li>Identify remaining security gaps</li>
+<li>Implement remediation plan for issues</li>
+<li>Provide security recommendations report</li>
+</ol>
+<h2 id="tools-for-google-groups-security-assessment">Tools for Google Groups Security Assessment<a class="headerlink" href="#tools-for-google-groups-security-assessment" title="Permanent link">&para;</a></h2>
+<h3 id="gubble-google-groups-security-auditing-tool">Gubble: Google Groups Security Auditing Tool<a class="headerlink" href="#gubble-google-groups-security-auditing-tool" title="Permanent link">&para;</a></h3>
+<p><a href="https://github.com/LowOrbitSecurity/gubble">Gubble</a> by Graham Helton and Low Orbit Security is a specialized security assessment tool designed specifically for auditing Google Groups configurations.</p>
+<p><strong>Key Capabilities:</strong>
+- Automates identification of high-risk group configurations
+- Analyzes critical permission settings that could lead to security issues
+- Reports on groups that could be exploited during penetration testing
+- Checks for common misconfigurations and excessive permissions</p>
+<p><strong>Implementation Example:</strong>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="c1"># Install and run Gubble for Google Groups security assessment</span>
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/LowOrbitSecurity/gubble.git
+</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="nb">cd</span><span class="w"> </span>gubble
+</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>
+</span><span id="__span-17-5"><a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a><span class="c1"># Set up authentication with required OAuth scopes:</span>
+</span><span id="__span-17-6"><a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a><span class="c1"># - admin.directory.group.readonly</span>
+</span><span id="__span-17-7"><a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a><span class="c1"># - apps.groups.settings</span>
+</span><span id="__span-17-8"><a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a>
+</span><span id="__span-17-9"><a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a><span class="c1"># Run the tool against your domain</span>
+</span><span id="__span-17-10"><a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a>python3<span class="w"> </span>gubble.py<span class="w"> </span>-c<span class="w"> </span>credentials.json<span class="w"> </span>-d<span class="w"> </span>yourdomain.com
+</span></code></pre></div></p>
+<p><strong>Security Risks Identified:</strong>
+- Groups allowing anyone in the domain to join (potential privilege escalation)
+- Groups permitting external members (data exfiltration risk)
+- Groups with overly permissive viewing permissions (information disclosure)
+- Groups where members can post as the group (phishing vector)</p>
+<p>Consider integrating Gubble into your regular security assessment process to automatically identify and remediate Google Groups security misconfigurations.</p>
+<h2 id="additional-resources-and-documentation">Additional Resources and Documentation<a class="headerlink" href="#additional-resources-and-documentation" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="https://support.google.com/a/topic/25838">Google Workspace Admin Help: Google Groups</a></li>
+<li><a href="https://developers.google.com/admin-sdk/groups-settings/v1/reference">Google Groups Settings API</a></li>
+<li><a href="https://developers.google.com/admin-sdk/directory">Google Admin SDK Directory API</a></li>
+<li><a href="https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-53r5.pdf">NIST SP 800-53: Access Control</a></li>
+</ul>
+<hr />
+<p><strong>Note</strong>: This guide should be adapted to your organization's specific Google Workspace configuration and requirements.</p>
+
+
+
+
+
+
+
+  
+    
+  
+  
+    
+  
+
+
+  <aside class="md-source-file">
+    
+      
+  <span class="md-source-file__fact">
+    <span class="md-icon" title="Last update">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
+    </span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="June 1, 2025 02:13:27 UTC">June 1, 2025</span>
+  </span>
+
+    
+    
+      
+  <span class="md-source-file__fact">
+    <span class="md-icon" title="Created">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
+    </span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="June 1, 2025 02:13:27 UTC">June 1, 2025</span>
+  </span>
+
+    
+    
+    
+      
+  <span class="md-source-file__fact">
+    
+      
+  <span class="md-icon" title="Contributors">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33s1.71.11 2.5.33c1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2"/></svg>
+  </span>
+  <span>GitHub</span>
+
+    
+    <nav>
+      
+        <a href="https://github.com/ethanolivertroy" class="md-author" title="@ethanolivertroy">
+          
+          <img src="https://avatars.githubusercontent.com/u/63926014?v=4&size=72" alt="ethanolivertroy">
+        </a>
+      
+      
+      
+    </nav>
+  </span>
+
+    
+  </aside>
+
+
+  
+
+
+
+  <form class="md-feedback" name="feedback" hidden>
+    <fieldset>
+      <legend class="md-feedback__title">
+        Was this page helpful?
+      </legend>
+      <div class="md-feedback__inner">
+        <div class="md-feedback__list">
+          
+            <button class="md-feedback__icon md-icon" type="submit" title="This page was helpful" data-md-value="1">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8 8 8 0 0 0 8-8m2 0a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10M10 9.5c0 .8-.7 1.5-1.5 1.5S7 10.3 7 9.5 7.7 8 8.5 8s1.5.7 1.5 1.5m7 0c0 .8-.7 1.5-1.5 1.5S14 10.3 14 9.5 14.7 8 15.5 8s1.5.7 1.5 1.5m-5 7.73c-1.75 0-3.29-.73-4.19-1.81L9.23 14c.45.72 1.52 1.23 2.77 1.23s2.32-.51 2.77-1.23l1.42 1.42c-.9 1.08-2.44 1.81-4.19 1.81"/></svg>
+            </button>
+          
+            <button class="md-feedback__icon md-icon" type="submit" title="This page could be improved" data-md-value="0">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8 8 8 0 0 0 8-8m2 0a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10m-6.5-4c.8 0 1.5.7 1.5 1.5s-.7 1.5-1.5 1.5-1.5-.7-1.5-1.5.7-1.5 1.5-1.5M10 9.5c0 .8-.7 1.5-1.5 1.5S7 10.3 7 9.5 7.7 8 8.5 8s1.5.7 1.5 1.5m2 4.5c1.75 0 3.29.72 4.19 1.81l-1.42 1.42C14.32 16.5 13.25 16 12 16s-2.32.5-2.77 1.23l-1.42-1.42C8.71 14.72 10.25 14 12 14"/></svg>
+            </button>
+          
+        </div>
+        <div class="md-feedback__note">
+          
+            <div data-md-value="1" hidden>
+              
+              
+                
+              
+              
+              
+                
+                
+              
+              Thanks for your feedback!
+            </div>
+          
+            <div data-md-value="0" hidden>
+              
+              
+                
+              
+              
+              
+                
+                
+              
+              Thanks for your feedback! Help us improve this page by <a href="https://github.com/ethanolivertroy/GWS-Security-Suite/issues/new/?title=[Feedback]+Google%20Groups%20Security+-+/google-groups-security/" target="_blank" rel="noopener">telling us what you're missing</a>.
+            </div>
+          
+        </div>
+      </div>
+    </fieldset>
+  </form>
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../exploitation-examples/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Exploitation Examples">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Exploitation Examples
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../incident-response-playbooks/" class="md-footer__link md-footer__link--next" aria-label="Next: Incident Response Playbooks">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Incident Response Playbooks
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2025
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/ethanolivertroy/GWS-Security-Suite" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://twitter.com/ethanolivertroy" target="_blank" rel="noopener" title="twitter.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://linkedin.com/in/ethanolivertroy" target="_blank" rel="noopener" title="linkedin.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3M135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5m282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+      <div class="md-consent" data-md-component="consent" id="__consent" hidden>
+        <div class="md-consent__overlay"></div>
+        <aside class="md-consent__inner">
+          <form class="md-consent__form md-grid md-typeset" name="consent">
+            
+
+
+
+<h4>Cookie consent</h4>
+<p>We use cookies to recognize your repeated visits and preferences, as well as to measure the effectiveness of our documentation and whether users find what they're searching for. With your consent, you're helping us to make our documentation better.</p>
+<input class="md-toggle" type="checkbox" id="__settings" >
+<div class="md-consent__settings">
+  <ul class="task-list">
+    
+    
+      
+        
+  
+  
+    
+    
+  
+  <li class="task-list-item">
+    <label class="task-list-control">
+      <input type="checkbox" name="analytics" checked>
+      <span class="task-list-indicator"></span>
+      Google Analytics
+    </label>
+  </li>
+
+      
+    
+    
+      
+        
+  
+  
+    
+    
+  
+  <li class="task-list-item">
+    <label class="task-list-control">
+      <input type="checkbox" name="github" checked>
+      <span class="task-list-indicator"></span>
+      GitHub
+    </label>
+  </li>
+
+      
+    
+    
+  </ul>
+</div>
+<div class="md-consent__controls">
+  
+    
+      <button class="md-button md-button--primary">Accept</button>
+    
+    
+    
+  
+    
+    
+      <button type="reset" class="md-button md-button--primary">Reject</button>
+    
+    
+  
+    
+    
+    
+      <label class="md-button" for="__settings">Manage settings</label>
+    
+  
+</div>
+          </form>
+        </aside>
+      </div>
+      <script>var consent=__md_get("__consent");if(consent)for(var input of document.forms.consent.elements)input.name&&(input.checked=consent[input.name]||!1);else"file:"!==location.protocol&&setTimeout((function(){document.querySelector("[data-md-component=consent]").hidden=!1}),250);var form=document.forms.consent;for(var action of["submit","reset"])form.addEventListener(action,(function(e){if(e.preventDefault(),"reset"===e.type)for(var n of document.forms.consent.elements)n.name&&(n.checked=!1);__md_set("__consent",Object.fromEntries(Array.from(new FormData(form).keys()).map((function(e){return[e,!0]})))),location.hash="",location.reload()}))</script>
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": ["navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.indexes", "navigation.path", "navigation.top", "navigation.footer", "navigation.expand", "toc.follow", "toc.integrate", "search.suggest", "search.highlight", "search.share", "content.tabs.link", "content.code.copy", "content.code.annotate", "content.code.select", "content.code.select.copy", "content.action.edit", "content.action.view", "content.action.feedback", "content.action.star", "content.action.issue", "content.authors", "content.contributors", "content.git", "content.footer", "content.source", "header.autohide"], "search": "../assets/javascripts/workers/search.d50fe291.min.js", "tags": true, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.13a4f30d.min.js"></script>
+      
+    
+  <script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(() => { lightbox.reload() });
+</script></body>
+</html>

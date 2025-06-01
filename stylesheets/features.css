@@ -1,0 +1,94 @@
+/* Styling for features section */
+
+/* Features grid layout */
+.features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  padding: 2rem 0;
+  margin-top: 3rem;
+}
+
+/* Feature card styling - light mode */
+[data-md-color-scheme="default"] .feature {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 1.5rem;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/* Feature card styling - dark mode */
+[data-md-color-scheme="slate"] .feature {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 1.5rem;
+  background-color: hsla(220, 13%, 18%, 1); /* Match code block bg color */
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: hsla(220, 14%, 96%, 1); /* Match code block text color */
+}
+
+/* Hover effect - light mode */
+[data-md-color-scheme="default"] .feature:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  border-color: var(--gws-green);
+}
+
+/* Hover effect - dark mode */
+[data-md-color-scheme="slate"] .feature:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  border-color: var(--gws-green);
+}
+
+/* Feature icon styling */
+.feature-icon {
+  font-size: 2.5rem;
+  color: var(--gws-green);
+  margin-bottom: 1rem;
+}
+
+/* Feature headings - light mode */
+[data-md-color-scheme="default"] .feature h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  color: var(--gws-dark-gray);
+}
+
+/* Feature headings - dark mode */
+[data-md-color-scheme="slate"] .feature h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  color: white;
+}
+
+/* Feature paragraphs - light mode */
+[data-md-color-scheme="default"] .feature p {
+  font-size: 0.9rem;
+  color: var(--gws-dark-gray);
+}
+
+/* Feature paragraphs - dark mode */
+[data-md-color-scheme="slate"] .feature p {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .features {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
