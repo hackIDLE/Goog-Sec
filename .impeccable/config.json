@@ -1,0 +1,16 @@
+{
+  "detector": {
+    "ignoreRules": [
+      "single-font"
+    ],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "overused-font",
+        "value": "roboto",
+        "reason": "Roboto is the committed Material Design 3 interface font for this Google-aligned documentation site.",
+        "createdAt": "2026-07-20T06:45:54.205Z"
+      }
+    ]
+  }
+}
