@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">Goog-Sec documentation</title>
+  <desc id="desc">Google security guidance, control testing, and evidence.</desc>
+  <rect width="1200" height="630" fill="#f7f8f4"/>
+  <rect x="48" y="48" width="1104" height="534" rx="40" fill="#eef5ef" stroke="#c5d8ca" stroke-width="2"/>
+  <rect x="48" y="48" width="276" height="8" rx="4" fill="#4285f4"/>
+  <rect x="324" y="48" width="276" height="8" fill="#db4437"/>
+  <rect x="600" y="48" width="276" height="8" fill="#f4b400"/>
+  <rect x="876" y="48" width="276" height="8" rx="4" fill="#0f9d58"/>
+  <g transform="translate(100 154) scale(10)">
+    <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z" fill="#0f9d58"/>
+  </g>
+  <text x="410" y="270" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="96" font-weight="750" letter-spacing="-4" fill="#17231b">Goog-Sec</text>
+  <text x="414" y="347" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="34" font-weight="500" fill="#46534a">Google security guidance, control testing,</text>
+  <text x="414" y="393" font-family="Inter, ui-sans-serif, system-ui, sans-serif" font-size="34" font-weight="500" fill="#46534a">and evidence.</text>
+  <text x="414" y="487" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="24" fill="#0b6b3d">hackidle.github.io/Goog-Sec</text>
+</svg>
