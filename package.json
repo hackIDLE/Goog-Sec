@@ -1,0 +1,29 @@
+{
+  "name": "goog-sec-docs",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "generate:contributors": "node scripts/generate-contributors.mjs",
+    "prebuild": "npm run generate:contributors",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "check:content": "node scripts/check-content.mjs",
+    "check:build": "node scripts/check-build.mjs",
+    "test": "npm run check:content && npm run check && npm run build && npm run check:build"
+  },
+  "dependencies": {
+    "@astrojs/starlight": "0.41.3",
+    "astro": "7.1.1",
+    "starlight-theme-md3": "0.2.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "0.9.9",
+    "typescript": "6.0.3"
+  }
+}
