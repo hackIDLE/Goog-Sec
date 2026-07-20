@@ -20,7 +20,7 @@ export default defineConfig({
       favicon: '/assets/logo.svg',
       lastUpdated: true,
       editLink: {
-        baseUrl: `${repository}/edit/main/src/content/docs/`,
+        baseUrl: `${repository}/edit/main/`,
       },
       social: [
         { icon: 'github', label: 'Goog-Sec on GitHub', href: repository },

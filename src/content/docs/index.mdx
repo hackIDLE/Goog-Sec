@@ -18,64 +18,70 @@ hero:
       variant: minimal
 ---
 
-import { Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
+<section className="home-purpose" aria-labelledby="purpose-heading">
+  <h2 id="purpose-heading">What this project is for</h2>
+  <p className="home-purpose__lede">Goog-Sec helps security engineers, cloud architects, administrators, assessors, and service providers turn broad Google security requirements into concrete implementation and validation steps.</p>
 
-## What this project is for
+  <dl className="capability-ledger">
+    <div>
+      <dt><span aria-hidden="true">01</span> Practical implementation</dt>
+      <dd>Configuration patterns, example commands, and verification steps for controls that must work in real environments.</dd>
+    </div>
+    <div>
+      <dt><span aria-hidden="true">02</span> Threat-informed guidance</dt>
+      <dd>Attack paths, detection considerations, and incident-response context alongside preventive configuration.</dd>
+    </div>
+    <div>
+      <dt><span aria-hidden="true">03</span> Control testing</dt>
+      <dd>NIST and FedRAMP-oriented evidence and test procedures for Google Cloud and Workspace environments.</dd>
+    </div>
+    <div>
+      <dt><span aria-hidden="true">04</span> Cross-product architecture</dt>
+      <dd>Identity, Zero Trust, threat intelligence, and security operations across product boundaries.</dd>
+    </div>
+  </dl>
+</section>
 
-Goog-Sec helps security engineers, cloud architects, administrators, assessors, and service providers turn broad Google security requirements into concrete implementation and validation steps.
+<nav className="domain-directory" aria-labelledby="explore">
+  <h2 id="explore">Explore the guidance</h2>
+  <p className="domain-directory__intro">Start with the environment or control family you are responsible for.</p>
 
-<CardGrid stagger>
-  <Card title="Practical implementation" icon="setting">
-    Configuration patterns, example commands, and verification steps for controls that must work in real environments.
-  </Card>
-  <Card title="Threat-informed guidance" icon="warning">
-    Attack paths, detection considerations, and incident-response context alongside preventive configuration.
-  </Card>
-  <Card title="Control testing" icon="approve-check">
-    NIST and FedRAMP-oriented evidence and test procedures for Google Cloud and Workspace environments.
-  </Card>
-  <Card title="Cross-product architecture" icon="puzzle">
-    Identity, Zero Trust, threat intelligence, and security operations across product boundaries.
-  </Card>
-</CardGrid>
+  <div className="domain-directory__list">
+    <a href="/Goog-Sec/workspace/">
+      <strong><span className="domain-dot domain-dot--blue" aria-hidden="true"></span>Google Workspace</strong>
+      <span>Identity, data, email, endpoints, threat hunting, incident response, and MSP operations.</span>
+      <span className="domain-directory__arrow" aria-hidden="true">→</span>
+    </a>
+    <a href="/Goog-Sec/gcp/">
+      <strong><span className="domain-dot domain-dot--red" aria-hidden="true"></span>Google Cloud</strong>
+      <span>IAM, networks, compute, storage, GKE, monitoring, Security Command Center, SAIF, and compliance.</span>
+      <span className="domain-directory__arrow" aria-hidden="true">→</span>
+    </a>
+    <a href="/Goog-Sec/chrome/">
+      <strong><span className="domain-dot domain-dot--yellow" aria-hidden="true"></span>Google Chrome</strong>
+      <span>Enterprise policy, extension security, filtering, authentication, and Zero Trust browsing.</span>
+      <span className="domain-directory__arrow" aria-hidden="true">→</span>
+    </a>
+    <a href="/Goog-Sec/cross-product/">
+      <strong><span className="domain-dot domain-dot--green" aria-hidden="true"></span>Cross-product security</strong>
+      <span>Federated identity, coordinated defense, security operations, and shared threat intelligence.</span>
+      <span className="domain-directory__arrow" aria-hidden="true">→</span>
+    </a>
+    <a href="/Goog-Sec/nist-fedramp/">
+      <strong><span className="domain-dot domain-dot--green" aria-hidden="true"></span>NIST and FedRAMP</strong>
+      <span>Assessment-oriented checklists, evidence expectations, and Google-specific control tests.</span>
+      <span className="domain-directory__arrow" aria-hidden="true">→</span>
+    </a>
+    <a href="/Goog-Sec/contributing/documentation-guidelines/">
+      <strong><span className="domain-dot domain-dot--blue" aria-hidden="true"></span>Contributing</strong>
+      <span>Authoring standards for sourced, testable, and public-safe security guidance.</span>
+      <span className="domain-directory__arrow" aria-hidden="true">→</span>
+    </a>
+  </div>
+</nav>
 
-<h2 id="explore">Explore</h2>
-
-<CardGrid>
-  <LinkCard
-    title="Google Workspace Security"
-    href="/Goog-Sec/workspace/"
-    description="Identity, data, email, endpoints, threat hunting, incident response, and MSP operations."
-  />
-  <LinkCard
-    title="Google Cloud Security"
-    href="/Goog-Sec/gcp/"
-    description="IAM, networks, compute, storage, GKE, monitoring, Security Command Center, SAIF, and compliance."
-  />
-  <LinkCard
-    title="Google Chrome Security"
-    href="/Goog-Sec/chrome/"
-    description="Enterprise policy, extension security, filtering, authentication, and Zero Trust browsing."
-  />
-  <LinkCard
-    title="Cross-Product Security"
-    href="/Goog-Sec/cross-product/"
-    description="Federated identity, coordinated defense, security operations, and shared threat intelligence."
-  />
-  <LinkCard
-    title="NIST and FedRAMP Controls"
-    href="/Goog-Sec/nist-fedramp/"
-    description="Assessment-oriented checklists, evidence expectations, and Google-specific control tests."
-  />
-  <LinkCard
-    title="Contributing"
-    href="/Goog-Sec/contributing/documentation-guidelines/"
-    description="Authoring standards for sourced, testable, and public-safe security guidance."
-  />
-</CardGrid>
-
-## Trust model
-
-This project provides community guidance. It does not claim that a configuration is universally secure, compliant, or appropriate for every Google tenant. Each guide should make prerequisites, permissions, evidence, limitations, and rollback expectations visible so readers can make informed changes.
-
-Use the page provenance panel, edit links, and issue tracker to inspect or improve the guidance.
+<section className="trust-model" aria-labelledby="trust-heading">
+  <h2 id="trust-heading">Trust model</h2>
+  <p>This project provides community guidance. It does not claim that a configuration is universally secure, compliant, or appropriate for every Google tenant. Each guide should make prerequisites, permissions, evidence, limitations, and rollback expectations visible so readers can make informed changes.</p>
+  <p>Use the page provenance panel, edit links, and issue tracker to inspect or improve the guidance.</p>
+</section>

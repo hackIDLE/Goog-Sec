@@ -53,6 +53,18 @@ logs/
 node_modules/
 .astro/
 
+# Impeccable project-local installer output and per-developer state
+# The downloaded executable skill bundle stays local; only shared detector config is versioned.
+.agents/skills/impeccable/
+.codex/hooks.json
+.cursor/hooks.json
+.cursor/skills/impeccable/
+.github/hooks/impeccable.json
+.github/skills/impeccable/
+.impeccable/config.local.json
+.impeccable/hook.cache.json
+.impeccable/live/
+
 # Temporary files
 tmp/
 temp/

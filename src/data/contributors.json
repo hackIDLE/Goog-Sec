@@ -29,14 +29,14 @@
   ],
   "chrome/extension-security": [
     {
-      "name": "PentaK",
-      "login": "Pentaksecurity",
-      "avatar": "https://github.com/Pentaksecurity.png?size=64"
-    },
-    {
       "name": "Ethan Troy",
       "login": "ethanolivertroy",
       "avatar": "https://github.com/ethanolivertroy.png?size=64"
+    },
+    {
+      "name": "PentaK",
+      "login": "Pentaksecurity",
+      "avatar": "https://github.com/Pentaksecurity.png?size=64"
     }
   ],
   "chrome": [
